@@ -76,22 +76,22 @@ export const MapaCuadrantesInteractive: React.FC<MapaProps> = ({ onSelectQuadran
   const CurrentIcon = current.icon;
 
   return (
-    <div className="w-full bg-gradient-to-b from-[#060F1E] via-[#0B1E36] to-[#060F1E] text-white rounded-[20px] p-6 sm:p-9 shadow-xl border border-[#F59E0B]/30 relative overflow-hidden">
+    <div className="w-full bg-gradient-to-b from-[#060F1E] via-[#0B1E36] to-[#060F1E] text-white rounded-[20px] p-4 sm:p-8 shadow-xl border border-[#F59E0B]/30 relative overflow-hidden">
       {/* Background ambient glow */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-[#F59E0B]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header section */}
-      <div className="relative z-10 text-center max-w-[620px] mx-auto mb-8 space-y-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F59E0B]/20 border border-[#F59E0B]/40 text-[#FBBF24] text-[11px] font-bold tracking-widest uppercase">
+      <div className="relative z-10 text-center max-w-[620px] mx-auto mb-6 sm:mb-8 space-y-2 px-1">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F59E0B]/20 border border-[#F59E0B]/40 text-[#FBBF24] text-[10.5px] sm:text-[11px] font-bold tracking-widest uppercase">
           <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
           <span>Metodología Integral de Transformación</span>
         </div>
 
-        <h3 className="font-serif text-[24px] sm:text-[30px] text-white font-normal leading-tight">
+        <h3 className="font-editorial text-[22px] sm:text-[30px] text-white font-normal leading-tight">
           El Mapa de tu Vida en Dios
         </h3>
-        <p className="text-[13.5px] sm:text-[14.5px] text-[#CBD5E1] leading-relaxed">
+        <p className="text-[13px] sm:text-[14.5px] text-[#CBD5E1] leading-relaxed">
           Para que tu vida se ordene y la ansiedad ceda el paso a la paz, los 4 cuadrantes deben alinearse bajo la gracia divina: <strong>Cuerpo, Mente, Alma y Propósito</strong>. Toca cada cuadrante para diagnosticar tu estado y recibir la respuesta de Dios.
         </p>
       </div>
@@ -139,7 +139,7 @@ export const MapaCuadrantesInteractive: React.FC<MapaProps> = ({ onSelectQuadran
       </div>
 
       {/* Active Quadrant Detailed Card */}
-      <div className="relative z-10 bg-[#0B1A2F] border-2 border-[#1E3A5F] rounded-[16px] p-5 sm:p-7 space-y-4 shadow-lg">
+      <div className="relative z-10 bg-[#0B1A2F] border-2 border-[#1E3A5F] rounded-[16px] p-4 sm:p-6 space-y-4 shadow-lg">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1E3A5F]">
           <div className="flex items-center gap-3">
             <div

@@ -9,12 +9,12 @@ interface LogoProps {
 
 export const TuPoderMentalLogo: React.FC<LogoProps> = ({
   className = '',
-  size = 46,
+  size = 44,
   showText = true,
   textColor = 'text-[#0B1E36]',
 }) => {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-2 sm:gap-2.5 min-w-0 ${className}`}>
       {/* 
         Exact Vector Representation of "Nuevo Logo Tu Poder Mental"
         - Navy circular frame
@@ -24,12 +24,10 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
         - 4 green botanical leaves at bottom-left
       */}
       <svg
-        width={size}
-        height={size}
         viewBox="0 0 220 220"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="shrink-0 drop-shadow-sm select-none"
+        className="w-9 h-9 sm:w-11 sm:h-11 shrink-0 drop-shadow-sm select-none"
         aria-label="Logo Tu Poder Mental"
       >
         <defs>
@@ -251,24 +249,24 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
 
       {/* Brand Wordmark & Typography Matching Uploaded Artwork */}
       {showText && (
-        <div className="flex flex-col text-left select-none">
+        <div className="flex flex-col text-left select-none min-w-0">
           {/* Line 1: — TU — */}
-          <div className="flex items-center gap-1.5 -mb-0.5">
-            <span className="w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
-            <span className="text-[10px] tracking-[0.26em] font-semibold text-[#CBD5E1] uppercase">
+          <div className="flex items-center gap-1 -mb-0.5">
+            <span className="w-2.5 sm:w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
+            <span className="text-[9px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.26em] font-semibold text-[#CBD5E1] uppercase">
               TU
             </span>
-            <span className="w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
+            <span className="w-2.5 sm:w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
           </div>
 
           {/* Line 2: PODER (with Golden Heart in the 'O') */}
-          <div className="flex items-center font-sans font-bold tracking-[0.04em] text-[18px] sm:text-[21px] leading-none text-[#F1F5F9] uppercase">
+          <div className="flex items-center font-sans font-bold tracking-[0.04em] text-[15px] sm:text-[20px] leading-none text-[#F1F5F9] uppercase">
             <span>P</span>
             {/* The 'O' with embedded golden heart */}
-            <span className="relative inline-flex items-center justify-center mx-[1.5px] w-[17px] h-[17px] sm:w-[19px] sm:h-[19px] rounded-full border-[2.5px] border-[#F1F5F9]">
+            <span className="relative inline-flex items-center justify-center mx-[1px] sm:mx-[1.5px] w-[14px] h-[14px] sm:w-[18px] sm:h-[18px] rounded-full border-[2px] sm:border-[2.5px] border-[#F1F5F9]">
               <svg
                 viewBox="0 0 24 24"
-                className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-[#F59E0B] stroke-[#B45309] stroke-[0.8]"
+                className="w-2 h-2 sm:w-2.5 sm:h-2.5 fill-[#F59E0B] stroke-[#B45309] stroke-[0.8]"
               >
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
@@ -277,12 +275,12 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
           </div>
 
           {/* Line 3: MENTAL */}
-          <div className="font-sans font-semibold tracking-[0.24em] text-[11px] sm:text-[12.5px] leading-tight text-[#CBD5E1] uppercase -mt-0.5">
+          <div className="font-sans font-semibold tracking-[0.2em] sm:tracking-[0.24em] text-[9.5px] sm:text-[12px] leading-tight text-[#CBD5E1] uppercase -mt-0.5">
             MENTAL
           </div>
 
           {/* Secondary Subtitle: F.E.™ */}
-          <span className="text-[8.5px] sm:text-[9px] tracking-[0.12em] uppercase font-semibold text-[#10B981] mt-0.5 whitespace-nowrap">
+          <span className="text-[7.5px] sm:text-[9px] tracking-[0.04em] sm:tracking-[0.1em] uppercase font-semibold text-[#10B981] mt-0.5 leading-tight line-clamp-1 max-w-[155px] sm:max-w-none">
             F.E.™  Fortaleza Espiritual y Esperanza
           </span>
         </div>

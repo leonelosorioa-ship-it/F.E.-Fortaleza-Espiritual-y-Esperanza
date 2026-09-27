@@ -300,7 +300,7 @@ export default function App() {
           <div>
             El Mapa de tu Vida en Dios • F.E.™ Fortaleza Espiritual • Tu Poder Mental™
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-center">
             <button
               type="button"
               onClick={() => setIsPlanOpen(true)}
@@ -308,7 +308,7 @@ export default function App() {
             >
               Proceso 30 Días con Clara Luz y Leo (12.99 USD - Pago Único)
             </button>
-            <span>•</span>
+            <span className="hidden xs:inline">•</span>
             <span>Uso privado y seguro en tu equipo</span>
           </div>
         </div>

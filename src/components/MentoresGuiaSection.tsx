@@ -14,25 +14,25 @@ export const MentoresGuiaSection: React.FC<MentoresProps> = ({
   return (
     <div className="w-full space-y-6">
       {/* Title & context */}
-      <div className="text-center max-w-[700px] mx-auto space-y-2.5">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FEF3C7] border border-[#FDE68A] text-[#92400E] text-[11px] font-bold tracking-widest uppercase shadow-2xs">
+      <div className="text-center max-w-[700px] mx-auto space-y-2.5 px-1">
+        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#F59E0B]/15 border border-[#F59E0B]/30 text-[#FBBF24] text-[10.5px] sm:text-[11px] font-bold tracking-widest uppercase">
           <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" strokeWidth={2.5} />
           <span>Nuestros 2 Guías o Mentores en este Proceso Espiritual y de Esperanza FE</span>
         </div>
 
-        <h2 className="font-serif text-[26px] sm:text-[34px] text-[#0B1E36] font-normal leading-tight">
+        <h2 className="font-editorial text-[24px] sm:text-[34px] text-[#F1F5F9] font-normal leading-tight">
           Caminando con Clara Luz y Leo durante los 30 Días
         </h2>
 
-        <p className="text-[14.5px] sm:text-[15.5px] text-[#475569] leading-relaxed">
+        <p className="text-[13.5px] sm:text-[15.5px] text-[#CBD5E1] leading-relaxed">
           No estás solo en este camino. Nuestros dos mentores te acompañarán paso a paso en tus 4 cuadrantes (Cuerpo, Mente, Alma y Propósito) <strong>durante los 30 días por un único valor de 12.99 Dólares</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
         </p>
       </div>
 
       {/* Grid de los 2 Mentores */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
         {/* CARD 1: CLARA LUZ */}
-        <div className="relative rounded-[22px] bg-gradient-to-b from-[#0B1728] via-[#0D223B] to-[#0A1A2F] border-2 border-[#14B8A6]/50 p-6 sm:p-7 text-white shadow-xl flex flex-col justify-between overflow-hidden group">
+        <div className="relative rounded-[22px] bg-gradient-to-b from-[#0B1728] via-[#0D223B] to-[#0A1A2F] border-2 border-[#14B8A6]/50 p-4 sm:p-7 text-white shadow-xl flex flex-col justify-between overflow-hidden group">
           {/* Ambient glow */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#14B8A6]/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -113,7 +113,7 @@ export const MentoresGuiaSection: React.FC<MentoresProps> = ({
         </div>
 
         {/* CARD 2: LEO */}
-        <div className="relative rounded-[22px] bg-gradient-to-b from-[#0B1728] via-[#0E2038] to-[#0A1A2F] border-2 border-[#F59E0B]/50 p-6 sm:p-7 text-white shadow-xl flex flex-col justify-between overflow-hidden group">
+        <div className="relative rounded-[22px] bg-gradient-to-b from-[#0B1728] via-[#0E2038] to-[#0A1A2F] border-2 border-[#F59E0B]/50 p-4 sm:p-7 text-white shadow-xl flex flex-col justify-between overflow-hidden group">
           {/* Ambient glow */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#F59E0B]/15 rounded-full blur-3xl pointer-events-none" />
 

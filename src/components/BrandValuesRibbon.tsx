@@ -42,12 +42,12 @@ export const BrandValuesRibbon: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-r from-[#060F1E] via-[#0B1E36] to-[#060F1E] text-white rounded-[18px] p-6 sm:p-7 shadow-xl border border-[#F59E0B]/30">
+    <div className="w-full bg-gradient-to-r from-[#060F1E] via-[#0B1E36] to-[#060F1E] text-white rounded-[18px] p-4 sm:p-7 shadow-xl border border-[#F59E0B]/30 overflow-hidden">
       <div className="text-center mb-6">
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FBBF24] block mb-1">
+        <span className="text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#FBBF24] block mb-1">
           Ecosistema Digital Tu Poder Mental™
         </span>
-        <h3 className="font-serif text-[20px] sm:text-[23px] text-white">
+        <h3 className="font-editorial text-[18px] sm:text-[23px] text-white font-normal leading-snug">
           La Arquitectura de tu Bienestar: Cuerpo • Mente • Alma • Propósito
         </h3>
         <p className="text-[13px] text-[#CBD5E1] max-w-[540px] mx-auto mt-1">

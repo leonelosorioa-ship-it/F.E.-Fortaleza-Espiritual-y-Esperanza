@@ -62,7 +62,7 @@ export const GraceStreakTracker: React.FC<GraceStreakTrackerProps> = ({
           <span className="tabular-nums">{Math.round((totalCompleted / 30) * 100)}% completado</span>
         </div>
 
-        <div className="grid grid-cols-10 gap-1.5 sm:gap-2">
+        <div className="grid grid-cols-6 sm:grid-cols-10 gap-1.5 sm:gap-2">
           {Array.from({ length: 30 }, (_, i) => i + 1).map((dayNum) => {
             const isDone = completedDays.includes(dayNum);
             const isCurrent = currentDay === dayNum;
@@ -73,7 +73,7 @@ export const GraceStreakTracker: React.FC<GraceStreakTrackerProps> = ({
                 key={dayNum}
                 type="button"
                 onClick={() => onSelectDay && onSelectDay(dayNum)}
-                className={`h-7 sm:h-8 rounded-[8px] text-[11px] font-semibold flex items-center justify-center transition-all cursor-pointer border ${
+                className={`h-8 sm:h-8 rounded-[8px] text-[11px] font-semibold flex items-center justify-center transition-all cursor-pointer border ${
                   isDone
                     ? 'bg-[#10B981]/25 border-[#10B981] text-[#A7F3D0]'
                     : isCurrent
