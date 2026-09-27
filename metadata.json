@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "F.E.™ Fortaleza Espiritual y Esperanza",
+  "description": "Botiquín de primeros auxilios litúrgicos y fisiológicos para momentos de ansiedad y rumiación nocturna.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

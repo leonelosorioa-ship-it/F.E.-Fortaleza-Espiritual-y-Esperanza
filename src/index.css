@@ -1,1 +1,134 @@
 @import "tailwindcss";
+
+:root {
+  /* ==========================================================================
+     COLOR - F.E.™ BOTIQUÍN (MODO OSCURO CANÓNICO)
+     ========================================================================== */
+  --color-base: #0E1413;
+  --color-surface: #161F1E;
+  --color-surface-subtle: #1D2826;
+  --color-surface-interactive: #1A2422;
+  --color-surface-selected: #1B322F;
+
+  /* Neutros Cálidos-Oliva */
+  --color-neutral-100: #E8EBE9; /* Texto Principal */
+  --color-neutral-200: #A6B0AC; /* Texto Secundario */
+  --color-neutral-300: #6E7A75; /* Texto Terciario / Placeholders */
+  --color-neutral-400: #2D3936; /* Bordes e hilos */
+  --color-neutral-500: #1A2422; /* Superficie inactiva */
+  --color-neutral-600: #121A18; /* Fondo de inputs */
+
+  /* Acento Único (Calm Teal) */
+  --color-accent: #2A6F68;
+  --color-accent-hover: #35837B;
+  --color-accent-active: #235E58;
+  --color-accent-text: #FFFFFF;
+
+  /* Semánticos */
+  --color-success: #3D7D68;
+  --color-warning: #C99757;
+  --color-error: #9E4D4D;
+
+  /* Hairlines y Separadores */
+  --color-border: #263330;
+  --color-border-subtle: rgba(166, 176, 172, 0.12);
+  --color-border-focus: #A6B0AC;
+
+  /* ==========================================================================
+     TIPOGRAFÍA
+     ========================================================================== */
+  --font-family-display: "Newsreader", Georgia, serif;
+  --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Pesos */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  /* Escala Canónica de 5 Tamaños */
+  --type-display-size: 36px;
+  --type-display-line: 40px;
+  --type-display-spacing: -0.025em;
+
+  --type-title-size: 26px;
+  --type-title-line: 32px;
+  --type-title-spacing: -0.015em;
+
+  --type-subtitle-size: 18px;
+  --type-subtitle-line: 26px;
+  --type-subtitle-spacing: -0.01em;
+
+  --type-body-size: 16px;
+  --type-body-line: 25px;
+  --type-body-spacing: 0em;
+
+  --type-label-size: 12px;
+  --type-label-line: 16px;
+  --type-label-spacing: 0.08em;
+
+  /* ==========================================================================
+     ESPACIADO Y FORMA
+     ========================================================================== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radios (Solo dos valores) */
+  --radius-control: 6px;
+  --radius-container: 12px;
+
+  /* Constantes de Layout */
+  --max-width-content: 720px;
+  --min-touch-target: 44px;
+
+  /* Elevación Única */
+  --shadow-floating: 0 12px 32px -4px rgba(6, 10, 9, 0.65);
+
+  /* ==========================================================================
+     MOVIMIENTO
+     ========================================================================== */
+  --ease-canonical: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 700ms;
+  --duration-breathing: 4000ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-normal: 0.01ms;
+    --duration-slow: 0.01ms;
+    --duration-breathing: 0.01ms;
+  }
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-neutral-100);
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-regular);
+  min-height: 100vh;
+}
+
+.font-editorial {
+  font-family: var(--font-family-display);
+}
+
+.font-ui {
+  font-family: var(--font-family-sans);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Ancho máximo editorial */
+.max-w-reading {
+  max-width: var(--max-width-content);
+}
