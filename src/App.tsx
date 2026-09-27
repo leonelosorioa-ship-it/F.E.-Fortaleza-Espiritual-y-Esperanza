@@ -162,8 +162,6 @@ export default function App() {
         onOpenGratitude={() => setCurrentScreen('gratitude')}
         onOpenAudios={() => setCurrentScreen('audios')}
         savedCount={savedAnchors.length}
-        isOfflineMode={isOffline}
-        onToggleOffline={handleToggleOffline}
       />
 
       {/* Main Content Area */}

@@ -2,54 +2,35 @@
 
 :root {
   /* ==========================================================================
-     DESIGN SYSTEM: MODO SANTUARIO NOCTURNO (WARM DARK SANCTUARY)
-     Fondos azul noche profundos, oro ámbar sereno y toques esmeralda de sanidad.
-     Regla estricta: NUNCA negro puro (#000) ni blanco puro (#FFF).
+     SISTEMA DE DISEÑO BASE ESTRICTO (AI STUDIO BRIEF)
      ========================================================================== */
-
-  /* Superficies de Fondo */
-  --color-base: #060F1E;
-  --color-surface-card: #0B1728;
-  --color-surface-elevated: #0E223D;
-  --color-surface-glass: rgba(255, 255, 255, 0.04);
-  --color-surface-selected: rgba(245, 158, 11, 0.12);
-
-  /* Neutros de Texto (Blanco roto cálido y gris lunar) */
-  --color-text-primary: #F1F5F9;
-  --color-text-secondary: #CBD5E1;
-  --color-text-tertiary: #94A3B8;
-  --color-text-muted: #64748B;
-
-  /* Acento Único de Acción y Foco (Oro Ámbar Cálido) */
+  --color-base-bg: #060F1E;
+  --color-base-surface: rgba(255, 255, 255, 0.05);
   --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-  --color-accent-active: #B45309;
-  --color-accent-subtle: rgba(245, 158, 11, 0.15);
-  --color-accent-text: #060F1E;
+  --color-text-main: #F8FAF9;
+  --color-text-secondary: #94A3B8;
+  --color-semantic-success: #059669;
+  --color-semantic-error: #EF4444;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --radius-container: 16px;
+  --radius-control: 8px;
 
-  /* Toque de Sanidad y Sosiego (Esmeralda) */
-  --color-emerald: #059669;
-  --color-emerald-light: #10B981;
-  --color-emerald-subtle: rgba(16, 185, 129, 0.14);
-
-  /* Bordes y Separadores Tenues (1px) */
-  --color-border-hairline: rgba(255, 255, 255, 0.08);
-  --color-border-subtle: rgba(245, 158, 11, 0.25);
-  --color-border-focus: #F59E0B;
-
-  /* Tipografía */
-  --font-family-display: "Lora", Georgia, serif;
-  --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Movimiento: cubic-bezier suave con 3 duraciones */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Layout Constants */
+  --min-viewport: 375px;
   --max-width-content: 720px;
   --min-touch-target: 44px;
 }
 
 body {
-  background-color: var(--color-base);
-  color: var(--color-text-primary);
-  font-family: var(--font-family-sans);
+  background-color: var(--color-base-bg);
+  color: var(--color-text-main);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 400;
   min-height: 100vh;
   margin: 0;
@@ -58,13 +39,53 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Tipografía de 60-75 caracteres máximo para lectura serena */
-p {
+/* ==========================================================================
+   ESCALA TIPOGRÁFICA ESTRICTA (5 tamaños, máx 2 pesos: 400 y 600)
+   ========================================================================== */
+.font-display-serif {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.text-display {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 600;
+}
+@media (min-width: 640px) {
+  .text-display {
+    font-size: 30px;
+  }
+}
+
+.text-titulo {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.text-subtitulo {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.text-cuerpo {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
   max-width: 68ch;
 }
 
-.font-editorial {
-  font-family: var(--font-family-display);
+.text-rotulo {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
 
 .tabular-nums {
@@ -72,11 +93,13 @@ p {
   font-feature-settings: "tnum";
 }
 
-/* Breathing UI: Animaciones de opacidad y escala continua (NADA DE REBOTE) */
-@keyframes breathing-wave {
+/* ==========================================================================
+   MOVIMIENTO CONTROLADO: Solo opacidad y transformación (Sin rebotes)
+   ========================================================================== */
+@keyframes breath-cycle {
   0%, 100% {
     transform: scale(0.96);
-    opacity: 0.65;
+    opacity: 0.7;
   }
   50% {
     transform: scale(1.04);
@@ -84,27 +107,41 @@ p {
   }
 }
 
-.animate-breathing-gentle {
-  animation: breathing-wave 4000ms ease-in-out infinite;
+.animate-breathing {
+  animation: breath-cycle 4000ms var(--ease-smooth) infinite;
 }
 
-@keyframes pulse-subtle {
-  0%, 100% {
-    opacity: 0.9;
+@keyframes fade-in-smooth {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
-  50% {
-    opacity: 0.4;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 3000ms ease-in-out infinite;
+.animate-fade-in {
+  animation: fade-in-smooth var(--duration-normal) var(--ease-smooth) forwards;
 }
 
-/* Focus visible accesible con aro ámbar sin salto de layout */
+/* Respeto a preferencia de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-breathing {
+    animation: none !important;
+  }
+}
+
+/* Foco visible estricto para controles interactivos */
 button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  outline: 2px solid #F59E0B;
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }

@@ -282,8 +282,8 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
           </div>
 
           {/* Secondary Subtitle: F.E.™ */}
-          <span className="text-[8.5px] tracking-[0.14em] uppercase font-semibold text-[#10B981] mt-0.5">
-            F.E.™ • Esperanza en Dios
+          <span className="text-[8.5px] sm:text-[9px] tracking-[0.12em] uppercase font-semibold text-[#10B981] mt-0.5 whitespace-nowrap">
+            F.E.™  Fortaleza Espiritual y Esperanza
           </span>
         </div>
       )}
