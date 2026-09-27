@@ -290,7 +290,7 @@ export default function App() {
               onClick={() => setIsPlanOpen(true)}
               className="hover:text-[#D97706] font-bold transition-colors cursor-pointer"
             >
-              El Mapa de 30 Días (4.99 USD)
+              Proceso 30 Días con Clara Luz y Leo (12.99 USD - Pago Único)
             </button>
             <span>•</span>
             <button

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Heart, ArrowRight, Compass, HeartHandshake, Volume2, ShieldCheck, Sun, Moon, Sparkles, BookOpen, Activity, Brain } from 'lucide-react';
 import { HeroCoupleIllustration } from './HeroCoupleIllustration';
 import { MapaCuadrantesInteractive } from './MapaCuadrantesInteractive';
+import { MentoresGuiaSection } from './MentoresGuiaSection';
 import { BrandValuesRibbon } from './BrandValuesRibbon';
 import { UserRoleProfile, SymptomId } from '../types';
 
@@ -65,7 +66,13 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
       {/* 2. El Mapa Interactivo de los 4 Cuadrantes: Cuerpo, Mente, Alma, Propósito */}
       <MapaCuadrantesInteractive onSelectQuadrantFlow={handleQuadrantFlow} />
 
-      {/* 3. Nicho Especial Ampliado: Hombres y Mujeres en Crisis Nocturna y Sobrecarga */}
+      {/* 3. Nuestros 2 Guías o Mentores: Clara Luz y Leo • Proceso Espiritual de 30 Días (12.99 USD Pago Único) */}
+      <MentoresGuiaSection
+        onSelectMentor={(role, symptom) => onStartFlow(role, symptom)}
+        onOpenPlanDetails={onOpenPlan}
+      />
+
+      {/* 4. Nicho Especial Ampliado: Hombres y Mujeres en Crisis Nocturna y Sobrecarga */}
       <div className="relative overflow-hidden bg-gradient-to-r from-[#FFFBEB] via-[#FFFFFF] to-[#F0FDF4] border-2 border-[#F59E0B]/40 rounded-[18px] p-6 sm:p-7 shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
           <div className="space-y-2 max-w-[530px]">
@@ -213,7 +220,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
               </span>
             </div>
             <p className="text-[12.5px] text-[#475569] leading-relaxed">
-              El mapa mensual completo: 4 semanas caminando en su palabra con reflexiones, neuroplasticidad y acciones prácticas.
+              El mapa guiado de 30 días: 5 semanas caminando en su palabra con Clara Luz y Leo, reflexiones diarias y acciones prácticas.
             </p>
           </button>
 
@@ -247,25 +254,31 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
         </div>
       </div>
 
-      {/* 8. Detalles del Plan Mensual (4.99 USD) */}
-      <div className="border border-[#CBD5E1] bg-gradient-to-r from-[#FFFFFF] via-[#FFFBEB]/40 to-[#F0FDF4]/40 rounded-[18px] p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-        <div>
-          <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#D97706] block mb-1">
-            Transparencia y Sostenimiento de la Plataforma
-          </span>
-          <div className="font-serif text-[20px] text-[#0B1E36] font-normal mb-1">
-            Botiquín gratuito permanente y suscripción mensual de 4.99 USD
+      {/* 8. Detalles del Proceso de 30 Días con Clara Luz y Leo (12.99 USD Pago Único) */}
+      <div className="border-2 border-[#F59E0B]/50 bg-gradient-to-r from-[#FFFBEB] via-[#FFFFFF] to-[#F0FDF4] rounded-[18px] p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-sm">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold tracking-[0.1em] uppercase px-3 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]">
+              Transparencia y Sostenimiento
+            </span>
+            <span className="text-[12px] font-bold text-[#059669]">
+              • Pago Único • Sin membresía
+            </span>
           </div>
-          <p className="text-[13px] text-[#475569] max-w-[480px]">
-            El acceso básico para buscar a Dios siempre será gratuito y libre. La suscripción opcional de $4.99/mes sostiene este ministerio y habilita el programa completo de 30 días y todas las vigilias sonoras extendidas.
+          <div className="font-serif text-[20px] sm:text-[22px] text-[#0B1E36] font-normal">
+            Proceso de 30 Días con Clara Luz y Leo: 12.99 USD
+          </div>
+          <p className="text-[13.5px] text-[#475569] max-w-[520px] leading-relaxed">
+            El acceso al botiquín de emergencia y primeros auxilios espirituales siempre será gratuito y libre. Para realizar el proceso completo de 30 días guiado por nuestros dos mentores de Esperanza y FE, realizas un <strong>único pago de 12.99 Dólares</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
           </p>
         </div>
         <button
           type="button"
           onClick={onOpenPlan}
-          className="min-h-[44px] px-5 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-[13px] font-bold text-white shrink-0 transition-colors shadow-sm cursor-pointer border border-[#F59E0B]/40"
+          className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-[13.5px] font-bold text-white shrink-0 transition-colors shadow-sm cursor-pointer border border-[#F59E0B]/40 flex items-center gap-2"
         >
-          Consultar detalles
+          <span>Ver Programa Completo</span>
+          <ArrowRight className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
         </button>
       </div>
     </div>

@@ -17,6 +17,27 @@ export type UserRoleProfile =
 
 export type LifeQuadrant = 'cuerpo' | 'mente' | 'alma' | 'proposito';
 
+export type MentorId = 'clara_luz' | 'leo' | 'ambos';
+
+export interface MentorPillar {
+  name: string;
+  tagline: string;
+  iconName: string;
+}
+
+export interface MentorProfile {
+  id: 'clara_luz' | 'leo';
+  fullName: string;
+  title: string;
+  motto: string;
+  shortBio: string;
+  pillars: MentorPillar[];
+  specialty: string;
+  primaryColor: string;
+  badgeColor: string;
+  glowColor: string;
+}
+
 export interface QuadrantInfo {
   id: LifeQuadrant;
   name: string;
@@ -83,6 +104,7 @@ export interface SavedAnchor {
   scriptureRef: string;
   declaration: string;
   quadrant?: LifeQuadrant;
+  mentor?: MentorId;
 }
 
 export interface GratitudeEntry {
@@ -103,6 +125,7 @@ export interface DailyPlanDay {
   scriptureRef: string;
   verse: string;
   quadrant?: LifeQuadrant;
+  mentorGuide?: 'Clara Luz' | 'Leo' | 'Clara Luz & Leo';
   isFreePreview?: boolean;
 }
 
@@ -115,5 +138,6 @@ export interface AudioFaithSession {
   description: string;
   scriptureTheme: string;
   quadrant?: LifeQuadrant;
+  mentorId?: MentorId;
   isFreePreview?: boolean;
 }

@@ -46,7 +46,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({ onOpenPlanDetails 
           El itinerario de 30 días para ordenar tu vida con Dios
         </h3>
         <p className="text-[14px] text-[#475569] leading-relaxed">
-          Diseñado para hombres y mujeres que buscan transformar la sobrecarga mental en un hábito sólido de paz, salud y alineación espiritual. Comienza hoy con la primera semana libre y desbloquea el mapa mensual completo por solo <strong>4.99 USD/mes</strong>.
+          Diseñado para hombres y mujeres que buscan transformar la sobrecarga mental en un hábito sólido de paz, salud y alineación espiritual. Comienza hoy con la primera semana libre y desbloquea el proceso completo de 30 días con nuestros mentores <strong>Clara Luz y Leo por un único valor de 12.99 Dólares</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
         </p>
       </div>
 
@@ -128,7 +128,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({ onOpenPlanDetails 
             </span>
           ) : (
             <span className="text-[11px] px-3 py-1 rounded-full bg-[#FEF3C7] text-[#92400E] font-bold border border-[#FDE68A] self-start sm:self-center flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Suscripción 30 Días
+              <Lock className="w-3 h-3" /> Proceso 30 Días (12.99 USD)
             </span>
           )}
         </div>
@@ -139,7 +139,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({ onOpenPlanDetails 
             <div className="flex items-start gap-2.5">
               <ShieldCheck className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
               <div className="text-[13px] text-[#78350F]">
-                <strong>Contenido del Mapa de 30 Días:</strong> Este día forma parte del catálogo completo de renovación mensual. Apoya el ministerio con <strong>4.99 USD/mes</strong> para desbloquearlo.
+                <strong>Proceso de 30 Días con Clara Luz y Leo:</strong> Este día forma parte del itinerario guiado por nuestros mentores de Fe y Esperanza. Accede a los 30 días por un <strong>único valor de 12.99 Dólares</strong> (sin membresía ni pagos recurrentes).
               </div>
             </div>
             {onOpenPlanDetails && (
@@ -148,7 +148,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({ onOpenPlanDetails 
                 onClick={onOpenPlanDetails}
                 className="px-4 py-2 rounded-[10px] bg-[#060F1E] text-white text-[12.5px] font-bold shrink-0 hover:bg-[#0B1E36] transition-colors cursor-pointer border border-[#F59E0B]/30"
               >
-                Desbloquear 30 Días
+                Desbloquear 30 Días (12.99 USD)
               </button>
             )}
           </div>

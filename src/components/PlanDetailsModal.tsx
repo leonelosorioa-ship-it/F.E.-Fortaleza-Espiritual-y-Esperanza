@@ -82,29 +82,40 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
             </ul>
           </div>
 
-          {/* Suscripción Mensual 30 Días */}
+          {/* Proceso Completo de 30 Días con Clara Luz y Leo (12.99 USD Pago Único) */}
           <div className="p-5 rounded-[14px] border-2 border-[#F59E0B] bg-gradient-to-b from-[#FFFBEB] to-[#FFFFFF] shadow-sm">
             <div className="flex justify-between items-baseline mb-2">
-              <span className="text-[15px] font-bold text-[#0B1E36]">Programa Mensual Completo (30 Días)</span>
-              <span className="text-[16px] tabular-nums font-bold text-[#0B1E36]">
-                4.99 USD <span className="text-[12px] text-[#64748B] font-normal">/ mes</span>
+              <div>
+                <span className="text-[15px] font-bold text-[#0B1E36] block">
+                  Proceso de 30 Días con Clara Luz y Leo
+                </span>
+                <span className="text-[11px] font-semibold text-[#059669]">
+                  Sin membresía recurrente • Acceso completo durante los 30 días
+                </span>
+              </div>
+              <span className="text-[18px] tabular-nums font-bold text-[#0B1E36]">
+                12.99 USD <span className="text-[12px] text-[#B45309] font-bold">(Pago Único)</span>
               </span>
             </div>
-            <p className="text-[12.5px] text-[#64748B] mb-3">
-              Sostiene este ministerio y proporciona el mapa completo de 30 días para edificar un hábito duradero en tus 4 cuadrantes.
+            <p className="text-[12.5px] text-[#475569] mb-3 leading-relaxed">
+              Durante los 30 días por un único valor de 12.99 Dólares. Nuestros dos guías y mentores de Esperanza y FE te acompañan a ordenar cuerpo, mente, alma y propósito. <em>Por el momento no existirá una membresía, es un único pago.</em>
             </p>
             <ul className="space-y-2 text-[13px] text-[#334155]">
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span><strong>Acompañamiento con Clara Luz y Leo:</strong> dos mentores de Fe y Esperanza guiándote en cada cuadrante</span>
+              </li>
               <li className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
                 <span><strong>El Mapa de 30 Días:</strong> 5 semanas estructuradas con principios diarios, versículos y acciones prácticas</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span><strong>Catálogo completo de audios de fe:</strong> vigilias de insomnio prolongado y paisajes sonoros devocionales</span>
+                <span><strong>Catálogo completo de audios de fe:</strong> vigilias de insomnio prolongado narradas por Clara Luz y Leo</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span><strong>Consolidación mensual:</strong> acompañamiento continuado para romper el ciclo de rumiación y desánimo</span>
+                <span><strong>Cero mensualidades ocultas:</strong> pago único de 12.99 USD con acceso definitivo</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />

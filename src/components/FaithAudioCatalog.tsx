@@ -37,7 +37,7 @@ export const FaithAudioCatalog: React.FC<FaithAudioCatalogProps> = ({ onOpenPlan
           Narraciones reposadas y frecuencias de descanso en Dios
         </h3>
         <p className="text-[14px] text-[#475569] leading-relaxed">
-          Lectura envolvente de las promesas de la Escritura acompañadas de texturas de sonido orgánicas (lluvia suave, arroyos serenos y frecuencias de reposo). Las sesiones introductorias son libres; las vigilias extendidas forman parte de la suscripción mensual de 30 días ($4.99/mes).
+          Lectura envolvente de las promesas de la Escritura acompañadas de texturas de sonido orgánicas (lluvia suave, arroyos serenos y frecuencias de reposo). Las sesiones introductorias son libres; las vigilias extendidas forman parte del proceso de 30 días guiado por Clara Luz y Leo por un <strong>único valor de 12.99 Dólares</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
         </p>
       </div>
 
@@ -63,7 +63,7 @@ export const FaithAudioCatalog: React.FC<FaithAudioCatalogProps> = ({ onOpenPlan
                     </span>
                     {!isFree && (
                       <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] flex items-center gap-1">
-                        <Lock className="w-2.5 h-2.5" /> Plan 30 Días
+                        <Lock className="w-2.5 h-2.5" /> Proceso 30 Días (12.99 USD)
                       </span>
                     )}
                   </div>
