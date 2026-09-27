@@ -1,13 +1,32 @@
 export type SymptomId =
-  | 'ansiedad'
-  | 'soledad'
-  | 'panico'
-  | 'tristeza'
-  | 'sentido'
-  | 'agotamiento'
-  | 'culpa';
+  | 'presencia'
+  | 'ansiedad_noche'
+  | 'confianza'
+  | 'cansancio'
+  | 'direccion'
+  | 'peticion'
+  | 'perdon'
+  | 'gratitud';
 
-export type UserRoleProfile = 'madre' | 'profesional' | 'hombre_proveedor' | 'creyente_abrumado';
+export type UserRoleProfile =
+  | 'hombre_fe'
+  | 'mujer_fe'
+  | 'madre_profesional'
+  | 'padre_familia'
+  | 'profesional_creyente';
+
+export type LifeQuadrant = 'cuerpo' | 'mente' | 'alma' | 'proposito';
+
+export interface QuadrantInfo {
+  id: LifeQuadrant;
+  name: string;
+  tagline: string;
+  description: string;
+  focusArea: string;
+  iconName: string;
+  accentColor: string;
+  recommendedSymptom: SymptomId;
+}
 
 export interface RoleProfileOption {
   id: UserRoleProfile;
@@ -15,12 +34,16 @@ export interface RoleProfileOption {
   sublabel: string;
   contextDesc: string;
   specificTension: string;
+  iconName: string;
 }
 
 export interface SymptomOption {
   id: SymptomId;
   label: string;
   tag: string;
+  iconColor: string;
+  quadrant?: LifeQuadrant;
+  quadrantLabel?: string;
 }
 
 export interface LiturgyStep {
@@ -31,6 +54,7 @@ export interface LiturgyStep {
 export interface AnchorContent {
   symptomId: SymptomId;
   symptomLabel: string;
+  quadrant?: LifeQuadrant;
   scripture: {
     verse: string;
     reference: string;
@@ -58,6 +82,7 @@ export interface SavedAnchor {
   userReflection?: string;
   scriptureRef: string;
   declaration: string;
+  quadrant?: LifeQuadrant;
 }
 
 export interface GratitudeEntry {
@@ -77,6 +102,7 @@ export interface DailyPlanDay {
   anchorAction: string;
   scriptureRef: string;
   verse: string;
+  quadrant?: LifeQuadrant;
   isFreePreview?: boolean;
 }
 
@@ -88,5 +114,6 @@ export interface AudioFaithSession {
   soundscape: string;
   description: string;
   scriptureTheme: string;
+  quadrant?: LifeQuadrant;
   isFreePreview?: boolean;
 }

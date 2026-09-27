@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Check } from 'lucide-react';
+import { X, Check, ShieldCheck, Heart, Sparkles, Compass } from 'lucide-react';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -11,107 +11,117 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#060A09]/80 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#060F1E]/80 backdrop-blur-xs animate-fade-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-plan-title"
     >
-      <div className="relative w-full max-w-[540px] bg-[#161F1E] border border-[#263330] rounded-[12px] p-6 sm:p-8 shadow-[0_12px_32px_-4px_rgba(6,10,9,0.65)] max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-[580px] bg-white border border-[#CBD5E1] rounded-[20px] p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-start justify-between mb-6 pb-4 border-b border-[#263330]">
+        <div className="flex items-start justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
           <div>
-            <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#A6B0AC] block mb-1">
-              Transparencia y sostenimiento
-            </span>
-            <h2 id="modal-plan-title" className="font-editorial text-[24px] text-[#E8EBE9]">
-              Detalles del plan F.E.™
+            <div className="flex items-center gap-1.5 text-[#D97706] mb-1">
+              <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
+              <span className="text-[11px] font-bold tracking-[0.08em] uppercase">
+                Transparencia y Sostenimiento de la Plataforma
+              </span>
+            </div>
+            <h2 id="modal-plan-title" className="font-serif text-[24px] text-[#0B1E36]">
+              El Mapa de tu Vida en Dios • Planes
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[44px] min-w-[44px] p-2 text-[#A6B0AC] hover:text-[#E8EBE9] rounded-[6px] hover:bg-[#1D2826] flex items-center justify-center transition-colors duration-150"
+            className="min-h-[40px] min-w-[40px] p-2 text-[#64748B] hover:text-[#0B1E36] rounded-[10px] hover:bg-[#F1F5F9] flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Cerrar detalles del plan"
           >
-            <X className="w-5 h-5" strokeWidth={1.5} />
+            <X className="w-5 h-5" strokeWidth={2} />
           </button>
         </div>
 
-        {/* Core Guarantee */}
-        <div className="bg-[#121A18] border border-[#263330] rounded-[6px] p-4 mb-6">
-          <p className="text-[13px] text-[#A6B0AC] leading-relaxed">
-            <span className="text-[#E8EBE9] font-medium">Principio de gracia:</span> El Botiquín de Emergencia nocturno para calmar la taquicardia y la rumiación es y será siempre de acceso libre y gratuito. Nadie debe pagar por ser consolado en la madrugada.
+        {/* Principio de Gracia */}
+        <div className="bg-[#FEF3C7]/40 border border-[#FDE68A] rounded-[14px] p-4 mb-6 flex items-start gap-3">
+          <Heart className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
+          <p className="text-[13px] text-[#334155] leading-relaxed">
+            <strong className="text-[#0B1E36]">Principio de Gracia:</strong> El Botiquín de Encuentro con Dios y los primeros auxilios para crisis nocturnas son y serán siempre de <strong>acceso libre y gratuito</strong>. Ningún hombre ni mujer debe pagar por ser consolado o recibir la Palabra en su momento de aflicción.
           </p>
         </div>
 
         {/* Pricing comparison */}
-        <div className="space-y-4 mb-8">
+        <div className="space-y-4 mb-6">
           {/* Plan Gratuito Perpetuo */}
-          <div className="p-4 rounded-[6px] border border-[#263330] bg-[#161F1E]">
+          <div className="p-5 rounded-[14px] border border-[#CBD5E1] bg-[#F8FAFC]">
             <div className="flex justify-between items-baseline mb-2">
-              <span className="text-[14px] font-medium text-[#E8EBE9]">Botiquín de Emergencia</span>
-              <span className="text-[14px] text-[#3D7D68] font-medium">Acceso libre perpetuo</span>
+              <span className="text-[15px] font-bold text-[#0B1E36]">Botiquín de Encuentro y Oración</span>
+              <span className="text-[12px] text-[#059669] font-bold uppercase tracking-wider bg-[#ECFDF5] px-2.5 py-0.5 rounded-full border border-[#A7F3D0]">
+                Acceso libre perpetuo
+              </span>
             </div>
-            <ul className="space-y-2 text-[13px] text-[#A6B0AC]">
+            <ul className="space-y-2 text-[13px] text-[#334155]">
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#3D7D68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Protocolo de entrega para crisis nocturnas en 7 dimensiones</span>
+                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Protocolo de entrega para hombres y mujeres ante cualquier necesidad</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#3D7D68] shrink-0 mt-0.5" strokeWidth={1.5} />
+                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Santuario para hombres y mujeres: calma fisiológica y libertad de culpa</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
                 <span>Pausa diafragmática 4×4 y anclaje sensorial 5-4-3-2-1</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#3D7D68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Diario de gratitud y primeros 7 días del plan de paz</span>
+                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Diario de gratitud y primeros 7 días libres del Mapa de Vida</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#3D7D68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Historial confidencial en la memoria de tu dispositivo</span>
+                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Almacenamiento confidencial y seguro en tu propio dispositivo</span>
               </li>
             </ul>
           </div>
 
           {/* Suscripción Mensual 30 Días */}
-          <div className="p-4 rounded-[6px] border border-[#2A6F68] bg-[#1B322F]/30">
+          <div className="p-5 rounded-[14px] border-2 border-[#F59E0B] bg-gradient-to-b from-[#FFFBEB] to-[#FFFFFF] shadow-sm">
             <div className="flex justify-between items-baseline mb-2">
-              <span className="text-[14px] font-medium text-[#E8EBE9]">Programa Completo 30 Días</span>
-              <span className="text-[15px] tabular-nums font-medium text-[#E8EBE9]">
-                4.99 USD <span className="text-[12px] text-[#A6B0AC] font-normal">/ mes (30 días)</span>
+              <span className="text-[15px] font-bold text-[#0B1E36]">Programa Mensual Completo (30 Días)</span>
+              <span className="text-[16px] tabular-nums font-bold text-[#0B1E36]">
+                4.99 USD <span className="text-[12px] text-[#64748B] font-normal">/ mes</span>
               </span>
             </div>
-            <p className="text-[12px] text-[#A6B0AC] mb-3">
-              Acompañamiento integral mes a mes para edificar un hábito duradero de reposo y sobriedad espiritual.
+            <p className="text-[12.5px] text-[#64748B] mb-3">
+              Sostiene este ministerio y proporciona el mapa completo de 30 días para edificar un hábito duradero en tus 4 cuadrantes.
             </p>
-            <ul className="space-y-2 text-[13px] text-[#A6B0AC]">
+            <ul className="space-y-2 text-[13px] text-[#334155]">
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#2A6F68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span><strong>Ruta completa de 30 Días:</strong> 4 semanas estructuradas de reestructuración cognitiva y anclas de paz</span>
+                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span><strong>El Mapa de 30 Días:</strong> 5 semanas estructuradas con principios diarios, versículos y acciones prácticas</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#2A6F68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span><strong>Catálogo completo de audios de fe:</strong> vigilias de insomnio prolongado y paisajes sonoros en 432 Hz</span>
+                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span><strong>Catálogo completo de audios de fe:</strong> vigilias de insomnio prolongado y paisajes sonoros devocionales</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#2A6F68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span><strong>Consolidación mensual:</strong> acompañamiento continuado para romper el ciclo de rumiación</span>
+                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span><strong>Consolidación mensual:</strong> acompañamiento continuado para romper el ciclo de rumiación y desánimo</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#2A6F68] shrink-0 mt-0.5" strokeWidth={1.5} />
-                <span>Acceso sin conexión permanente garantizado</span>
+                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <span>Acceso sin conexión permanente y soporte de actualizaciones</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Footer actions */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-end">
+        <div className="flex flex-col sm:flex-row gap-3 justify-end pt-2 border-t border-[#E2E8F0]">
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[44px] px-4 py-2 rounded-[6px] border border-[#263330] hover:bg-[#1D2826] text-[#A6B0AC] hover:text-[#E8EBE9] text-[14px] font-medium transition-colors duration-150 text-center"
+            className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[13.5px] font-bold transition-all shadow-sm cursor-pointer border border-[#F59E0B]/30"
           >
-            Entendido, volver al botiquín
+            Entendido, continuar al botiquín
           </button>
         </div>
       </div>

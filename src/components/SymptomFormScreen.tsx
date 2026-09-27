@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
 import { SymptomId, UserRoleProfile } from '../types';
 import { SYMPTOM_OPTIONS, ROLE_PROFILE_OPTIONS } from '../data/anchors';
-import { ArrowLeft, ArrowRight, Info, CheckCircle2, User, HeartPulse } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Info, CheckCircle2, User, Sparkles, Heart, Moon, Compass, Activity, Brain } from 'lucide-react';
 
 interface SymptomFormScreenProps {
   onBack: () => void;
   onSubmit: (symptomId: SymptomId, reflection: string, roleProfile: UserRoleProfile) => void;
   isLoading: boolean;
+  initialRole?: UserRoleProfile;
+  initialSymptom?: SymptomId;
 }
 
 export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
   onBack,
   onSubmit,
   isLoading,
+  initialRole = 'hombre_fe',
+  initialSymptom = 'presencia',
 }) => {
-  const [selectedRole, setSelectedRole] = useState<UserRoleProfile>('madre');
-  const [selectedSymptom, setSelectedSymptom] = useState<SymptomId | null>(null);
+  const [selectedRole, setSelectedRole] = useState<UserRoleProfile>(initialRole);
+  const [selectedSymptom, setSelectedSymptom] = useState<SymptomId>(initialSymptom);
   const [reflection, setReflection] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedSymptom) {
-      setErrorMessage('Por favor selecciona la dimensión emocional o carga que pesa en este momento.');
+      setErrorMessage('Por favor selecciona el área o motivo en el que deseas encontrarte con Dios hoy.');
       return;
     }
     setErrorMessage(null);
@@ -31,47 +35,62 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
 
   const currentRoleInfo = ROLE_PROFILE_OPTIONS.find((r) => r.id === selectedRole);
 
+  const getQuadrantColorBadge = (quadrant?: string) => {
+    switch (quadrant) {
+      case 'cuerpo':
+        return 'bg-[#ECFDF5] text-[#059669] border-[#A7F3D0]';
+      case 'mente':
+        return 'bg-[#FEF3C7] text-[#B45309] border-[#FDE68A]';
+      case 'alma':
+        return 'bg-[#F0FDFA] text-[#0D9488] border-[#99F6E4]';
+      case 'proposito':
+      default:
+        return 'bg-[#EEF2FF] text-[#4F46E5] border-[#C7D2FE]';
+    }
+  };
+
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Back button */}
-      <div className="mb-6">
+    <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
+      {/* Botón de regreso */}
+      <div>
         <button
           type="button"
           onClick={onBack}
-          className="min-h-[44px] px-3 py-2 rounded-[6px] text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] text-[13px] font-medium flex items-center gap-1.5 transition-colors duration-150"
+          className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+          <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
           <span>Volver al inicio</span>
         </button>
       </div>
 
-      {/* Screen Header */}
-      <div className="mb-8">
-        <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#A6B0AC] block mb-2">
-          Paso 1 de 2: La entrega de rescate
-        </span>
-        <h2 className="font-editorial text-[28px] sm:text-[32px] text-[#E8EBE9] leading-tight mb-2">
-          ¿Dónde duele o qué pesa hoy?
+      {/* Título de Bienvenida Espiritual */}
+      <div className="bg-white border border-[#E2E8F0] rounded-[18px] p-6 sm:p-8 shadow-sm space-y-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FEF3C7] text-[#B45309] text-[11px] font-bold tracking-wider uppercase border border-[#FDE68A]">
+          <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
+          <span>Diagnóstico y Anclaje en el Mapa de tu Vida</span>
+        </div>
+        <h2 className="font-serif text-[26px] sm:text-[30px] text-[#0B1E36] font-normal leading-tight">
+          ¿En qué área de tu vida necesitas a Dios hoy?
         </h2>
-        <p className="font-editorial text-[16px] text-[#A6B0AC] leading-relaxed">
-          Nombra lo que sientes con franqueza. La gracia de Dios no exige que maquilles tu agotamiento ni tu angustia; en tu debilidad se perfecciona su poder.
+        <p className="text-[14px] text-[#64748B] leading-relaxed">
+          Dios conoce tu nombre, tus anhelos y tus cargas secretas. Selecciona tu perfil y la necesidad que traes hoy ante el Señor para recibir su promesa viva, declaración afirmativa y oración guiada.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Niche Persona Context Selector */}
+        {/* Paso 1: Perfil de Identidad en Dios */}
         <div className="space-y-3">
           <div className="flex items-baseline justify-between">
-            <label className="block text-[13px] font-medium text-[#E8EBE9] flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-[#2A6F68]" strokeWidth={1.5} />
-              <span>¿Desde qué lugar estás librando esta batalla hoy?</span>
+            <label className="text-[14px] font-bold text-[#0B1E36] flex items-center gap-2">
+              <User className="w-4 h-4 text-[#F59E0B]" strokeWidth={2} />
+              <span>1. ¿Cómo te presentas delante del Señor en este momento?</span>
             </label>
-            <span className="text-[11px] text-[#3D7D68] uppercase tracking-wider font-medium">
-              Contexto personalizado
+            <span className="text-[11px] text-[#F59E0B] font-bold uppercase tracking-wider">
+              Enfoque personal
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
             {ROLE_PROFILE_OPTIONS.map((role) => {
               const isSelected = selectedRole === role.id;
               return (
@@ -79,54 +98,57 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
                   key={role.id}
                   type="button"
                   onClick={() => setSelectedRole(role.id)}
-                  className={`p-3.5 rounded-[6px] text-left border transition-all flex items-start justify-between gap-2.5 ${
+                  className={`p-4 rounded-[14px] text-left border transition-all flex flex-col justify-between gap-2 cursor-pointer ${
                     isSelected
-                      ? 'bg-[#1B322F] border-[#2A6F68] text-[#E8EBE9]'
-                      : 'bg-[#121A18] border-[#263330] text-[#A6B0AC] hover:text-[#E8EBE9]'
+                      ? 'bg-[#FEF3C7]/40 border-[#F59E0B] ring-2 ring-[#F59E0B]/20 shadow-xs'
+                      : 'bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#334155]'
                   }`}
                 >
-                  <div className="space-y-0.5">
-                    <span className="text-[13px] font-medium block text-[#E8EBE9]">
+                  <div className="flex items-start justify-between gap-2 w-full">
+                    <span className="text-[13.5px] font-bold text-[#0B1E36] leading-snug">
                       {role.label}
                     </span>
-                    <span className="text-[11px] text-[#6E7A75] block leading-snug">
-                      {role.sublabel}
-                    </span>
+                    {isSelected && (
+                      <div className="w-5 h-5 rounded-full bg-[#F59E0B] flex items-center justify-center shrink-0">
+                        <CheckCircle2 className="w-4 h-4 text-[#060F1E]" strokeWidth={2.5} />
+                      </div>
+                    )}
                   </div>
-                  {isSelected && (
-                    <div className="w-4 h-4 rounded-full bg-[#2A6F68] flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
-                    </div>
-                  )}
+                  <span className="text-[11.5px] text-[#64748B] leading-snug">
+                    {role.sublabel}
+                  </span>
                 </button>
               );
             })}
           </div>
 
           {currentRoleInfo && (
-            <div className="p-3 rounded-[6px] bg-[#161F1E] border border-[#263330] text-[12px] text-[#A6B0AC] flex items-start gap-2">
-              <span className="text-[#C99757] font-medium shrink-0">•</span>
-              <p>
-                <strong className="text-[#E8EBE9]">Tensión de tu rol:</strong> {currentRoleInfo.contextDesc} {currentRoleInfo.specificTension}
-              </p>
+            <div className="p-4 rounded-[14px] bg-[#F8FAFC] border border-[#CBD5E1] text-[13px] text-[#334155] flex items-start gap-2.5">
+              <Heart className="w-4 h-4 text-[#F59E0B] fill-[#F59E0B] shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-[#0B1E36] font-semibold">Propósito de oración: </strong>
+                <span>{currentRoleInfo.contextDesc} </span>
+                <span className="text-[#0D9488] font-medium italic">{currentRoleInfo.specificTension}</span>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Selector de Síntomas / 7 Botiquines Temáticos */}
+        {/* Paso 2: Selección de la Necesidad Espiritual y Cuadrante */}
         <div className="space-y-3">
           <div className="flex items-baseline justify-between">
-            <label className="block text-[13px] font-medium text-[#E8EBE9]">
-              Selecciona tu botiquín temático de emergencia (7 dimensiones):
+            <label className="text-[14px] font-bold text-[#0B1E36]">
+              2. ¿Qué necesidad o motivo traes a la presencia de Dios?
             </label>
-            <span className="text-[11px] text-[#6E7A75] uppercase tracking-wider">
-              Enfoque compasivo
+            <span className="text-[11px] text-[#64748B] uppercase tracking-wider font-semibold">
+              {SYMPTOM_OPTIONS.length} Vías de Gracia
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="radiogroup" aria-label="Dimensiones emocionales">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="radiogroup">
             {SYMPTOM_OPTIONS.map((item) => {
               const isSelected = selectedSymptom === item.id;
+              const isNightCrisis = item.id === 'ansiedad_noche';
               return (
                 <button
                   key={item.id}
@@ -137,23 +159,35 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
                     setSelectedSymptom(item.id);
                     if (errorMessage) setErrorMessage(null);
                   }}
-                  className={`min-h-[76px] p-4 rounded-[6px] text-left transition-all duration-150 border flex items-start justify-between gap-3 focus:outline-none focus:ring-2 focus:ring-[#A6B0AC] ${
+                  className={`p-4 rounded-[14px] text-left transition-all border flex items-start justify-between gap-3 cursor-pointer ${
                     isSelected
-                      ? 'bg-[#1B322F] border-[#2A6F68] text-[#E8EBE9]'
-                      : 'bg-[#161F1E] border-[#263330] hover:bg-[#1D2826] text-[#A6B0AC] hover:text-[#E8EBE9]'
+                      ? 'bg-[#FEF3C7]/40 border-[#F59E0B] ring-2 ring-[#F59E0B]/20 shadow-xs'
+                      : isNightCrisis
+                      ? 'bg-[#FFFBEB] border-[#FDE68A] hover:border-[#F59E0B] text-[#334155]'
+                      : 'bg-white border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#334155]'
                   }`}
                 >
-                  <div className="space-y-1">
-                    <span className="text-[14px] font-medium block text-[#E8EBE9]">
+                  <div className="space-y-1.5 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {item.quadrantLabel && (
+                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${getQuadrantColorBadge(item.quadrant)}`}>
+                          {item.quadrantLabel}
+                        </span>
+                      )}
+                      {isNightCrisis && <Moon className="w-3.5 h-3.5 text-[#D97706]" />}
+                    </div>
+
+                    <span className="text-[14px] font-bold text-[#0B1E36] block">
                       {item.label}
                     </span>
-                    <span className="text-[12px] text-[#6E7A75] block leading-snug">
+
+                    <span className="text-[12px] text-[#64748B] block leading-snug">
                       {item.tag}
                     </span>
                   </div>
                   {isSelected && (
-                    <div className="w-5 h-5 rounded-full bg-[#2A6F68] flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-4 h-4 text-white" strokeWidth={1.5} />
+                    <div className="w-5 h-5 rounded-full bg-[#F59E0B] flex items-center justify-center shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-4 h-4 text-[#060F1E]" strokeWidth={2.5} />
                     </div>
                   )}
                 </button>
@@ -162,14 +196,14 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
           </div>
         </div>
 
-        {/* Desahogo Breve Opcional */}
+        {/* Paso 3: Petición o Desahogo del Corazón */}
         <div className="space-y-2">
           <div className="flex justify-between items-baseline">
-            <label htmlFor="reflection-input" className="text-[13px] font-medium text-[#E8EBE9]">
-              Desahogo breve (opcional):
+            <label htmlFor="reflection-input" className="text-[14px] font-bold text-[#0B1E36]">
+              3. Tu petición o conversación con Dios (opcional):
             </label>
-            <span className="text-[12px] text-[#6E7A75]">
-              Solo se guardará en tu dispositivo
+            <span className="text-[12px] text-[#64748B]">
+              Solo tú y Dios la leen
             </span>
           </div>
           <textarea
@@ -177,39 +211,39 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
             rows={3}
             value={reflection}
             onChange={(e) => setReflection(e.target.value)}
-            placeholder="Describe qué pensamiento te angustia sin temor a ser juzgada («Siento que no puedo con todo…», «Temo fallarle a Dios y a mi familia…»)"
-            className="w-full p-4 rounded-[6px] bg-[#121A18] border border-[#263330] text-[#E8EBE9] placeholder:text-[#6E7A75] font-editorial text-[16px] leading-relaxed focus:outline-none focus:border-[#2A6F68] focus:ring-1 focus:ring-[#2A6F68] transition-colors duration-150 resize-none"
+            placeholder="Escribe lo que sientes en tu corazón («Señor, pongo a mi familia en tus manos…», «Padre, dame fuerzas y sabiduría en mi trabajo…», «Señor, calma mis palpitaciones y ayúdame a descansar…»)"
+            className="w-full p-4 rounded-[14px] bg-white border border-[#CBD5E1] text-[#0B132B] placeholder:text-[#64748B] font-serif text-[15px] leading-relaxed focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20 transition-all resize-none shadow-2xs"
           />
         </div>
 
         {/* Error Feedback */}
         {errorMessage && (
-          <div className="p-3 rounded-[6px] bg-[#1A1515] border border-[#9E4D4D] text-[#9E4D4D] text-[13px] flex items-center gap-2">
-            <Info className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+          <div className="p-4 rounded-[12px] bg-[#FEF2F2] border border-[#FECACA] text-[#DC2626] text-[13px] flex items-center gap-2">
+            <Info className="w-4 h-4 shrink-0" strokeWidth={2} />
             <span>{errorMessage}</span>
           </div>
         )}
 
-        {/* Botón de Acción Principal */}
+        {/* Botón Principal */}
         <div className="pt-2">
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full min-h-[48px] px-6 py-3 rounded-[6px] text-white text-[15px] font-medium transition-all duration-150 flex items-center justify-center gap-2 ${
+            className={`w-full min-h-[52px] px-6 py-3 rounded-[12px] text-[#060F1E] text-[15px] font-bold transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer ${
               isLoading
-                ? 'bg-[#235E58] cursor-wait'
-                : 'bg-[#2A6F68] hover:bg-[#35837B] active:bg-[#235E58]'
-            } focus:outline-none focus:ring-2 focus:ring-[#A6B0AC]`}
+                ? 'bg-[#EAB308] cursor-wait'
+                : 'bg-gradient-to-r from-[#F59E0B] via-[#EAB308] to-[#D97706] hover:brightness-110 active:brightness-95'
+            }`}
           >
             {isLoading ? (
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                <span>Buscando refugio en la Palabra…</span>
+                <div className="w-4 h-4 border-2 border-[#060F1E]/40 border-t-[#060F1E] rounded-full animate-spin" />
+                <span>Buscando refugio en la Palabra de Dios…</span>
               </div>
             ) : (
               <>
-                <span>Recibir ancla de gracia</span>
-                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+                <span>Recibir Palabra y Oración de Fe</span>
+                <ArrowRight className="w-4 h-4 text-[#060F1E]" strokeWidth={2.5} />
               </>
             )}
           </button>

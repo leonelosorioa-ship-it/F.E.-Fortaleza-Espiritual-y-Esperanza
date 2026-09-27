@@ -21,9 +21,11 @@ type Screen = 'landing' | 'form' | 'loading' | 'result' | 'history' | 'peace_pla
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('landing');
-  const [activeContent, setActiveContent] = useState<AnchorContent>(ANCHOR_DATA.ansiedad);
+  const [activeContent, setActiveContent] = useState<AnchorContent>(ANCHOR_DATA.presencia);
   const [currentReflection, setCurrentReflection] = useState<string>('');
-  const [activeRole, setActiveRole] = useState<UserRoleProfile>('madre');
+  const [activeRole, setActiveRole] = useState<UserRoleProfile>('hombre_fe');
+  const [formInitialRole, setFormInitialRole] = useState<UserRoleProfile>('hombre_fe');
+  const [formInitialSymptom, setFormInitialSymptom] = useState<SymptomId>('presencia');
   const [savedAnchors, setSavedAnchors] = useState<SavedAnchor[]>([]);
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
   const [isPlanOpen, setIsPlanOpen] = useState<boolean>(false);
@@ -51,12 +53,14 @@ export default function App() {
     };
   }, []);
 
-  const handleStartFlow = () => {
+  const handleStartFlow = (role: UserRoleProfile = 'hombre_fe', symptom: SymptomId = 'presencia') => {
+    setFormInitialRole(role);
+    setFormInitialSymptom(symptom);
     setCurrentScreen('form');
   };
 
   const handleSymptomSubmit = (symptomId: SymptomId, reflection: string, roleProfile: UserRoleProfile) => {
-    const content = ANCHOR_DATA[symptomId];
+    const content = ANCHOR_DATA[symptomId] || ANCHOR_DATA.presencia;
     setActiveContent(content);
     setCurrentReflection(reflection);
     setActiveRole(roleProfile);
@@ -96,7 +100,7 @@ export default function App() {
   };
 
   const handleSelectFromHistory = (anchor: SavedAnchor) => {
-    const content = ANCHOR_DATA[anchor.symptomId] || ANCHOR_DATA.ansiedad;
+    const content = ANCHOR_DATA[anchor.symptomId] || ANCHOR_DATA.presencia;
     setActiveContent(content);
     setCurrentReflection(anchor.userReflection || '');
     if (anchor.roleProfile) {
@@ -119,19 +123,19 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0E1413] text-[#E8EBE9] flex flex-col font-ui selection:bg-[#2A6F68] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0B132B] flex flex-col font-ui selection:bg-[#F59E0B] selection:text-[#060F1E]">
       {/* Cintillo Canónico de Modo Sin Conexión */}
       {isOffline && (
         <div
           role="status"
-          className="w-full bg-[#1A2422] border-b border-[#263330] py-2 px-4 text-center flex items-center justify-center gap-2 text-[#A6B0AC] text-[12px]"
+          className="w-full bg-[#060F1E] text-white py-2 px-4 text-center flex items-center justify-center gap-2 text-[12px] border-b border-[#F59E0B]/30"
         >
-          <WifiOff className="w-3.5 h-3.5 text-[#3D7D68]" strokeWidth={1.5} />
-          <span>Modo refugio offline activado. Todo tu botiquín funciona sin red.</span>
+          <WifiOff className="w-3.5 h-3.5 text-[#F59E0B]" strokeWidth={2} />
+          <span>Modo refugio offline activado. Todo tu mapa y botiquín espiritual funcionan sin red.</span>
         </div>
       )}
 
-      {/* Barra de navegación superior sobria */}
+      {/* Barra de navegación superior sobria y de alto impacto */}
       <Header
         onGoHome={() => setCurrentScreen('landing')}
         onOpenHistory={() => setCurrentScreen('history')}
@@ -161,21 +165,23 @@ export default function App() {
             onBack={() => setCurrentScreen('landing')}
             onSubmit={handleSymptomSubmit}
             isLoading={false}
+            initialRole={formInitialRole}
+            initialSymptom={formInitialSymptom}
           />
         )}
 
-        {/* Estado Canónico de Carga */}
+        {/* Estado de Carga Apacible */}
         {currentScreen === 'loading' && (
           <div className="w-full max-w-[720px] mx-auto px-4 py-28 flex flex-col items-center justify-center text-center">
-            <div className="w-10 h-10 border-2 border-[#263330] border-t-[#2A6F68] rounded-full animate-spin mb-6" />
-            <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#A6B0AC] mb-2">
-              Pausa de gracia
+            <div className="w-13 h-13 border-4 border-[#E2E8F0] border-t-[#F59E0B] rounded-full animate-spin mb-6" />
+            <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#D97706] mb-2">
+              Pausa de Gracia y Alineación
             </span>
-            <p className="font-editorial text-[20px] text-[#E8EBE9]">
-              Buscando refugio en la Palabra…
+            <p className="font-serif text-[24px] sm:text-[26px] text-[#0B1E36]">
+              Trazando tu mapa en la presencia de Dios…
             </p>
-            <p className="text-[13px] text-[#6E7A75] mt-2">
-              Inhala despacio mientras se prepara tu ancla de paz.
+            <p className="text-[14px] text-[#64748B] mt-2 max-w-[420px]">
+              Inhala despacio mientras se prepara tu ancla bíblica y tu oración de entrega.
             </p>
           </div>
         )}
@@ -191,14 +197,14 @@ export default function App() {
         )}
 
         {currentScreen === 'peace_plan' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8">
+          <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-8">
             <div className="mb-6">
               <button
                 type="button"
                 onClick={() => setCurrentScreen('landing')}
-                className="min-h-[44px] px-3 py-2 rounded-[6px] text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] text-[13px] font-medium flex items-center gap-1.5 transition-colors duration-150"
+                className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+                <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
                 <span>Volver al botiquín</span>
               </button>
             </div>
@@ -207,14 +213,14 @@ export default function App() {
         )}
 
         {currentScreen === 'gratitude' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8">
+          <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-8">
             <div className="mb-6">
               <button
                 type="button"
                 onClick={() => setCurrentScreen('landing')}
-                className="min-h-[44px] px-3 py-2 rounded-[6px] text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] text-[13px] font-medium flex items-center gap-1.5 transition-colors duration-150"
+                className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+                <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
                 <span>Volver al botiquín</span>
               </button>
             </div>
@@ -223,14 +229,14 @@ export default function App() {
         )}
 
         {currentScreen === 'audios' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8">
+          <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-8">
             <div className="mb-6">
               <button
                 type="button"
                 onClick={() => setCurrentScreen('landing')}
-                className="min-h-[44px] px-3 py-2 rounded-[6px] text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] text-[13px] font-medium flex items-center gap-1.5 transition-colors duration-150"
+                className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+                <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
                 <span>Volver al botiquín</span>
               </button>
             </div>
@@ -251,52 +257,52 @@ export default function App() {
         {/* Estado Canónico de Error */}
         {currentScreen === 'error' && (
           <div className="w-full max-w-[720px] mx-auto px-4 py-20 text-center flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full border border-[#263330] bg-[#121A18] flex items-center justify-center mb-5 text-[#9E4D4D]">
-              <CloudOff className="w-6 h-6" strokeWidth={1.5} />
+            <div className="w-14 h-14 rounded-full border border-[#FECACA] bg-[#FEF2F2] flex items-center justify-center mb-5 text-[#DC2626]">
+              <CloudOff className="w-7 h-7" strokeWidth={1.8} />
             </div>
-            <h2 className="font-editorial text-[22px] text-[#E8EBE9] mb-2">
-              Conexión interrumpida
+            <h2 className="font-serif text-[24px] text-[#0B1E36] mb-2">
+              Conexión temporalmente interrumpida
             </h2>
-            <p className="font-editorial text-[16px] text-[#A6B0AC] max-w-[420px] mb-8 leading-relaxed">
-              Tu oración permanece a salvo en tu dispositivo. Puedes leerla y meditar en ella sin conexión.
+            <p className="text-[15px] text-[#64748B] max-w-[420px] mb-8 leading-relaxed">
+              Tus oraciones y anclas permanecen a salvo en tu dispositivo. Puedes leerlas y meditar en ellas sin conexión a internet.
             </p>
             <button
               type="button"
               onClick={() => setCurrentScreen('landing')}
-              className="min-h-[48px] px-6 py-3 rounded-[6px] bg-[#2A6F68] hover:bg-[#35837B] text-white text-[15px] font-medium transition-colors duration-150 flex items-center gap-2"
+              className="min-h-[48px] px-6 py-3 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[14px] font-bold transition-all flex items-center gap-2 cursor-pointer shadow-md border border-[#F59E0B]/30"
             >
-              <RefreshCw className="w-4 h-4" strokeWidth={1.5} />
+              <RefreshCw className="w-4 h-4 text-[#F59E0B]" strokeWidth={2} />
               <span>Reintentar conexión</span>
             </button>
           </div>
         )}
       </main>
 
-      {/* Pie de página sobrio */}
-      <footer className="w-full border-t border-[#263330] py-6 px-4 text-center bg-[#0E1413]">
-        <div className="max-w-[720px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#6E7A75]">
+      {/* Pie de página sobrio y de alto impacto */}
+      <footer className="w-full border-t border-[#CBD5E1] py-7 px-4 text-center bg-white mt-12">
+        <div className="max-w-[840px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#64748B]">
           <div>
-            F.E.™ Fortaleza Espiritual y Esperanza — Dimensión Trascendente de Tu Poder Mental™
+            El Mapa de tu Vida en Dios • F.E.™ Fortaleza Espiritual • Tu Poder Mental™
           </div>
           <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => setIsPlanOpen(true)}
-              className="hover:text-[#A6B0AC] transition-colors"
+              className="hover:text-[#D97706] font-bold transition-colors cursor-pointer"
             >
-              Plan 4.99 USD
+              El Mapa de 30 Días (4.99 USD)
             </button>
             <span>•</span>
             <button
               type="button"
               onClick={() => setCurrentScreen('error')}
-              className="hover:text-[#A6B0AC] transition-colors"
+              className="hover:text-[#0B1E36] transition-colors cursor-pointer"
               title="Comprobar pantalla de error canónica"
             >
               Simular error
             </button>
             <span>•</span>
-            <span>Uso confidencial en tu equipo</span>
+            <span>Uso privado y seguro en tu equipo</span>
           </div>
         </div>
       </footer>

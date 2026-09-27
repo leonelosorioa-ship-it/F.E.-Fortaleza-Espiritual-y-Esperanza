@@ -1,5 +1,6 @@
 import React from 'react';
-import { Bookmark, Compass, HeartHandshake, Volume2, Wifi, WifiOff } from 'lucide-react';
+import { Bookmark, Compass, HeartHandshake, Volume2, Wifi, WifiOff, MapPin, Sparkles } from 'lucide-react';
+import { TuPoderMentalLogo } from './TuPoderMentalLogo';
 
 interface HeaderProps {
   onGoHome: () => void;
@@ -25,26 +26,16 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleOffline,
 }) => {
   return (
-    <header className="w-full border-b border-[#263330] bg-[#0E1413]/90 backdrop-blur-xs sticky top-0 z-40">
-      <div className="max-w-[720px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Wordmark */}
+    <header className="w-full border-b border-[#CBD5E1] bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
+      <div className="max-w-[840px] mx-auto px-4 sm:px-6 h-18 flex items-center justify-between">
+        {/* Brand Logo & Wordmark */}
         <button
           type="button"
           onClick={onGoHome}
-          className="flex flex-col text-left group"
-          aria-label="Ir a la portada de F.E. Botiquín"
+          className="text-left group cursor-pointer focus:outline-none flex items-center gap-2"
+          aria-label="Ir al inicio de Tu Poder Mental F.E."
         >
-          <div className="flex items-baseline gap-1.5">
-            <span className="font-editorial text-[22px] font-normal tracking-tight text-[#E8EBE9] group-hover:text-white transition-colors duration-150">
-              F.E.
-            </span>
-            <span className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#A6B0AC]">
-              BOTIQUÍN™
-            </span>
-          </div>
-          <span className="text-[9px] uppercase tracking-wider text-[#6E7A75] hidden sm:block">
-            Tu Poder Mental™
-          </span>
+          <TuPoderMentalLogo size={42} showText={true} textColor="text-[#0B1E36]" />
         </button>
 
         {/* Top actions */}
@@ -53,30 +44,30 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenPeacePlan}
-            className="min-h-[44px] px-2.5 py-1.5 rounded-[6px] text-[12px] font-medium text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] hidden md:flex items-center gap-1 transition-colors duration-150"
-            title="Ruta 30 Días Ancla de Paz"
+            className="min-h-[40px] px-3 py-1.5 rounded-[10px] text-[13px] font-semibold text-[#334155] hover:text-[#0B1E36] hover:bg-[#F1F5F9] hidden md:flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Ruta 30 Días con Dios"
           >
-            <Compass className="w-3.5 h-3.5 text-[#2A6F68]" strokeWidth={1.5} />
+            <Compass className="w-4 h-4 text-[#F59E0B]" strokeWidth={2} />
             <span>Ruta 30D</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenGratitude}
-            className="min-h-[44px] px-2.5 py-1.5 rounded-[6px] text-[12px] font-medium text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] hidden md:flex items-center gap-1 transition-colors duration-150"
+            className="min-h-[40px] px-3 py-1.5 rounded-[10px] text-[13px] font-semibold text-[#334155] hover:text-[#0B1E36] hover:bg-[#F1F5F9] hidden md:flex items-center gap-1.5 transition-colors cursor-pointer"
             title="Diario de Gratitud"
           >
-            <HeartHandshake className="w-3.5 h-3.5 text-[#C99757]" strokeWidth={1.5} />
+            <HeartHandshake className="w-4 h-4 text-[#0D9488]" strokeWidth={2} />
             <span>Gratitud</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenAudios}
-            className="min-h-[44px] px-2.5 py-1.5 rounded-[6px] text-[12px] font-medium text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] hidden md:flex items-center gap-1 transition-colors duration-150"
+            className="min-h-[40px] px-3 py-1.5 rounded-[10px] text-[13px] font-semibold text-[#334155] hover:text-[#0B1E36] hover:bg-[#F1F5F9] hidden md:flex items-center gap-1.5 transition-colors cursor-pointer"
             title="Audios de Fe"
           >
-            <Volume2 className="w-3.5 h-3.5 text-[#3D7D68]" strokeWidth={1.5} />
+            <Volume2 className="w-4 h-4 text-[#6366F1]" strokeWidth={2} />
             <span>Audios</span>
           </button>
 
@@ -84,21 +75,21 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onToggleOffline}
-            className={`min-h-[44px] px-2.5 py-1.5 rounded-[6px] border text-[12px] flex items-center gap-1.5 transition-colors duration-150 ${
+            className={`min-h-[38px] px-2.5 py-1.5 rounded-[10px] border text-[12px] flex items-center gap-1.5 transition-colors cursor-pointer ${
               isOfflineMode
-                ? 'border-[#3D7D68] text-[#3D7D68] bg-[#161F1E]'
-                : 'border-transparent text-[#6E7A75] hover:text-[#A6B0AC]'
+                ? 'border-[#10B981] text-[#10B981] bg-[#ECFDF5]'
+                : 'border-transparent text-[#64748B] hover:text-[#0B1E36]'
             }`}
-            title={isOfflineMode ? 'Modo sin conexión activo' : 'Simular modo sin conexión'}
+            title={isOfflineMode ? 'Modo sin conexión activo' : 'Modo sin conexión'}
             aria-label="Alternar modo sin conexión"
           >
             {isOfflineMode ? (
               <>
-                <WifiOff className="w-3.5 h-3.5" strokeWidth={1.5} />
-                <span className="hidden sm:inline">Offline</span>
+                <WifiOff className="w-3.5 h-3.5" strokeWidth={2} />
+                <span className="hidden sm:inline font-bold">Offline</span>
               </>
             ) : (
-              <Wifi className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <Wifi className="w-3.5 h-3.5" strokeWidth={2} />
             )}
           </button>
 
@@ -106,7 +97,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenPlan}
-            className="min-h-[44px] px-2.5 py-1.5 rounded-[6px] text-[13px] font-medium text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] transition-colors duration-150"
+            className="min-h-[38px] px-3 py-1.5 rounded-[10px] bg-[#FEF3C7] hover:bg-[#FDE68A] text-[12px] sm:text-[13px] font-bold text-[#92400E] transition-colors border border-[#F59E0B]/30 cursor-pointer"
           >
             Plan 30D
           </button>
@@ -115,13 +106,13 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenHistory}
-            className="min-h-[44px] px-3 py-1.5 rounded-[6px] border border-[#263330] hover:bg-[#161F1E] text-[13px] font-medium text-[#E8EBE9] flex items-center gap-1.5 transition-colors duration-150"
-            aria-label={`Ver anclas guardadas (${savedCount})`}
+            className="min-h-[38px] px-3.5 py-1.5 rounded-[10px] border border-[#CBD5E1] bg-white hover:bg-[#F8FAFC] text-[12px] sm:text-[13px] font-bold text-[#0B1E36] flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
+            aria-label={`Ver oraciones guardadas (${savedCount})`}
           >
-            <Bookmark className="w-3.5 h-3.5 text-[#A6B0AC]" strokeWidth={1.5} />
-            <span className="hidden xs:inline">Mis anclas</span>
+            <Bookmark className="w-3.5 h-3.5 text-[#F59E0B]" strokeWidth={2} />
+            <span className="hidden xs:inline">Mis oraciones</span>
             {savedCount > 0 && (
-              <span className="ml-1 text-[11px] tabular-nums px-1.5 py-0.5 rounded-[4px] bg-[#1D2826] text-[#A6B0AC]">
+              <span className="ml-1 text-[11px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#060F1E] text-[#FBBF24] font-bold border border-[#F59E0B]/40">
                 {savedCount}
               </span>
             )}

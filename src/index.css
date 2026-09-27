@@ -2,109 +2,67 @@
 
 :root {
   /* ==========================================================================
-     COLOR - F.E.™ BOTIQUÍN (MODO OSCURO CANÓNICO)
+     COLOR SYSTEM - EL MAPA DE TU VIDA EN DIOS (ESTILO INSTITUTO JHONNY ROMERO)
+     Paleta de alto impacto: Azul Obsidiana Profundo, Oro Radiante y Esmeralda de Sanidad
      ========================================================================== */
-  --color-base: #0E1413;
-  --color-surface: #161F1E;
-  --color-surface-subtle: #1D2826;
-  --color-surface-interactive: #1A2422;
-  --color-surface-selected: #1B322F;
+  --color-base: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F1F5F9;
+  --color-surface-interactive: #E2E8F0;
+  --color-surface-selected: #FEF3C7;
 
-  /* Neutros Cálidos-Oliva */
-  --color-neutral-100: #E8EBE9; /* Texto Principal */
-  --color-neutral-200: #A6B0AC; /* Texto Secundario */
-  --color-neutral-300: #6E7A75; /* Texto Terciario / Placeholders */
-  --color-neutral-400: #2D3936; /* Bordes e hilos */
-  --color-neutral-500: #1A2422; /* Superficie inactiva */
-  --color-neutral-600: #121A18; /* Fondo de inputs */
+  /* Neutros de Alto Contraste */
+  --color-neutral-100: #0B132B; /* Texto Principal (Azul Noche Profundo) */
+  --color-neutral-200: #1E293B; /* Texto Secundario */
+  --color-neutral-300: #475569; /* Texto Terciario / Descriptivo */
+  --color-neutral-400: #CBD5E1; /* Bordes */
+  --color-neutral-500: #F1F5F9; /* Fondos suaves */
+  --color-neutral-600: #FFFFFF;
 
-  /* Acento Único (Calm Teal) */
-  --color-accent: #2A6F68;
-  --color-accent-hover: #35837B;
-  --color-accent-active: #235E58;
-  --color-accent-text: #FFFFFF;
+  /* Colores de Marca El Mapa de Vida */
+  --color-primary-navy: #060F1E;
+  --color-primary-midnight: #0B192F;
+  --color-accent-gold: #F59E0B;
+  --color-accent-gold-light: #FBBF24;
+  --color-accent-gold-dark: #D97706;
+  --color-accent-emerald: #10B981;
+  --color-accent-teal: #0D9488;
+  --color-accent-cyan: #06B6D4;
+
+  /* Acento de Acción */
+  --color-accent: #F59E0B;
+  --color-accent-hover: #D97706;
+  --color-accent-active: #B45309;
+  --color-accent-text: #060F1E;
 
   /* Semánticos */
-  --color-success: #3D7D68;
-  --color-warning: #C99757;
-  --color-error: #9E4D4D;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
 
   /* Hairlines y Separadores */
-  --color-border: #263330;
-  --color-border-subtle: rgba(166, 176, 172, 0.12);
-  --color-border-focus: #A6B0AC;
+  --color-border: #E2E8F0;
+  --color-border-subtle: rgba(245, 158, 11, 0.18);
+  --color-border-focus: #F59E0B;
 
   /* ==========================================================================
-     TIPOGRAFÍA
+     TIPOGRAFÍA INSPIRADORA Y CLARA
      ========================================================================== */
-  --font-family-display: "Newsreader", Georgia, serif;
+  --font-family-display: "Lora", Georgia, serif;
   --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Pesos */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
-  /* Escala Canónica de 5 Tamaños */
-  --type-display-size: 36px;
-  --type-display-line: 40px;
-  --type-display-spacing: -0.025em;
+  /* Radios */
+  --radius-control: 10px;
+  --radius-container: 18px;
 
-  --type-title-size: 26px;
-  --type-title-line: 32px;
-  --type-title-spacing: -0.015em;
-
-  --type-subtitle-size: 18px;
-  --type-subtitle-line: 26px;
-  --type-subtitle-spacing: -0.01em;
-
-  --type-body-size: 16px;
-  --type-body-line: 25px;
-  --type-body-spacing: 0em;
-
-  --type-label-size: 12px;
-  --type-label-line: 16px;
-  --type-label-spacing: 0.08em;
-
-  /* ==========================================================================
-     ESPACIADO Y FORMA
-     ========================================================================== */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
-
-  /* Radios (Solo dos valores) */
-  --radius-control: 6px;
-  --radius-container: 12px;
-
-  /* Constantes de Layout */
-  --max-width-content: 720px;
-  --min-touch-target: 44px;
-
-  /* Elevación Única */
-  --shadow-floating: 0 12px 32px -4px rgba(6, 10, 9, 0.65);
-
-  /* ==========================================================================
-     MOVIMIENTO
-     ========================================================================== */
-  --ease-canonical: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 700ms;
-  --duration-breathing: 4000ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --duration-fast: 0.01ms;
-    --duration-normal: 0.01ms;
-    --duration-slow: 0.01ms;
-    --duration-breathing: 0.01ms;
-  }
+  /* Layout */
+  --max-width-content: 840px;
+  --min-touch-target: 46px;
 }
 
 body {
@@ -128,7 +86,6 @@ body {
   font-feature-settings: "tnum";
 }
 
-/* Ancho máximo editorial */
 .max-w-reading {
   max-width: var(--max-width-content);
 }

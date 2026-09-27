@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { AnchorContent, UserRoleProfile } from '../types';
-import { ROLE_PROFILE_OPTIONS } from '../data/anchors';
+import { ROLE_PROFILE_OPTIONS, SYMPTOM_OPTIONS } from '../data/anchors';
 import { BreathingGuide } from './BreathingGuide';
 import { SensoryGrounding } from './SensoryGrounding';
-import { BookOpen, Sparkles, Moon, ArrowLeft, Check, SunMedium, Compass, User } from 'lucide-react';
+import { BookOpen, Sparkles, Moon, ArrowLeft, SunMedium, Compass, Heart, Share2, Check, Activity, Brain } from 'lucide-react';
 
 interface ResultScreenProps {
   content: AnchorContent;
@@ -16,255 +16,280 @@ interface ResultScreenProps {
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   content,
   userReflection,
-  roleProfile = 'madre',
+  roleProfile = 'hombre_fe',
   onFinishAndRest,
   onStartOver,
 }) => {
   const [isRestingMode, setIsRestingMode] = useState<boolean>(false);
   const [showSensoryModal, setShowSensoryModal] = useState<boolean>(false);
+  const [copied, setCopied] = useState<boolean>(false);
 
   const roleInfo = ROLE_PROFILE_OPTIONS.find((r) => r.id === roleProfile) || ROLE_PROFILE_OPTIONS[0];
+  const symptomInfo = SYMPTOM_OPTIONS.find((s) => s.id === content.symptomId);
 
-  // Specific contextual declaration based on the user's role and tension
   const getRolePersonalizedAffirmation = () => {
     switch (roleProfile) {
-      case 'madre':
-        return 'Mis hijos y mi hogar están en manos más sabias y amorosas que las mías. Mi valor como madre no se mide por no cansarme; Dios vela por mi familia mientras duermo.';
-      case 'profesional':
-        return 'Mi productividad y mi trabajo no definen mi salvación ni mi valor delante de Dios. Esta noche cierro mi computadora y mi mente: el Señor es mi verdadero proveedor.';
-      case 'hombre_proveedor':
-        return 'Reconocer mi dolor y mi vulnerabilidad no me hace menos fuerte; me hace humano y dependiente de la gracia. Dios sostiene el hogar; yo entrego el control esta noche.';
-      case 'creyente_abrumado':
+      case 'hombre_fe':
+        return 'Dios renueva mi fuerza y guía mis pasos con rectitud. No dependo de mi autosuficiencia; mi provisión, mi liderazgo y mi paz provienen del Señor todopoderoso.';
+      case 'mujer_fe':
+        return 'Soy preciosa a los ojos de Dios. En su presencia encuentro gracia infinita; suelto las expectativas humanas y descanso sabiendo que el Padre sostiene a mi familia y mi corazón.';
+      case 'madre_profesional':
+        return 'Mi valor no se mide por la perfección ni el agotamiento de mis fuerzas. Dios me abraza con ternura; mi ansiedad nocturna, taquicardia o sobrecarga no es falta de fe, sino la señal para soltar el control y descansar en sus brazos de amor incondicional.';
+      case 'padre_familia':
+        return 'Mi casa y mis hijos están consagrados al Señor. La paz de Cristo guarda nuestro hogar y su fidelidad nos acompaña de generación en generación.';
+      case 'profesional_creyente':
       default:
-        return 'Tener taquicardia o rumiación no significa que me falte fe. Jesús conoce mi cuerpo de barro; ninguna condenación pesa sobre mí.';
+        return 'Mi vocación está en las manos de Dios. Camino con integridad y descanso en que el Señor prospera la labor de mis manos y me bendice abundantemente.';
     }
+  };
+
+  const handleCopyPrayer = () => {
+    const textToCopy = `${content.scripture.verse} (${content.scripture.reference})\n\nDeclaración: ${content.declaration}\n\nOración:\n1. ${content.liturgy.step1.title}: ${content.liturgy.step1.body}\n2. ${content.liturgy.step2.title}: ${content.liturgy.step2.body}\n3. ${content.liturgy.step3.title}: ${content.liturgy.step3.body}`;
+    navigator.clipboard?.writeText(textToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   if (isRestingMode) {
     return (
-      <div className="w-full min-h-[80vh] flex flex-col items-center justify-center text-center px-4 py-16 animate-fade-in">
-        <div className="w-12 h-12 rounded-full border border-[#263330] bg-[#121A18] flex items-center justify-center text-[#3D7D68] mb-6">
-          <Moon className="w-6 h-6" strokeWidth={1.5} />
+      <div className="w-full min-h-[75vh] flex flex-col items-center justify-center text-center px-4 py-16">
+        <div className="w-16 h-16 rounded-full bg-[#FEF3C7] border-2 border-[#F59E0B] flex items-center justify-center text-[#B45309] mb-6 shadow-md">
+          <Heart className="w-8 h-8 text-[#D97706] fill-[#D97706]" />
         </div>
-        <span className="text-[12px] uppercase tracking-[0.08em] font-medium text-[#A6B0AC] mb-2">
-          Entrega Completada
+        <span className="text-[12px] uppercase tracking-[0.14em] font-bold text-[#D97706] mb-2">
+          Tiempo en la Presencia de Dios
         </span>
-        <h2 className="font-editorial text-[28px] text-[#E8EBE9] mb-4">
-          La guardia ha terminado por hoy
+        <h2 className="font-serif text-[28px] sm:text-[34px] text-[#0B1E36] font-normal mb-4">
+          La paz de Dios queda contigo
         </h2>
-        <p className="font-editorial text-[17px] text-[#A6B0AC] max-w-[420px] mb-8 leading-relaxed">
-          Has nombrado tu carga como {roleInfo.label.toLowerCase()} y la has puesto en manos que nunca duermen ni se cansan. Ahora puedes apagar tu dispositivo y cerrar los ojos en paz.
+        <p className="text-[16px] text-[#475569] max-w-[460px] mb-8 leading-relaxed">
+          Has depositado tus anhelos en las manos del Creador. Puedes descansar o continuar tu día con gozo, sabiendo que Aquel que comenzó la buena obra en ti la perfeccionará.
         </p>
 
-        <div className="p-4 rounded-[8px] border border-[#263330] bg-[#161F1E] max-w-[380px] mb-8">
-          <span className="text-[11px] font-medium tracking-[0.08em] uppercase text-[#6E7A75] block mb-1">
-            Ancla para el amanecer
+        <div className="p-5 rounded-[16px] border border-[#CBD5E1] bg-white max-w-[460px] mb-8 shadow-sm">
+          <span className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#F59E0B] block mb-1">
+            Palabra para tu Corazón
           </span>
-          <p className="font-editorial text-[15px] text-[#E8EBE9] italic mb-1">
+          <p className="font-serif text-[16px] text-[#0B1E36] italic mb-1">
             «{content.morningSeed.verse}»
           </p>
-          <span className="text-[12px] text-[#A6B0AC]">{content.morningSeed.reference}</span>
+          <span className="text-[12px] font-bold text-[#D97706]">{content.morningSeed.reference}</span>
         </div>
 
         <button
           type="button"
           onClick={onFinishAndRest}
-          className="min-h-[48px] px-6 py-3 rounded-[6px] border border-[#263330] hover:bg-[#161F1E] text-[#A6B0AC] hover:text-[#E8EBE9] text-[14px] font-medium transition-colors duration-150"
+          className="min-h-[48px] px-8 py-3 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[14px] font-bold transition-all shadow-md cursor-pointer border border-[#F59E0B]/30"
         >
-          Volver a la portada
+          Volver al botiquín
         </button>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
+    <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
       {/* Top back navigation */}
-      <div className="flex items-center justify-between pb-4 border-b border-[#263330]">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E2E8F0]">
         <button
           type="button"
           onClick={onStartOver}
-          className="min-h-[44px] px-3 py-2 rounded-[6px] text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] text-[13px] font-medium flex items-center gap-1.5 transition-colors duration-150"
+          className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
-          <span>Cambiar emoción</span>
+          <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
+          <span>Elegir otro momento</span>
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded-[4px] bg-[#161F1E] text-[#A6B0AC] border border-[#263330]">
+          {symptomInfo?.quadrantLabel && (
+            <span className="text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full bg-[#FEF3C7] text-[#B45309] border border-[#FDE68A]">
+              {symptomInfo.quadrantLabel}
+            </span>
+          )}
+          <span className="text-[11px] font-bold tracking-[0.06em] uppercase px-3 py-1 rounded-full bg-[#F1F5F9] text-[#0B1E36] border border-[#CBD5E1]">
             {roleInfo.label}
           </span>
-          <span className="text-[11px] font-medium tracking-[0.08em] uppercase px-2.5 py-1 rounded-[4px] bg-[#1B322F] text-[#3D7D68] border border-[#2A6F68]/30">
-            {content.symptomLabel}
-          </span>
+          <button
+            type="button"
+            onClick={handleCopyPrayer}
+            className="min-h-[36px] px-3 py-1 rounded-[8px] border border-[#CBD5E1] bg-white hover:bg-[#F8FAFC] text-[12px] font-semibold text-[#334155] flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Copiar texto de oración"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-[#10B981]" strokeWidth={2.5} />
+                <span className="text-[#10B981] font-bold">Copiado</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="w-3.5 h-3.5 text-[#F59E0B]" strokeWidth={2} />
+                <span>Guardar texto</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
       {/* User's unloaded thought if present */}
       {userReflection && userReflection.trim() && (
-        <div className="p-4 rounded-[8px] bg-[#121A18] border border-[#263330] text-[#A6B0AC]">
-          <span className="text-[11px] uppercase tracking-[0.08em] text-[#6E7A75] block mb-1 font-medium">
-            Carga entregada esta noche
+        <div className="p-4 rounded-[14px] bg-white border border-[#CBD5E1] text-[#334155] shadow-xs">
+          <span className="text-[11px] uppercase tracking-[0.1em] text-[#D97706] block mb-1 font-bold">
+            Tu conversación con Dios hoy:
           </span>
-          <p className="font-editorial text-[15px] italic text-[#E8EBE9]">
+          <p className="font-serif text-[15px] italic text-[#0B1E36]">
             «{userReflection}»
           </p>
         </div>
       )}
 
-      {/* 1. Fisiología: Pausa de respiración */}
-      <section className="space-y-3">
+      {/* 1. Promesa Bíblica Viva */}
+      <section className="bg-white border border-[#E2E8F0] rounded-[18px] p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex items-center justify-between">
-          <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#A6B0AC]">
-            Paso 1: Regular el cuerpo (Respiración diafragmática)
-          </span>
-          <button
-            type="button"
-            onClick={() => setShowSensoryModal(!showSensoryModal)}
-            className="text-[12px] text-[#2A6F68] hover:text-[#35837B] font-medium flex items-center gap-1"
-          >
-            <Compass className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span>{showSensoryModal ? 'Ocultar anclaje 5-4-3-2-1' : 'Ver anclaje sensorial 5-4-3-2-1'}</span>
-          </button>
-        </div>
-        <BreathingGuide />
-      </section>
-
-      {/* Anclaje sensorial complementario 5-4-3-2-1 si se activa */}
-      {showSensoryModal && (
-        <section className="animate-fade-in">
-          <SensoryGrounding onFinish={() => setShowSensoryModal(false)} />
-        </section>
-      )}
-
-      {/* 2. Promesa Bíblica Clave */}
-      <section className="bg-[#161F1E] border border-[#263330] rounded-[12px] p-6 sm:p-8 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-[#A6B0AC]">
-            <BookOpen className="w-4 h-4 text-[#A6B0AC]" strokeWidth={1.5} />
-            <span className="text-[12px] font-medium tracking-[0.08em] uppercase">
-              Paso 2: La verdad que desarma la culpa
+          <div className="flex items-center gap-2 text-[#0B1E36]">
+            <BookOpen className="w-5 h-5 text-[#F59E0B]" strokeWidth={2} />
+            <span className="text-[13px] font-bold tracking-[0.1em] uppercase">
+              Palabra de Dios para tu Vida
             </span>
           </div>
-          <span className="text-[12px] font-medium text-[#2A6F68] bg-[#121A18] px-2.5 py-1 rounded-[4px] border border-[#263330]">
+          <span className="text-[12px] font-bold text-[#D97706] bg-[#FEF3C7] px-3 py-1 rounded-full border border-[#FDE68A]">
             {content.scripture.reference}
           </span>
         </div>
 
-        <blockquote className="font-editorial text-[19px] sm:text-[21px] text-[#E8EBE9] leading-[1.45] border-l-2 border-[#2A6F68] pl-4 py-1 italic">
+        <blockquote className="font-serif text-[20px] sm:text-[22px] text-[#0B1E36] leading-[1.5] border-l-4 border-[#F59E0B] pl-4 py-1 italic">
           «{content.scripture.verse}»
         </blockquote>
 
-        <p className="text-[13px] text-[#A6B0AC] leading-relaxed pt-1">
+        <p className="text-[14px] text-[#475569] leading-relaxed pt-1">
           {content.scripture.contextNote}
         </p>
       </section>
 
-      {/* 3. Declaración de Anclaje Adaptada */}
-      <section className="bg-[#161F1E] border border-[#263330] rounded-[12px] p-6 sm:p-8 space-y-4">
-        <div className="flex items-center gap-2 text-[#A6B0AC]">
-          <Sparkles className="w-4 h-4 text-[#C99757]" strokeWidth={1.5} />
-          <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#C99757]">
-            Paso 3: Declaración de anclaje para tu mente
+      {/* 2. Declaración de Anclaje y Fe */}
+      <section className="bg-white border border-[#E2E8F0] rounded-[18px] p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex items-center gap-2 text-[#0B1E36]">
+          <Sparkles className="w-5 h-5 text-[#F59E0B]" strokeWidth={2} />
+          <span className="text-[13px] font-bold tracking-[0.1em] uppercase text-[#0B1E36]">
+            Declaración de Fe para tu Corazón
           </span>
         </div>
 
-        <p className="font-editorial text-[18px] sm:text-[20px] text-[#E8EBE9] leading-relaxed">
+        <p className="font-serif text-[18px] sm:text-[20px] text-[#0B1E36] leading-relaxed">
           «{content.declaration}»
         </p>
 
         {/* Declaración contextualizada al arquetipo */}
-        <div className="pt-3 border-t border-[#263330] bg-[#121A18] p-3.5 rounded-[6px]">
-          <span className="text-[11px] font-medium tracking-[0.08em] uppercase text-[#3D7D68] block mb-1">
-            Ancla específica para {roleInfo.label.toLowerCase()}:
+        <div className="pt-3 border-t border-[#E2E8F0] bg-[#F8FAFC] p-4 rounded-[12px]">
+          <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-[#D97706] block mb-1">
+            Enfoque para {roleInfo.label.toLowerCase()}:
           </span>
-          <p className="font-editorial text-[15px] text-[#A6B0AC] italic leading-relaxed">
+          <p className="font-serif text-[15px] text-[#334155] italic leading-relaxed">
             «{getRolePersonalizedAffirmation()}»
           </p>
         </div>
 
-        <span className="text-[12px] text-[#6E7A75] block">
-          Léela despacio una o dos veces, respirando al terminar cada frase.
+        <span className="text-[12px] text-[#64748B] block">
+          Repítela con convicción: la verdad de Dios renueva tu mente y fortalece tu espíritu.
         </span>
       </section>
 
-      {/* 4. Liturgia de Entrega en Tres Tiempos */}
-      <section className="space-y-4">
-        <div>
-          <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#A6B0AC] block mb-1">
-            Paso 4: Oración guiada de entrega
+      {/* 3. Fisiología: Pausa de paz y respiración consciente */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[13px] font-bold tracking-[0.08em] uppercase text-[#0B1E36] flex items-center gap-2">
+            <Heart className="w-4 h-4 text-[#10B981]" />
+            <span>Pausa de Serenidad (Respiración 4×4 en la Presencia de Dios)</span>
           </span>
-          <h3 className="font-editorial text-[22px] text-[#E8EBE9]">
-            La liturgia de tres tiempos
-          </h3>
+          <button
+            type="button"
+            onClick={() => setShowSensoryModal(!showSensoryModal)}
+            className="text-[12px] text-[#D97706] hover:text-[#0B1E36] font-bold flex items-center gap-1 cursor-pointer"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#F59E0B]" strokeWidth={2} />
+            <span>{showSensoryModal ? 'Ocultar 5-4-3-2-1' : 'Ver anclaje sensorial'}</span>
+          </button>
         </div>
 
-        <div className="space-y-3">
-          {/* Step 1 */}
-          <div className="bg-[#161F1E] border border-[#263330] rounded-[8px] p-5">
-            <h4 className="text-[14px] font-medium text-[#E8EBE9] mb-1">
+        {/* Breathing guide component */}
+        <BreathingGuide />
+
+        {/* Sensory grounding interactive panel if toggled */}
+        {showSensoryModal && (
+          <div className="mt-4">
+            <SensoryGrounding onClose={() => setShowSensoryModal(false)} />
+          </div>
+        )}
+      </section>
+
+      {/* 4. Oración Guiada de Entrega en Tres Tiempos */}
+      <section className="bg-white border border-[#E2E8F0] rounded-[18px] p-6 sm:p-8 space-y-6 shadow-sm">
+        <div className="flex items-center gap-2 text-[#0B1E36]">
+          <SunMedium className="w-5 h-5 text-[#F59E0B]" strokeWidth={2} />
+          <span className="text-[13px] font-bold tracking-[0.1em] uppercase">
+            Oración Guiada de Entrega en Tres Tiempos
+          </span>
+        </div>
+
+        <div className="space-y-4">
+          <div className="p-4 rounded-[14px] bg-[#F8FAFC] border border-[#CBD5E1] space-y-1">
+            <h4 className="text-[14px] font-bold text-[#0B1E36]">
               {content.liturgy.step1.title}
             </h4>
-            <p className="font-editorial text-[15px] text-[#A6B0AC] leading-relaxed">
+            <p className="text-[14px] text-[#334155] leading-relaxed">
               {content.liturgy.step1.body}
             </p>
           </div>
 
-          {/* Step 2 */}
-          <div className="bg-[#161F1E] border border-[#263330] rounded-[8px] p-5">
-            <h4 className="text-[14px] font-medium text-[#E8EBE9] mb-1">
+          <div className="p-4 rounded-[14px] bg-[#F8FAFC] border border-[#CBD5E1] space-y-1">
+            <h4 className="text-[14px] font-bold text-[#0B1E36]">
               {content.liturgy.step2.title}
             </h4>
-            <p className="font-editorial text-[15px] text-[#A6B0AC] leading-relaxed">
+            <p className="text-[14px] text-[#334155] leading-relaxed">
               {content.liturgy.step2.body}
             </p>
           </div>
 
-          {/* Step 3 */}
-          <div className="bg-[#161F1E] border border-[#263330] rounded-[8px] p-5">
-            <h4 className="text-[14px] font-medium text-[#E8EBE9] mb-1">
+          <div className="p-4 rounded-[14px] bg-[#F8FAFC] border border-[#CBD5E1] space-y-1">
+            <h4 className="text-[14px] font-bold text-[#0B1E36]">
               {content.liturgy.step3.title}
             </h4>
-            <p className="font-editorial text-[15px] text-[#A6B0AC] leading-relaxed">
+            <p className="text-[14px] text-[#334155] leading-relaxed">
               {content.liturgy.step3.body}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Return Trigger: Ancla para el amanecer */}
-      <section className="bg-[#121A18] border border-[#263330] rounded-[12px] p-5 sm:p-6 flex items-start gap-4">
-        <div className="w-9 h-9 rounded-[6px] bg-[#161F1E] border border-[#263330] flex items-center justify-center shrink-0 text-[#C99757]">
-          <SunMedium className="w-5 h-5" strokeWidth={1.5} />
-        </div>
+      {/* 5. Semilla de Paz para la Noche o el Amanecer */}
+      <section className="p-5 rounded-[16px] bg-[#FEF3C7]/40 border border-[#FDE68A] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="text-[11px] font-medium tracking-[0.08em] uppercase text-[#A6B0AC] block mb-1">
-            Semilla para tu despertar
+          <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-[#B45309] block mb-1">
+            Semilla para tu descanso o jornada
           </span>
-          <p className="font-editorial text-[15px] text-[#E8EBE9] italic mb-1">
+          <p className="font-serif text-[15px] text-[#0B1E36] italic">
             «{content.morningSeed.verse}»
           </p>
-          <span className="text-[12px] text-[#6E7A75]">{content.morningSeed.reference}</span>
+          <span className="text-[12px] text-[#D97706] font-bold">{content.morningSeed.reference}</span>
         </div>
       </section>
 
-      {/* Botón Canónico de Cierre */}
-      <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
+      {/* Botones de Cierre */}
+      <div className="pt-2 flex flex-col sm:flex-row gap-3">
         <button
           type="button"
-          onClick={onStartOver}
-          className="min-h-[48px] px-5 py-2.5 rounded-[6px] border border-[#263330] hover:bg-[#161F1E] text-[14px] text-[#A6B0AC] hover:text-[#E8EBE9] transition-colors duration-150 order-2 sm:order-1"
+          onClick={() => setIsRestingMode(true)}
+          className="flex-1 min-h-[50px] px-6 py-3 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[14.5px] font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#F59E0B]/30"
         >
-          Hacer otra entrega
+          <Moon className="w-4 h-4 text-[#FBBF24]" />
+          <span>Apagar pantalla y descansar en Dios</span>
         </button>
 
         <button
           type="button"
-          onClick={() => setIsRestingMode(true)}
-          className="w-full sm:w-auto min-h-[48px] px-7 py-3 rounded-[6px] bg-[#2A6F68] hover:bg-[#35837B] active:bg-[#235E58] text-white text-[15px] font-medium transition-colors duration-150 flex items-center justify-center gap-2 order-1 sm:order-2"
+          onClick={onFinishAndRest}
+          className="min-h-[50px] px-6 py-3 rounded-[12px] bg-white border border-[#CBD5E1] hover:bg-[#F8FAFC] text-[#334155] text-[14px] font-bold transition-all cursor-pointer"
         >
-          <Moon className="w-4 h-4" strokeWidth={1.5} />
-          <span>Apagar pantalla y descansar</span>
+          Volver al botiquín
         </button>
       </div>
     </div>

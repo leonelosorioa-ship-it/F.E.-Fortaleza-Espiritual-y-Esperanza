@@ -1,6 +1,6 @@
 import React from 'react';
 import { SavedAnchor } from '../types';
-import { ShieldAlert, Trash2, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ShieldAlert, Trash2, ArrowLeft, ArrowRight, Bookmark, BookOpen, Heart } from 'lucide-react';
 
 interface HistoryViewProps {
   anchors: SavedAnchor[];
@@ -18,15 +18,15 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
   onBack,
 }) => {
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8">
+    <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-8 space-y-6">
       {/* Header row */}
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#263330]">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E2E8F0]">
         <button
           type="button"
           onClick={onBack}
-          className="min-h-[44px] px-3 py-2 rounded-[6px] text-[#A6B0AC] hover:text-[#E8EBE9] hover:bg-[#161F1E] text-[13px] font-medium flex items-center gap-1.5 transition-colors duration-150"
+          className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+          <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
           <span>Volver al botiquín</span>
         </button>
 
@@ -34,10 +34,10 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
           <button
             type="button"
             onClick={onClearAll}
-            className="min-h-[44px] px-3 py-2 text-[12px] text-[#A6B0AC] hover:text-[#9E4D4D] flex items-center gap-1.5 transition-colors duration-150"
+            className="min-h-[36px] px-3 py-1.5 text-[12px] text-[#64748B] hover:text-[#DC2626] flex items-center gap-1.5 transition-colors cursor-pointer"
             title="Limpiar registro guardado en este dispositivo"
           >
-            <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+            <Trash2 className="w-3.5 h-3.5" />
             <span>Borrar historial</span>
           </button>
         )}
@@ -45,76 +45,71 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
 
       {anchors.length === 0 ? (
         /* Estado vacío canónico */
-        <div className="bg-[#161F1E] border border-[#263330] rounded-[12px] p-8 sm:p-12 text-center flex flex-col items-center">
-          <div className="w-12 h-12 rounded-full border border-[#2D3936] bg-[#121A18] flex items-center justify-center mb-5 text-[#6E7A75]">
-            <ShieldAlert className="w-7 h-7" strokeWidth={1.5} />
+        <div className="bg-white border border-[#CBD5E1] rounded-[20px] p-8 sm:p-12 text-center flex flex-col items-center shadow-xs">
+          <div className="w-16 h-16 rounded-full bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center mb-5 text-[#D97706]">
+            <Bookmark className="w-7 h-7 text-[#D97706]" strokeWidth={1.8} />
           </div>
-          <h2 className="font-editorial text-[22px] text-[#E8EBE9] mb-2">
-            Ningún ancla guardada
+          <h2 className="font-serif text-[22px] sm:text-[25px] text-[#0B1E36] font-normal mb-2">
+            Ninguna promesa guardada aún
           </h2>
-          <p className="font-editorial text-[16px] text-[#A6B0AC] max-w-[420px] mb-8 leading-relaxed">
-            No hay oraciones guardadas aún. Ancla tu primera entrega nocturna.
+          <p className="text-[14px] text-[#64748B] max-w-[420px] mb-8 leading-relaxed">
+            Aquí se guardarán de forma privada tus oraciones y anclas espirituales para que puedas volver a ellas en cualquier momento.
           </p>
           <button
             type="button"
             onClick={onStartNew}
-            className="min-h-[48px] px-6 py-3 rounded-[6px] bg-[#2A6F68] hover:bg-[#35837B] active:bg-[#235E58] text-white text-[15px] font-medium transition-colors duration-150 flex items-center gap-2"
+            className="min-h-[48px] px-6 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[14px] font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer border border-[#F59E0B]/30"
           >
-            <span>Comenzar entrega nocturna</span>
-            <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+            <span>Buscar a Dios ahora</span>
+            <ArrowRight className="w-4 h-4 text-[#F59E0B]" strokeWidth={2} />
           </button>
         </div>
       ) : (
-        /* List of saved entries */
-        <div className="space-y-6">
-          <div className="flex items-baseline justify-between">
-            <h2 className="font-editorial text-[24px] text-[#E8EBE9]">
-              Tus entregas nocturnas
-            </h2>
-            <span className="text-[12px] tabular-nums text-[#6E7A75]">
-              {anchors.length} {anchors.length === 1 ? 'registro' : 'registros'} en este dispositivo
+        /* Lista de anclas guardadas */
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#D97706]">
+              Tus Anclas Espirituales Guardadas ({anchors.length})
+            </span>
+            <span className="text-[11px] text-[#64748B]">
+              Almacenadas localmente y protegidas
             </span>
           </div>
 
-          <div className="space-y-4">
-            {anchors.map((item) => (
-              <div
-                key={item.id}
-                className="bg-[#161F1E] border border-[#263330] rounded-[12px] p-6 hover:border-[#3D4C47] transition-colors duration-150"
+          <div className="grid grid-cols-1 gap-3">
+            {anchors.map((anchor) => (
+              <button
+                key={anchor.id}
+                type="button"
+                onClick={() => onSelectAnchor(anchor)}
+                className="p-5 rounded-[16px] bg-white border border-[#CBD5E1] hover:border-[#F59E0B] text-left transition-all shadow-xs hover:shadow-md group cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               >
-                <div className="flex items-center justify-between gap-4 mb-3">
-                  <span className="text-[11px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded-[4px] bg-[#1B322F] text-[#3D7D68] border border-[#2A6F68]/30">
-                    {item.symptomLabel}
-                  </span>
-                  <span className="text-[12px] tabular-nums text-[#6E7A75]">
-                    {item.displayDate}
-                  </span>
-                </div>
+                <div className="space-y-1.5 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#B45309] bg-[#FEF3C7] px-2.5 py-0.5 rounded-full border border-[#FDE68A]">
+                      {anchor.symptomLabel}
+                    </span>
+                    <span className="text-[11px] text-[#64748B]">{anchor.displayDate}</span>
+                  </div>
 
-                {item.userReflection && (
-                  <p className="font-editorial text-[15px] text-[#A6B0AC] italic mb-4 border-l-2 border-[#2D3936] pl-3 py-0.5">
-                    «{item.userReflection}»
+                  <p className="font-serif text-[15px] text-[#0B1E36] italic line-clamp-1">
+                    «{anchor.declaration}»
                   </p>
-                )}
 
-                <div className="text-[14px] text-[#E8EBE9] font-editorial mb-2 line-clamp-2">
-                  {item.declaration}
+                  {anchor.userReflection && (
+                    <p className="text-[12px] text-[#64748B] line-clamp-1">
+                      Tu desahogo: «{anchor.userReflection}»
+                    </p>
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-[#263330]/60 mt-4">
-                  <span className="text-[12px] font-medium text-[#A6B0AC]">
-                    {item.scriptureRef}
+                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                  <span className="text-[12px] font-bold text-[#D97706] group-hover:underline">
+                    Reabrir ancla
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => onSelectAnchor(item)}
-                    className="min-h-[44px] px-3 py-1 text-[13px] font-medium text-[#2A6F68] hover:text-[#35837B] flex items-center gap-1"
-                  >
-                    <span>Meditar en esta ancla</span>
-                    <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  </button>
+                  <ArrowRight className="w-4 h-4 text-[#D97706] group-hover:translate-x-0.5 transition-transform" />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -122,9 +117,9 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
             <button
               type="button"
               onClick={onStartNew}
-              className="min-h-[48px] px-6 py-3 rounded-[6px] border border-[#263330] hover:bg-[#161F1E] text-[#E8EBE9] text-[14px] font-medium transition-colors duration-150"
+              className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:brightness-110 text-[#060F1E] text-[13.5px] font-bold transition-all shadow-sm cursor-pointer"
             >
-              Hacer una nueva entrega ahora
+              Realizar una nueva entrega a Dios
             </button>
           </div>
         </div>
