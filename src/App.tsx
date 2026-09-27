@@ -165,7 +165,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col justify-start">
+      <main className="flex-1 flex flex-col justify-start pb-24 sm:pb-12">
         {currentScreen === 'landing' && (
           <LandingScreen
             onStartFlow={handleStartFlow}

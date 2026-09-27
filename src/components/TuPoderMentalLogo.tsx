@@ -27,7 +27,7 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
         viewBox="0 0 220 220"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-9 h-9 sm:w-11 sm:h-11 shrink-0 drop-shadow-sm select-none"
+        className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 shrink-0 drop-shadow-sm select-none"
         aria-label="Logo Tu Poder Mental"
       >
         <defs>
@@ -280,7 +280,7 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
           </div>
 
           {/* Secondary Subtitle: F.E.™ */}
-          <span className="text-[7.5px] sm:text-[9px] tracking-[0.04em] sm:tracking-[0.1em] uppercase font-semibold text-[#10B981] mt-0.5 leading-tight line-clamp-1 max-w-[155px] sm:max-w-none">
+          <span className="text-[7px] xs:text-[8px] sm:text-[9px] tracking-[0.02em] sm:tracking-[0.08em] uppercase font-semibold text-[#10B981] mt-0.5 leading-tight truncate max-w-[130px] xs:max-w-[170px] sm:max-w-none block">
             F.E.™  Fortaleza Espiritual y Esperanza
           </span>
         </div>

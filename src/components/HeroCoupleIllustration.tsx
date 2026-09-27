@@ -67,46 +67,46 @@ export const HeroCoupleIllustration: React.FC<HeroProps> = ({ onStart, onOpenMot
         </div>
 
         {/* Right: Harmonious Dignified Graphic of Man & Woman Aligning Body, Mind, Soul */}
-        <div className="relative w-full lg:w-auto flex justify-center items-center">
-          <div className="relative w-60 h-60 sm:w-80 sm:h-80 max-w-[85vw] max-h-[85vw] rounded-full bg-gradient-to-tr from-[#112540] via-[#09172B] to-[#1E3A5F] p-3 sm:p-4 shadow-2xl flex items-center justify-center border-2 border-[#F59E0B]/40">
+        <div className="relative w-full lg:w-auto flex justify-center items-center py-2 sm:py-0">
+          <div className="relative w-full max-w-[260px] sm:max-w-[320px] aspect-square rounded-full bg-gradient-to-tr from-[#112540] via-[#09172B] to-[#1E3A5F] p-3 sm:p-4 shadow-2xl flex items-center justify-center border-2 border-[#F59E0B]/40">
             {/* Inner radiant halo */}
-            <div className="w-full h-full rounded-full border border-white/20 flex flex-col items-center justify-center text-center p-4 bg-[#061120]/80 backdrop-blur-md shadow-inner">
+            <div className="w-full h-full rounded-full border border-white/20 flex flex-col items-center justify-center text-center p-3 sm:p-4 bg-[#061120]/80 backdrop-blur-md shadow-inner">
               {/* Couple vector emblems */}
-              <div className="relative flex items-center justify-center gap-4 mb-3">
+              <div className="relative flex items-center justify-center gap-3 sm:gap-4 mb-2 sm:mb-3">
                 {/* Man avatar card */}
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#1E3A5F] to-[#0A1C33] flex items-center justify-center shadow-lg border-2 border-[#F59E0B]/50 text-white">
-                    <svg className="w-8 h-8 text-[#93C5FD]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="w-13 h-13 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#1E3A5F] to-[#0A1C33] flex items-center justify-center shadow-lg border-2 border-[#F59E0B]/50 text-white">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#93C5FD]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                       <circle cx="12" cy="7" r="4" />
                     </svg>
                   </div>
-                  <span className="text-[11px] font-bold text-[#FBBF24] mt-1.5 tracking-wide">Hombre</span>
+                  <span className="text-[10px] sm:text-[11px] font-bold text-[#FBBF24] mt-1 tracking-wide">Hombre</span>
                 </div>
 
                 {/* Central divine heart of grace & light */}
-                <div className="w-13 h-13 rounded-full bg-gradient-to-br from-[#F59E0B] via-[#EAB308] to-[#D97706] flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.5)] animate-pulse">
-                  <Heart className="w-7 h-7 text-[#060F1E] fill-[#060F1E]" />
+                <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-gradient-to-br from-[#F59E0B] via-[#EAB308] to-[#D97706] flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.5)] animate-pulse">
+                  <Heart className="w-6 h-6 sm:w-7 sm:h-7 text-[#060F1E] fill-[#060F1E]" />
                 </div>
 
                 {/* Woman avatar card */}
                 <div className="flex flex-col items-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0F3733] to-[#0D9488] flex items-center justify-center shadow-lg border-2 border-[#10B981]/50 text-white">
-                    <svg className="w-8 h-8 text-[#A7F3D0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <div className="w-13 h-13 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#0F3733] to-[#0D9488] flex items-center justify-center shadow-lg border-2 border-[#10B981]/50 text-white">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#A7F3D0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                       <circle cx="12" cy="7" r="4" />
                       <path d="M12 14c2.5 0 4.5 1.5 4.5 3.5" />
                     </svg>
                   </div>
-                  <span className="text-[11px] font-bold text-[#10B981] mt-1.5 tracking-wide">Mujer</span>
+                  <span className="text-[10px] sm:text-[11px] font-bold text-[#10B981] mt-1 tracking-wide">Mujer</span>
                 </div>
               </div>
 
-              <span className="text-[13px] font-serif italic text-white font-normal leading-snug px-3">
+              <span className="text-[11.5px] sm:text-[13px] font-serif italic text-white font-normal leading-snug px-2">
                 «Cuerpo relajado, Mente clara, Alma en paz y Propósito en Dios.»
               </span>
 
-              <div className="flex items-center gap-1.5 text-[10px] text-[#FBBF24] font-bold uppercase tracking-wider mt-2.5">
+              <div className="flex items-center gap-1.5 text-[9.5px] sm:text-[10px] text-[#FBBF24] font-bold uppercase tracking-wider mt-2">
                 <Sparkles className="w-3 h-3 text-[#F59E0B]" />
                 <span>El Mapa de Vida de Tu Poder Mental</span>
               </div>

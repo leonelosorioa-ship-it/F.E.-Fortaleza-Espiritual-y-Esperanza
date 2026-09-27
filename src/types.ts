@@ -127,6 +127,10 @@ export interface DailyPlanDay {
   anchorAction: string;
   scriptureRef: string;
   verse: string;
+  keyMessage?: string;
+  category?: 'fe_esperanza' | 'familia' | 'amigos' | 'trabajo' | 'sociedad' | 'oracion' | 'sanidad_perdon';
+  categoryLabel?: string;
+  illustrationKey?: string;
   quadrant?: LifeQuadrant;
   mentorGuide?: 'Clara Luz' | 'Leo' | 'Clara Luz & Leo';
   isFreePreview?: boolean;

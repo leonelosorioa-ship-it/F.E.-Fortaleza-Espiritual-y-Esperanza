@@ -30,7 +30,7 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-8 animate-fade-in">
+    <div className="w-full max-w-[720px] mx-auto px-3.5 sm:px-6 py-3 sm:py-8 space-y-6 sm:space-y-8 animate-fade-in overflow-hidden">
       {/* 
         1. HERO SECTION OPTIMIZADO PARA VIEWPORT DE 375px (MOBILE FIRST)
         Cabe en la primera pantalla a 375px sin scroll obligatorio:

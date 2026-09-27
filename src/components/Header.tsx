@@ -22,15 +22,15 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="w-full border-b border-white/[0.08] bg-[#060F1E]/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
-      <div className="max-w-[720px] mx-auto px-3 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-2 sm:gap-3">
+      <div className="max-w-[720px] mx-auto px-2.5 sm:px-6 h-15 sm:h-18 flex items-center justify-between gap-1.5 sm:gap-3">
         {/* Brand Logo & Wordmark */}
         <button
           type="button"
           onClick={onGoHome}
-          className="text-left group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none flex items-center gap-1.5 sm:gap-2 rounded-[10px] min-h-[44px] min-w-0 shrink overflow-hidden"
+          className="text-left group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none flex items-center gap-1 sm:gap-2 rounded-[10px] min-h-[44px] min-w-0 shrink overflow-hidden"
           aria-label="Ir al inicio de Tu Poder Mental F.E."
         >
-          <TuPoderMentalLogo size={40} showText={true} />
+          <TuPoderMentalLogo size={38} showText={true} />
         </button>
 
         {/* Top actions & navigation */}
@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenPeacePlan}
-            className="min-h-[42px] min-w-[38px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
+            className="min-h-[44px] min-w-[40px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] text-[12.5px] sm:text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] active:bg-white/[0.1] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
             title="Ruta 30 Días con Dios"
             aria-label="Ruta 30 Días con Dios"
           >
@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenGratitude}
-            className="min-h-[42px] min-w-[38px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#10B981] focus-visible:outline-none"
+            className="min-h-[44px] min-w-[40px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] text-[12.5px] sm:text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] active:bg-white/[0.1] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#10B981] focus-visible:outline-none"
             title="Diario de Gratitud"
             aria-label="Diario de Gratitud"
           >
@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenAudios}
-            className="min-h-[42px] min-w-[38px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0EA5E9] focus-visible:outline-none"
+            className="min-h-[44px] min-w-[40px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] text-[12.5px] sm:text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] active:bg-white/[0.1] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#0EA5E9] focus-visible:outline-none"
             title="Audios de Fe"
             aria-label="Audios de Fe"
           >
@@ -75,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenHistory}
-            className="min-h-[42px] min-w-[38px] sm:min-w-[44px] px-2.5 sm:px-3.5 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-[12.5px] font-medium text-[#F1F5F9] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
+            className="min-h-[44px] min-w-[40px] sm:min-w-[44px] px-2 sm:px-3 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-[12px] sm:text-[12.5px] font-medium text-[#F1F5F9] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
             aria-label={`Ver oraciones guardadas (${savedCount})`}
             title="Mis oraciones guardadas"
           >
