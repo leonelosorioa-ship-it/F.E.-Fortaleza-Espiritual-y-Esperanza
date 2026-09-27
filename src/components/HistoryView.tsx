@@ -1,6 +1,6 @@
 import React from 'react';
 import { SavedAnchor } from '../types';
-import { ShieldAlert, Trash2, ArrowLeft, ArrowRight, Bookmark, BookOpen, Heart } from 'lucide-react';
+import { Trash2, ArrowLeft, ArrowRight, Bookmark, BookOpen } from 'lucide-react';
 
 interface HistoryViewProps {
   anchors: SavedAnchor[];
@@ -18,15 +18,15 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
   onBack,
 }) => {
   return (
-    <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 animate-fade-in">
       {/* Header row */}
-      <div className="flex items-center justify-between pb-4 border-b border-[#E2E8F0]">
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
         <button
           type="button"
           onClick={onBack}
-          className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] text-[#475569] hover:text-[#0B1E36] hover:bg-[#F1F5F9] text-[13px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="min-h-[44px] px-3 py-1.5 rounded-[10px] text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-white/[0.04] text-[13px] font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
+          <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
           <span>Volver al botiquín</span>
         </button>
 
@@ -34,10 +34,10 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
           <button
             type="button"
             onClick={onClearAll}
-            className="min-h-[36px] px-3 py-1.5 text-[12px] text-[#64748B] hover:text-[#DC2626] flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Limpiar registro guardado en este dispositivo"
+            className="min-h-[44px] px-3 py-1.5 text-[12px] text-[#94A3B8] hover:text-[#EF4444] flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Limpiar registro guardado en este equipo"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
             <span>Borrar historial</span>
           </button>
         )}
@@ -45,82 +45,70 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
 
       {anchors.length === 0 ? (
         /* Estado vacío canónico */
-        <div className="bg-white border border-[#CBD5E1] rounded-[20px] p-8 sm:p-12 text-center flex flex-col items-center shadow-xs">
-          <div className="w-16 h-16 rounded-full bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center mb-5 text-[#D97706]">
-            <Bookmark className="w-7 h-7 text-[#D97706]" strokeWidth={1.8} />
+        <div className="bg-[#0B1728] border border-white/[0.08] rounded-[18px] p-8 sm:p-12 text-center flex flex-col items-center shadow-sm">
+          <div className="w-14 h-14 rounded-full bg-[#F59E0B]/15 border border-[#F59E0B]/30 flex items-center justify-center mb-4 text-[#F59E0B]">
+            <Bookmark className="w-6 h-6" strokeWidth={1.75} />
           </div>
-          <h2 className="font-serif text-[22px] sm:text-[25px] text-[#0B1E36] font-normal mb-2">
+          <h2 className="font-editorial text-[22px] sm:text-[24px] text-[#F1F5F9] font-normal mb-2">
             Ninguna promesa guardada aún
           </h2>
-          <p className="text-[14px] text-[#64748B] max-w-[420px] mb-8 leading-relaxed">
+          <p className="text-[14px] text-[#94A3B8] max-w-[42ch] mb-6 leading-relaxed">
             Aquí se guardarán de forma privada tus oraciones y anclas espirituales para que puedas volver a ellas en cualquier momento.
           </p>
           <button
             type="button"
             onClick={onStartNew}
-            className="min-h-[48px] px-6 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[14px] font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer border border-[#F59E0B]/30"
+            className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] text-[#060F1E] font-semibold text-[13.5px] transition-colors cursor-pointer shadow-md"
           >
-            <span>Buscar a Dios ahora</span>
-            <ArrowRight className="w-4 h-4 text-[#F59E0B]" strokeWidth={2} />
+            Buscar a Dios ahora
           </button>
         </div>
       ) : (
-        /* Lista de anclas guardadas */
+        /* List of saved anchors */
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#D97706]">
-              Tus Anclas Espirituales Guardadas ({anchors.length})
-            </span>
-            <span className="text-[11px] text-[#64748B]">
-              Almacenadas localmente y protegidas
+            <span className="text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1]">
+              Oraciones Guardadas en tu Dispositivo ({anchors.length})
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-3">
+          <div className="space-y-3">
             {anchors.map((anchor) => (
-              <button
+              <div
                 key={anchor.id}
-                type="button"
-                onClick={() => onSelectAnchor(anchor)}
-                className="p-5 rounded-[16px] bg-white border border-[#CBD5E1] hover:border-[#F59E0B] text-left transition-all shadow-xs hover:shadow-md group cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                className="p-5 rounded-[16px] bg-[#0B1728] border border-white/[0.08] hover:border-white/[0.18] transition-all space-y-3"
               >
-                <div className="space-y-1.5 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#B45309] bg-[#FEF3C7] px-2.5 py-0.5 rounded-full border border-[#FDE68A]">
-                      {anchor.symptomLabel}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10.5px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30">
+                        {anchor.symptomLabel}
+                      </span>
+                      <span className="text-[11.5px] text-[#94A3B8]">
+                        {anchor.displayDate}
+                      </span>
+                    </div>
+                    <span className="text-[12px] font-semibold text-[#10B981] flex items-center gap-1">
+                      <BookOpen className="w-3.5 h-3.5" strokeWidth={1.75} />
+                      {anchor.scriptureRef}
                     </span>
-                    <span className="text-[11px] text-[#64748B]">{anchor.displayDate}</span>
                   </div>
 
-                  <p className="font-serif text-[15px] text-[#0B1E36] italic line-clamp-1">
-                    «{anchor.declaration}»
-                  </p>
-
-                  {anchor.userReflection && (
-                    <p className="text-[12px] text-[#64748B] line-clamp-1">
-                      Tu desahogo: «{anchor.userReflection}»
-                    </p>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => onSelectAnchor(anchor)}
+                    className="min-h-[40px] px-3.5 py-1.5 rounded-[10px] bg-white/[0.04] hover:bg-[#F59E0B] hover:text-[#060F1E] text-[#F1F5F9] border border-white/[0.1] text-[12px] font-medium transition-colors flex items-center gap-1 cursor-pointer shrink-0"
+                  >
+                    <span>Releer</span>
+                    <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  </button>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
-                  <span className="text-[12px] font-bold text-[#D97706] group-hover:underline">
-                    Reabrir ancla
-                  </span>
-                  <ArrowRight className="w-4 h-4 text-[#D97706] group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </button>
+                <p className="font-editorial text-[14px] italic text-[#CBD5E1] line-clamp-2 leading-relaxed">
+                  «{anchor.declaration}»
+                </p>
+              </div>
             ))}
-          </div>
-
-          <div className="pt-4 text-center">
-            <button
-              type="button"
-              onClick={onStartNew}
-              className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:brightness-110 text-[#060F1E] text-[13.5px] font-bold transition-all shadow-sm cursor-pointer"
-            >
-              Realizar una nueva entrega a Dios
-            </button>
           </div>
         </div>
       )}

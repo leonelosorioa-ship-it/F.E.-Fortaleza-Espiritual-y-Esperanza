@@ -2,83 +2,69 @@
 
 :root {
   /* ==========================================================================
-     COLOR SYSTEM - EL MAPA DE TU VIDA EN DIOS (ESTILO INSTITUTO JHONNY ROMERO)
-     Paleta de alto impacto: Azul Obsidiana Profundo, Oro Radiante y Esmeralda de Sanidad
+     DESIGN SYSTEM: MODO SANTUARIO NOCTURNO (WARM DARK SANCTUARY)
+     Fondos azul noche profundos, oro ámbar sereno y toques esmeralda de sanidad.
+     Regla estricta: NUNCA negro puro (#000) ni blanco puro (#FFF).
      ========================================================================== */
-  --color-base: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-surface-subtle: #F1F5F9;
-  --color-surface-interactive: #E2E8F0;
-  --color-surface-selected: #FEF3C7;
 
-  /* Neutros de Alto Contraste */
-  --color-neutral-100: #0B132B; /* Texto Principal (Azul Noche Profundo) */
-  --color-neutral-200: #1E293B; /* Texto Secundario */
-  --color-neutral-300: #475569; /* Texto Terciario / Descriptivo */
-  --color-neutral-400: #CBD5E1; /* Bordes */
-  --color-neutral-500: #F1F5F9; /* Fondos suaves */
-  --color-neutral-600: #FFFFFF;
+  /* Superficies de Fondo */
+  --color-base: #060F1E;
+  --color-surface-card: #0B1728;
+  --color-surface-elevated: #0E223D;
+  --color-surface-glass: rgba(255, 255, 255, 0.04);
+  --color-surface-selected: rgba(245, 158, 11, 0.12);
 
-  /* Colores de Marca El Mapa de Vida */
-  --color-primary-navy: #060F1E;
-  --color-primary-midnight: #0B192F;
-  --color-accent-gold: #F59E0B;
-  --color-accent-gold-light: #FBBF24;
-  --color-accent-gold-dark: #D97706;
-  --color-accent-emerald: #10B981;
-  --color-accent-teal: #0D9488;
-  --color-accent-cyan: #06B6D4;
+  /* Neutros de Texto (Blanco roto cálido y gris lunar) */
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary: #94A3B8;
+  --color-text-muted: #64748B;
 
-  /* Acento de Acción */
+  /* Acento Único de Acción y Foco (Oro Ámbar Cálido) */
   --color-accent: #F59E0B;
   --color-accent-hover: #D97706;
   --color-accent-active: #B45309;
+  --color-accent-subtle: rgba(245, 158, 11, 0.15);
   --color-accent-text: #060F1E;
 
-  /* Semánticos */
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
+  /* Toque de Sanidad y Sosiego (Esmeralda) */
+  --color-emerald: #059669;
+  --color-emerald-light: #10B981;
+  --color-emerald-subtle: rgba(16, 185, 129, 0.14);
 
-  /* Hairlines y Separadores */
-  --color-border: #E2E8F0;
-  --color-border-subtle: rgba(245, 158, 11, 0.18);
+  /* Bordes y Separadores Tenues (1px) */
+  --color-border-hairline: rgba(255, 255, 255, 0.08);
+  --color-border-subtle: rgba(245, 158, 11, 0.25);
   --color-border-focus: #F59E0B;
 
-  /* ==========================================================================
-     TIPOGRAFÍA INSPIRADORA Y CLARA
-     ========================================================================== */
+  /* Tipografía */
   --font-family-display: "Lora", Georgia, serif;
   --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  /* Radios */
-  --radius-control: 10px;
-  --radius-container: 18px;
-
-  /* Layout */
-  --max-width-content: 840px;
-  --min-touch-target: 46px;
+  /* Layout Constants */
+  --max-width-content: 720px;
+  --min-touch-target: 44px;
 }
 
 body {
   background-color: var(--color-base);
-  color: var(--color-neutral-100);
+  color: var(--color-text-primary);
   font-family: var(--font-family-sans);
-  font-weight: var(--font-weight-regular);
+  font-weight: 400;
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tipografía de 60-75 caracteres máximo para lectura serena */
+p {
+  max-width: 68ch;
 }
 
 .font-editorial {
   font-family: var(--font-family-display);
-}
-
-.font-ui {
-  font-family: var(--font-family-sans);
 }
 
 .tabular-nums {
@@ -86,6 +72,39 @@ body {
   font-feature-settings: "tnum";
 }
 
-.max-w-reading {
-  max-width: var(--max-width-content);
+/* Breathing UI: Animaciones de opacidad y escala continua (NADA DE REBOTE) */
+@keyframes breathing-wave {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+.animate-breathing-gentle {
+  animation: breathing-wave 4000ms ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3000ms ease-in-out infinite;
+}
+
+/* Focus visible accesible con aro ámbar sin salto de layout */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #F59E0B;
+  outline-offset: 2px;
 }

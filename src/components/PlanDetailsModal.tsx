@@ -11,126 +11,118 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#060F1E]/80 backdrop-blur-xs animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#060F1E]/85 backdrop-blur-md animate-fade-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-plan-title"
     >
-      <div className="relative w-full max-w-[580px] bg-white border border-[#CBD5E1] rounded-[20px] p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-[580px] bg-[#0B1728] border border-white/[0.1] rounded-[20px] p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto space-y-5">
         {/* Header */}
-        <div className="flex items-start justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
+        <div className="flex items-start justify-between pb-3.5 border-b border-white/[0.08]">
           <div>
-            <div className="flex items-center gap-1.5 text-[#D97706] mb-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
-              <span className="text-[11px] font-bold tracking-[0.08em] uppercase">
+            <div className="flex items-center gap-1.5 text-[#F59E0B] mb-1">
+              <Sparkles className="w-3.5 h-3.5" strokeWidth={1.75} />
+              <span className="text-[10.5px] font-semibold tracking-wider uppercase">
                 Transparencia y Sostenimiento de la Plataforma
               </span>
             </div>
-            <h2 id="modal-plan-title" className="font-serif text-[24px] text-[#0B1E36]">
-              El Mapa de tu Vida en Dios • Planes
+            <h2 id="modal-plan-title" className="font-editorial text-[22px] sm:text-[24px] text-[#F1F5F9] font-normal">
+              El Mapa de tu Vida en Dios • Rescate y Rehabilitación
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[40px] min-w-[40px] p-2 text-[#64748B] hover:text-[#0B1E36] rounded-[10px] hover:bg-[#F1F5F9] flex items-center justify-center transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] text-[#94A3B8] hover:text-[#F1F5F9] rounded-[10px] hover:bg-white/[0.05] flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Cerrar detalles del plan"
           >
-            <X className="w-5 h-5" strokeWidth={2} />
+            <X className="w-5 h-5" strokeWidth={1.75} />
           </button>
         </div>
 
         {/* Principio de Gracia */}
-        <div className="bg-[#FEF3C7]/40 border border-[#FDE68A] rounded-[14px] p-4 mb-6 flex items-start gap-3">
-          <Heart className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
-          <p className="text-[13px] text-[#334155] leading-relaxed">
-            <strong className="text-[#0B1E36]">Principio de Gracia:</strong> El Botiquín de Encuentro con Dios y los primeros auxilios para crisis nocturnas son y serán siempre de <strong>acceso libre y gratuito</strong>. Ningún hombre ni mujer debe pagar por ser consolado o recibir la Palabra en su momento de aflicción.
+        <div className="bg-[#0E223D]/70 border border-[#F59E0B]/30 rounded-[14px] p-4 flex items-start gap-3">
+          <Heart className="w-4 h-4 text-[#F59E0B] fill-[#F59E0B]/20 shrink-0 mt-0.5" strokeWidth={1.75} />
+          <p className="text-[12.5px] text-[#CBD5E1] leading-relaxed">
+            <strong className="text-[#F1F5F9]">Principio de Gracia:</strong> El Botiquín de Encuentro con Dios y los primeros auxilios para momentos de crisis nocturna o taquicardia son y serán siempre de <strong>acceso libre y gratuito</strong>. Nadie debe pagar por ser consolado o recibir la Palabra en su momento de mayor aflicción.
           </p>
         </div>
 
         {/* Pricing comparison */}
-        <div className="space-y-4 mb-6">
+        <div className="space-y-3.5">
           {/* Plan Gratuito Perpetuo */}
-          <div className="p-5 rounded-[14px] border border-[#CBD5E1] bg-[#F8FAFC]">
+          <div className="p-5 rounded-[14px] border border-white/[0.08] bg-[#060F1E]">
             <div className="flex justify-between items-baseline mb-2">
-              <span className="text-[15px] font-bold text-[#0B1E36]">Botiquín de Encuentro y Oración</span>
-              <span className="text-[12px] text-[#059669] font-bold uppercase tracking-wider bg-[#ECFDF5] px-2.5 py-0.5 rounded-full border border-[#A7F3D0]">
+              <span className="text-[14.5px] font-semibold text-[#F1F5F9]">
+                Botiquín de Rescate y Oración
+              </span>
+              <span className="text-[11px] text-[#34D399] font-semibold uppercase tracking-wider bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/30">
                 Acceso libre perpetuo
               </span>
             </div>
-            <ul className="space-y-2 text-[13px] text-[#334155]">
+            <ul className="space-y-1.5 text-[12.5px] text-[#CBD5E1]">
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span>Protocolo de entrega para hombres y mujeres ante cualquier necesidad</span>
+                <Check className="w-3.5 h-3.5 text-[#10B981] shrink-0 mt-0.5" strokeWidth={2} />
+                <span>Protocolo de entrega para madres, padres y profesionales</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span>Santuario para hombres y mujeres: calma fisiológica y libertad de culpa</span>
+                <Check className="w-3.5 h-3.5 text-[#10B981] shrink-0 mt-0.5" strokeWidth={2} />
+                <span>Pausa diafragmática 4×4 y enraizamiento sensorial 5-4-3-2-1</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span>Pausa diafragmática 4×4 y anclaje sensorial 5-4-3-2-1</span>
+                <Check className="w-3.5 h-3.5 text-[#10B981] shrink-0 mt-0.5" strokeWidth={2} />
+                <span>Diario de gratitud con jardín botánico y Semana 1 libre</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span>Diario de gratitud y primeros 7 días libres del Mapa de Vida</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#059669] shrink-0 mt-0.5" strokeWidth={2.5} />
+                <Check className="w-3.5 h-3.5 text-[#10B981] shrink-0 mt-0.5" strokeWidth={2} />
                 <span>Almacenamiento confidencial y seguro en tu propio dispositivo</span>
               </li>
             </ul>
           </div>
 
           {/* Proceso Completo de 30 Días con Clara Luz y Leo (12.99 USD Pago Único) */}
-          <div className="p-5 rounded-[14px] border-2 border-[#F59E0B] bg-gradient-to-b from-[#FFFBEB] to-[#FFFFFF] shadow-sm">
-            <div className="flex justify-between items-baseline mb-2">
+          <div className="p-5 rounded-[14px] border-2 border-[#F59E0B] bg-gradient-to-b from-[#0E223D] to-[#0A1A2F] shadow-lg space-y-2.5">
+            <div className="flex justify-between items-baseline">
               <div>
-                <span className="text-[15px] font-bold text-[#0B1E36] block">
+                <span className="text-[15px] font-semibold text-[#F1F5F9] block">
                   Proceso de 30 Días con Clara Luz y Leo
                 </span>
-                <span className="text-[11px] font-semibold text-[#059669]">
-                  Sin membresía recurrente • Acceso completo durante los 30 días
+                <span className="text-[11px] font-medium text-[#34D399]">
+                  Construye un refugio a prueba de tormentas
                 </span>
               </div>
-              <span className="text-[18px] tabular-nums font-bold text-[#0B1E36]">
-                12.99 USD <span className="text-[12px] text-[#B45309] font-bold">(Pago Único)</span>
+              <span className="text-[17px] tabular-nums font-bold text-[#F59E0B]">
+                12.99 USD <span className="text-[11px] text-[#FBBF24] font-medium">(Pago Único)</span>
               </span>
             </div>
-            <p className="text-[12.5px] text-[#475569] mb-3 leading-relaxed">
-              Durante los 30 días por un único valor de 12.99 Dólares. Nuestros dos guías y mentores de Esperanza y FE te acompañan a ordenar cuerpo, mente, alma y propósito. <em>Por el momento no existirá una membresía, es un único pago.</em>
+
+            <p className="text-[12.5px] text-[#CBD5E1] leading-relaxed">
+              Durante los 30 días por un único valor de 12.99 Dólares. Clara Luz y Leo te guían a edificar cuerpo, mente, alma y propósito. <em>Por el momento no existirá membresía ni pagos mensuales recurrentes.</em>
             </p>
-            <ul className="space-y-2 text-[13px] text-[#334155]">
+
+            <ul className="space-y-1.5 text-[12.5px] text-[#CBD5E1]">
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span><strong>Acompañamiento con Clara Luz y Leo:</strong> dos mentores de Fe y Esperanza guiándote en cada cuadrante</span>
+                <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
+                <span><strong>El Mapa de 30 Días:</strong> semanas 2 a 5 con reflexiones y anclajes diarios</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span><strong>El Mapa de 30 Días:</strong> 5 semanas estructuradas con principios diarios, versículos y acciones prácticas</span>
+                <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
+                <span><strong>Catálogo completo de audios de fe:</strong> vigilias nocturnas extendidas</span>
               </li>
               <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span><strong>Catálogo completo de audios de fe:</strong> vigilias de insomnio prolongado narradas por Clara Luz y Leo</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span><strong>Cero mensualidades ocultas:</strong> pago único de 12.99 USD con acceso definitivo</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-[#D97706] shrink-0 mt-0.5" strokeWidth={2.5} />
-                <span>Acceso sin conexión permanente y soporte de actualizaciones</span>
+                <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
+                <span><strong>Cero mensualidades ocultas:</strong> un solo pago con acceso ilimitado</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Footer actions */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-end pt-2 border-t border-[#E2E8F0]">
+        <div className="pt-2 border-t border-white/[0.08] flex justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[13.5px] font-bold transition-all shadow-sm cursor-pointer border border-[#F59E0B]/30"
+            className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] text-[13px] font-semibold transition-colors cursor-pointer shadow-sm"
           >
             Entendido, continuar al botiquín
           </button>

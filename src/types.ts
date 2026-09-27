@@ -8,12 +8,14 @@ export type SymptomId =
   | 'perdon'
   | 'gratitud';
 
+export type ConversationalMood = 'panico' | 'insomnio' | 'culpa' | 'agotamiento';
+
 export type UserRoleProfile =
-  | 'hombre_fe'
-  | 'mujer_fe'
   | 'madre_profesional'
   | 'padre_familia'
-  | 'profesional_creyente';
+  | 'profesional_creyente'
+  | 'hombre_fe'
+  | 'mujer_fe';
 
 export type LifeQuadrant = 'cuerpo' | 'mente' | 'alma' | 'proposito';
 
@@ -65,6 +67,7 @@ export interface SymptomOption {
   iconColor: string;
   quadrant?: LifeQuadrant;
   quadrantLabel?: string;
+  conversationalMood?: ConversationalMood;
 }
 
 export interface LiturgyStep {
@@ -140,4 +143,11 @@ export interface AudioFaithSession {
   quadrant?: LifeQuadrant;
   mentorId?: MentorId;
   isFreePreview?: boolean;
+}
+
+export interface GraceStreakState {
+  completedDays: number[];
+  lastCompletedDateISO?: string;
+  totalCheckIns: number;
+  graceShieldActive: boolean;
 }

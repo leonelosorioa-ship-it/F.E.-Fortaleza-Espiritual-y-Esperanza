@@ -22,7 +22,7 @@ export const BreathingGuide: React.FC<BreathingGuideProps> = ({ onCompleteCycle 
           return prev - 1;
         }
 
-        // Phase transition
+        // Phase transition (4s each, total 12s per full cycle)
         if (phase === 'inhalar') {
           setPhase('sostener');
           return 4;
@@ -63,69 +63,74 @@ export const BreathingGuide: React.FC<BreathingGuideProps> = ({ onCompleteCycle 
     exhalar: 'EXHALAR',
   }[phase];
 
-  // Visual size ratio for the breathing indicator
-  const circleScale = phase === 'inhalar' ? 'scale-110' : phase === 'sostener' ? 'scale-110' : 'scale-95';
+  // Visual size ratio for the breathing indicator (Smooth scale without bounce)
+  const circleScale =
+    phase === 'inhalar'
+      ? 'scale-105 opacity-100'
+      : phase === 'sostener'
+      ? 'scale-105 opacity-90'
+      : 'scale-95 opacity-75';
 
   return (
-    <div className="w-full bg-white border border-[#CBD5E1] rounded-[18px] p-6 sm:p-8 flex flex-col items-center text-center shadow-xs">
-      <div className="flex items-center justify-between w-full pb-4 border-b border-[#E2E8F0] mb-6">
-        <div className="flex items-center gap-2 text-[#0B1E36]">
-          <Wind className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
-          <span className="text-[12px] font-bold tracking-[0.08em] uppercase text-[#0B1E36]">
-            Respiración Guiada 4×4 en la Presencia de Dios (Cuadrante Cuerpo)
+    <div className="w-full bg-[#0B1728] border border-white/[0.08] rounded-[18px] p-6 sm:p-7 flex flex-col items-center text-center shadow-sm">
+      <div className="flex items-center justify-between w-full pb-3 border-b border-white/[0.08] mb-5">
+        <div className="flex items-center gap-2">
+          <Wind className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
+          <span className="text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1]">
+            Respiración Diafragmática 4×4 • Calma Biológica
           </span>
         </div>
-        <span className="text-[12px] text-[#64748B] tabular-nums font-semibold">
+        <span className="text-[11.5px] text-[#94A3B8] tabular-nums font-medium">
           Ciclos: {cyclesCompleted}
         </span>
       </div>
 
-      {/* Visual Breathing Ring */}
-      <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center my-4">
-        {/* Outer ambient pulse ring */}
+      {/* Visual Breathing Ring with 4000ms duration, NO bounce */}
+      <div className="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center my-3">
+        {/* Outer ambient wave */}
         <div
-          className={`absolute inset-0 rounded-full border-2 border-[#F59E0B]/30 transition-transform duration-1000 ease-out ${
-            isActive ? circleScale : 'scale-100'
+          className={`absolute inset-0 rounded-full border border-[#F59E0B]/30 transition-all duration-[4000ms] ease-in-out ${
+            isActive ? circleScale : 'scale-100 opacity-60'
           }`}
         />
 
         {/* Dynamic expanding center */}
         <div
-          className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-gradient-to-tr from-[#FFFBEB] via-[#FEF3C7] to-[#ECFDF5] border-2 border-[#F59E0B] flex flex-col items-center justify-center transition-transform duration-1000 ease-out shadow-md ${
+          className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-gradient-to-tr from-[#060F1E] via-[#0E223D] to-[#0A1A2F] border-2 border-[#F59E0B] flex flex-col items-center justify-center transition-all duration-[4000ms] ease-in-out shadow-lg ${
             isActive ? circleScale : 'scale-100'
           }`}
         >
-          <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#B45309] mb-1">
+          <span className="text-[10px] font-semibold tracking-widest uppercase text-[#F59E0B] mb-1">
             {phaseLabel}
           </span>
-          <span className="font-serif text-[36px] sm:text-[40px] text-[#0B1E36] font-normal tabular-nums leading-none">
+          <span className="font-editorial text-[36px] sm:text-[40px] text-[#F1F5F9] font-normal tabular-nums leading-none">
             {secondsLeft}
           </span>
-          <span className="text-[10px] text-[#64748B] uppercase font-semibold mt-1">segundos</span>
+          <span className="text-[10px] text-[#94A3B8] uppercase tracking-wider font-medium mt-1">segundos</span>
         </div>
       </div>
 
       {/* Instructional copy */}
-      <p className="font-serif text-[16px] sm:text-[17px] text-[#0B1E36] max-w-[380px] my-3 leading-snug">
+      <p className="font-editorial text-[15px] sm:text-[16px] text-[#F1F5F9] max-w-[40ch] my-2 leading-snug">
         {phaseInstruction}
       </p>
 
       {/* Controls */}
-      <div className="flex items-center gap-3 mt-4">
+      <div className="flex items-center gap-2.5 mt-3">
         <button
           type="button"
           onClick={handleToggle}
-          className="min-h-[46px] px-5 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[13px] font-bold transition-colors flex items-center gap-2 cursor-pointer shadow-sm border border-[#F59E0B]/30"
+          className="min-h-[44px] px-5 py-2 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] text-[13px] font-semibold transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
         >
           {isActive ? (
             <>
-              <Pause className="w-4 h-4 fill-white" />
-              <span>Pausar ritmo</span>
+              <Pause className="w-3.5 h-3.5" strokeWidth={2} />
+              <span>Pausar</span>
             </>
           ) : (
             <>
-              <Play className="w-4 h-4 fill-white" />
-              <span>Reanudar</span>
+              <Play className="w-3.5 h-3.5" strokeWidth={2} />
+              <span>Continuar</span>
             </>
           )}
         </button>
@@ -133,11 +138,11 @@ export const BreathingGuide: React.FC<BreathingGuideProps> = ({ onCompleteCycle 
         <button
           type="button"
           onClick={handleReset}
-          className="min-h-[46px] px-4 py-2.5 rounded-[12px] border border-[#CBD5E1] bg-white hover:bg-[#F8FAFC] text-[#64748B] hover:text-[#0B1E36] text-[13px] font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+          className="min-h-[44px] min-w-[44px] px-3 py-2 rounded-[12px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-[#CBD5E1] text-[13px] transition-colors flex items-center justify-center cursor-pointer"
           title="Reiniciar respiración"
+          aria-label="Reiniciar respiración"
         >
-          <RotateCcw className="w-4 h-4" />
-          <span>Reiniciar</span>
+          <RotateCcw className="w-4 h-4" strokeWidth={1.75} />
         </button>
       </div>
     </div>

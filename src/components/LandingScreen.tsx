@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Heart, ArrowRight, Compass, HeartHandshake, Volume2, ShieldCheck, Sun, Moon, Sparkles, BookOpen, Activity, Brain } from 'lucide-react';
+import React from 'react';
+import { Heart, ArrowRight, Compass, HeartHandshake, Volume2, ShieldCheck, Moon, Sparkles } from 'lucide-react';
 import { HeroCoupleIllustration } from './HeroCoupleIllustration';
 import { MapaCuadrantesInteractive } from './MapaCuadrantesInteractive';
 import { MentoresGuiaSection } from './MentoresGuiaSection';
@@ -21,32 +21,6 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
   onOpenGratitude,
   onOpenAudios,
 }) => {
-  const [email, setEmail] = useState<string>('');
-  const [emailSaved, setEmailSaved] = useState<boolean>(false);
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim() || !email.includes('@')) {
-      onStartFlow();
-      return;
-    }
-
-    try {
-      const stored = localStorage.getItem('fe_subscriber_emails');
-      const list: string[] = stored ? JSON.parse(stored) : [];
-      if (!list.includes(email.trim().toLowerCase())) {
-        list.push(email.trim().toLowerCase());
-        localStorage.setItem('fe_subscriber_emails', JSON.stringify(list));
-      }
-      setEmailSaved(true);
-      setTimeout(() => {
-        onStartFlow();
-      }, 500);
-    } catch {
-      onStartFlow();
-    }
-  };
-
   const handleStartMotherSanctuary = () => {
     onStartFlow('madre_profesional', 'ansiedad_noche');
   };
@@ -56,229 +30,178 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[840px] mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10">
-      {/* 1. Hero Principal: El Mapa de tu Vida en Dios para Hombres y Mujeres */}
+    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-8 animate-fade-in">
+      {/* 
+        1. HERO SECTION OPTIMIZADO PARA VIEWPORT DE 375px (MOBILE FIRST)
+        Cabe en la primera pantalla a 375px sin scroll obligatorio:
+        - Badge editorial
+        - Titular con la Promesa exacta
+        - Línea de apoyo
+        - Botón de acción principal con área tocable >= 44px
+      */}
+      <div className="relative rounded-[20px] bg-gradient-to-b from-[#0B1728] via-[#0E223D] to-[#060F1E] border border-white/[0.08] p-5 sm:p-7 text-[#F1F5F9] shadow-xl">
+        <div className="space-y-3 max-w-[65ch]">
+          {/* Badge Editorial */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F59E0B]/10 border border-[#F59E0B]/30 text-[#F59E0B] text-[11px] font-semibold tracking-wider uppercase">
+            <Sparkles className="w-3.5 h-3.5 shrink-0" strokeWidth={1.75} />
+            <span>Santuario Litúrgico & Fisiológico</span>
+          </div>
+
+          {/* Titular con la Promesa Estricta */}
+          <h1 className="font-editorial text-[22px] sm:text-[28px] text-[#F1F5F9] font-normal leading-snug tracking-tight">
+            Para el creyente abrumado, obtén un ancla de paz y descanso del sistema nervioso sin sentir culpa religiosa.
+          </h1>
+
+          {/* Línea de Apoyo */}
+          <p className="text-[13.5px] sm:text-[14.5px] text-[#CBD5E1] leading-relaxed">
+            Si la ansiedad nocturna, la sobrecarga o el insomnio te visitan hoy, tu cuerpo no está fallando espiritualmente. Respira y entrega el control.
+          </p>
+
+          {/* Botón Principal y Acceso Rápido */}
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => onStartFlow('madre_profesional', 'ansiedad_noche')}
+              className="min-h-[48px] px-6 py-3 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
+            >
+              <span>Iniciar botiquín de paz</span>
+              <ArrowRight className="w-4 h-4" strokeWidth={1.75} />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleStartMotherSanctuary}
+              className="min-h-[44px] px-4 py-2 rounded-[12px] bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-[#CBD5E1] border border-white/[0.1] text-[13px] font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Moon className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
+              <span>Calma Nocturna (Madres y Profesionales)</span>
+            </button>
+          </div>
+
+          {/* Métricas de Confianza sutiles */}
+          <div className="pt-1 flex items-center gap-3 text-[11.5px] text-[#94A3B8]">
+            <span className="flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" strokeWidth={1.75} />
+              Refugio 100% gratuito permanente
+            </span>
+            <span>•</span>
+            <span>Sin juicios • Confidencial en tu equipo</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Emblema Visual Armonioso de Hombre y Mujer en Dios */}
       <HeroCoupleIllustration
         onStart={() => onStartFlow('hombre_fe', 'presencia')}
         onOpenMotherSanctuary={handleStartMotherSanctuary}
       />
 
-      {/* 2. El Mapa Interactivo de los 4 Cuadrantes: Cuerpo, Mente, Alma, Propósito */}
+      {/* 3. El Mapa Interactivo de los 4 Cuadrantes: Cuerpo, Mente, Alma, Propósito */}
       <MapaCuadrantesInteractive onSelectQuadrantFlow={handleQuadrantFlow} />
 
-      {/* 3. Nuestros 2 Guías o Mentores: Clara Luz y Leo • Proceso Espiritual de 30 Días (12.99 USD Pago Único) */}
+      {/* 4. Nuestros 2 Guías y Mentores: Clara Luz y Leo */}
       <MentoresGuiaSection
         onSelectMentor={(role, symptom) => onStartFlow(role, symptom)}
         onOpenPlanDetails={onOpenPlan}
       />
 
-      {/* 4. Nicho Especial Ampliado: Hombres y Mujeres en Crisis Nocturna y Sobrecarga */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#FFFBEB] via-[#FFFFFF] to-[#F0FDF4] border-2 border-[#F59E0B]/40 rounded-[18px] p-6 sm:p-7 shadow-sm">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-          <div className="space-y-2 max-w-[530px]">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#F59E0B]/15 text-[#B45309] text-[11px] font-bold tracking-wider uppercase border border-[#F59E0B]/30">
-                <Moon className="w-3.5 h-3.5 text-[#D97706]" />
-                Santuario de Calma Nocturna
-              </span>
-              <span className="text-[11px] text-[#64748B] hidden sm:inline">
-                • Para hombres y mujeres • Sin juicios ni culpa
-              </span>
-            </div>
-
-            <h3 className="font-serif text-[20px] sm:text-[23px] text-[#0F172A] font-normal leading-snug">
-              Para hombres y mujeres, madres y profesionales en crisis de ansiedad nocturna:
-            </h3>
-
-            <p className="text-[13.5px] text-[#334155] leading-relaxed">
-              Obtén <strong>calma fisiológica</strong> y descanso en la <strong>gracia de Dios</strong> sin la culpa de sentir que te falta fe. Si la rumiación nocturna, la taquicardia o el peso de tus responsabilidades te visitan hoy, tu cuerpo no está fallando espiritualmente; seas hombre o mujer, aquí tienes un ancla de sosiego, respiración guiada y reposo en la soberanía divina.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleStartMotherSanctuary}
-            className="min-h-[46px] px-5 py-2.5 rounded-[12px] bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:brightness-110 text-[#060F1E] text-[13.5px] font-bold transition-all shadow-md flex items-center gap-2 shrink-0 cursor-pointer"
-          >
-            <span>Iniciar calma y descanso</span>
-            <ArrowRight className="w-4 h-4 text-[#060F1E]" strokeWidth={2.5} />
-          </button>
-        </div>
-      </div>
-
-      {/* 4. Cinta de Valores y Arquitectura del Mapa */}
+      {/* 5. Cinta de Principios (Neurociencia + Verdad Bíblica) */}
       <BrandValuesRibbon />
 
-      {/* 5. Acción Central: Botiquín Espiritual de Encuentro con Dios */}
-      <div className="bg-white border border-[#E2E8F0] rounded-[18px] p-6 sm:p-8 shadow-sm">
-        <div className="flex items-center gap-2 mb-2">
-          <Heart className="w-5 h-5 text-[#F59E0B] fill-[#F59E0B]" />
-          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#0B1E36]">
-            Botiquín Espiritual de Encuentro con Dios
-          </span>
-        </div>
-
-        <h3 className="font-serif text-[22px] sm:text-[26px] text-[#0B1E36] font-normal leading-snug mb-2">
-          ¿En qué área de tu mapa necesitas a Dios hoy?
-        </h3>
-        <p className="text-[14px] text-[#64748B] mb-6">
-          Un espacio cálido y personal para hombres y mujeres. Ingresa tu correo opcional para recibir el devocional matutino o avanza directamente a tu tiempo de oración.
-        </p>
-
-        <form onSubmit={handleEmailSubmit} className="space-y-3">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Tu correo electrónico (opcional)"
-              className="min-h-[48px] flex-1 px-4 py-3 rounded-[12px] bg-[#F8FAFC] border border-[#CBD5E1] text-[#0B132B] placeholder:text-[#64748B] text-[14px] focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20 transition-all"
-            />
-            <button
-              type="submit"
-              className="min-h-[48px] px-7 py-3 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-white text-[15px] font-bold transition-all flex items-center justify-center gap-2 shadow-sm shrink-0 cursor-pointer border border-[#F59E0B]/30"
-            >
-              <span>{emailSaved ? 'Conectando con Dios…' : 'Buscar a Dios ahora'}</span>
-              <ArrowRight className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
-            </button>
-          </div>
-          <p className="text-[12px] text-[#64748B]">
-            Acceso libre perpetuo al botiquín • Sin contraseñas obligatorias • Confidencial en tu dispositivo
-          </p>
-        </form>
-      </div>
-
-      {/* 6. Pilares para Hombres y Mujeres de Dios */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#0D9488]">
-            Enfocado en toda persona que anhela la gracia de Dios
-          </span>
-          <span className="text-[12px] text-[#64748B]">
-            Hombres • Mujeres • Familias
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white border border-[#E2E8F0] rounded-[16px] p-5 shadow-xs hover:border-[#F59E0B]/50 transition-colors">
-            <div className="w-10 h-10 rounded-[10px] bg-[#FEF3C7] text-[#D97706] flex items-center justify-center mb-3">
-              <Sun className="w-5 h-5 text-[#D97706]" strokeWidth={2} />
-            </div>
-            <h4 className="font-serif text-[17px] text-[#0B1E36] font-normal mb-1">
-              Para el Hombre de Fe
-            </h4>
-            <p className="text-[13px] text-[#475569] leading-relaxed">
-              Fuerza espiritual para liderar con sabiduría, vencer la soledad en las batallas de provisión y descansar en la soberanía divina.
-            </p>
-          </div>
-
-          <div className="bg-white border border-[#E2E8F0] rounded-[16px] p-5 shadow-xs hover:border-[#10B981]/50 transition-colors">
-            <div className="w-10 h-10 rounded-[10px] bg-[#ECFDF5] text-[#059669] flex items-center justify-center mb-3">
-              <Heart className="w-5 h-5 text-[#059669] fill-[#059669]" />
-            </div>
-            <h4 className="font-serif text-[17px] text-[#0B1E36] font-normal mb-1">
-              Para la Mujer de Fe
-            </h4>
-            <p className="text-[13px] text-[#475569] leading-relaxed">
-              Un refugio de ternura y dignidad donde soltar la sobrecarga emocional y recibir el abrazo incondicional de un Dios que nunca falla.
-            </p>
-          </div>
-
-          <div className="bg-white border border-[#E2E8F0] rounded-[16px] p-5 shadow-xs hover:border-[#6366F1]/50 transition-colors">
-            <div className="w-10 h-10 rounded-[10px] bg-[#EEF2FF] text-[#4F46E5] flex items-center justify-center mb-3">
-              <ShieldCheck className="w-5 h-5 text-[#4F46E5]" strokeWidth={2} />
-            </div>
-            <h4 className="font-serif text-[17px] text-[#0B1E36] font-normal mb-1">
-              Gracia sin Juicios
-            </h4>
-            <p className="text-[13px] text-[#475569] leading-relaxed">
-              Dios no te pide fingir que eres invencible. En tu debilidad humana resplandece la grandeza de su poder, amor y comprensión.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* 7. Módulos Interactivos de Bienestar Espiritual */}
-      <div className="space-y-4">
-        <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#0B1E36] block">
-          Caminos de Crecimiento y Transformación
+      {/* 6. Módulos de Bienestar Espiritual y Hábitos */}
+      <div className="space-y-3.5">
+        <span className="text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1] block">
+          Herramientas de Paz y Retención
         </span>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Módulo 1: Ruta 30 Días */}
           <button
             type="button"
             onClick={onOpenPeacePlan}
-            className="p-5 rounded-[16px] bg-white border border-[#E2E8F0] hover:border-[#F59E0B] text-left transition-all shadow-xs hover:shadow-md group cursor-pointer"
+            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-[#F59E0B]/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B]"
           >
-            <Compass className="w-6 h-6 text-[#F59E0B] mb-3 group-hover:scale-105 transition-transform" strokeWidth={2} />
-            <div className="flex items-center justify-between mb-1">
-              <h4 className="font-serif text-[16.5px] text-[#0B1E36] font-normal">
-                Ruta 30 Días con Dios
-              </h4>
-              <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#B45309] font-bold">
-                D1-7 Libre
+            <div className="flex items-center justify-between mb-2">
+              <Compass className="w-5 h-5 text-[#F59E0B]" strokeWidth={1.75} />
+              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30">
+                Semana 1 Libre
               </span>
             </div>
-            <p className="text-[12.5px] text-[#475569] leading-relaxed">
-              El mapa guiado de 30 días: 5 semanas caminando en su palabra con Clara Luz y Leo, reflexiones diarias y acciones prácticas.
+            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
+              Ruta 30 Días en Dios
+            </h2>
+            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
+              Itinerario estructurado con Clara Luz y Leo para entrenar tu mente y sistema nervioso.
             </p>
           </button>
 
+          {/* Módulo 2: Diario de Gratitud con Jardín */}
           <button
             type="button"
             onClick={onOpenGratitude}
-            className="p-5 rounded-[16px] bg-white border border-[#E2E8F0] hover:border-[#0D9488] text-left transition-all shadow-xs hover:shadow-md group cursor-pointer"
+            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-[#10B981]/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#10B981]"
           >
-            <HeartHandshake className="w-6 h-6 text-[#0D9488] mb-3 group-hover:scale-105 transition-transform" strokeWidth={2} />
-            <h4 className="font-serif text-[16.5px] text-[#0B1E36] font-normal mb-1">
-              Diario de Gratitud Espiritual
-            </h4>
-            <p className="text-[12.5px] text-[#475569] leading-relaxed">
-              Registra 3 bendiciones y regalos de Dios al final de cada jornada para entrenar tu cerebro en su providencia.
+            <div className="flex items-center justify-between mb-2">
+              <HeartHandshake className="w-5 h-5 text-[#10B981]" strokeWidth={1.75} />
+              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30">
+                Jardín Vivo
+              </span>
+            </div>
+            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
+              Diario de Gratitud
+            </h2>
+            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
+              Siembra 3 regalos diarios para florecer un jardín botánico interior de alabanza.
             </p>
           </button>
 
+          {/* Módulo 3: Audios de Fe */}
           <button
             type="button"
             onClick={onOpenAudios}
-            className="p-5 rounded-[16px] bg-white border border-[#E2E8F0] hover:border-[#6366F1] text-left transition-all shadow-xs hover:shadow-md group cursor-pointer"
+            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-[#6366F1]/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366F1]"
           >
-            <Volume2 className="w-6 h-6 text-[#6366F1] mb-3 group-hover:scale-105 transition-transform" strokeWidth={2} />
-            <h4 className="font-serif text-[16.5px] text-[#0B1E36] font-normal mb-1">
-              Audios de Fe y Devoción
-            </h4>
-            <p className="text-[12.5px] text-[#475569] leading-relaxed">
-              Narraciones de promesas bíblicas acompañadas de suaves arroyos, lluvia apacible y frecuencias de reposo.
+            <div className="flex items-center justify-between mb-2">
+              <Volume2 className="w-5 h-5 text-[#0EA5E9]" strokeWidth={1.75} />
+              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/[0.05] text-[#CBD5E1]">
+                Sueño & Reposo
+              </span>
+            </div>
+            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
+              Audios de Fe
+            </h2>
+            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
+              Lectura reposada de la Escritura con paisajes sonoros orgánicos de descanso.
             </p>
           </button>
         </div>
       </div>
 
-      {/* 8. Detalles del Proceso de 30 Días con Clara Luz y Leo (12.99 USD Pago Único) */}
-      <div className="border-2 border-[#F59E0B]/50 bg-gradient-to-r from-[#FFFBEB] via-[#FFFFFF] to-[#F0FDF4] rounded-[18px] p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-sm">
-        <div className="space-y-1">
+      {/* 7. Rescate vs Rehabilitación: Transparencia del Proceso */}
+      <div className="border border-white/[0.08] bg-[#0B1728] rounded-[18px] p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1 max-w-[480px]">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold tracking-[0.1em] uppercase px-3 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]">
-              Transparencia y Sostenimiento
+            <span className="text-[10.5px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30">
+              Botiquín Gratuito
             </span>
-            <span className="text-[12px] font-bold text-[#059669]">
-              • Pago Único • Sin membresía
+            <span className="text-[11.5px] font-semibold text-[#F59E0B]">
+              • Programa de 30 Días: 12.99 USD (Pago Único)
             </span>
           </div>
-          <div className="font-serif text-[20px] sm:text-[22px] text-[#0B1E36] font-normal">
-            Proceso de 30 Días con Clara Luz y Leo: 12.99 USD
-          </div>
-          <p className="text-[13.5px] text-[#475569] max-w-[520px] leading-relaxed">
-            El acceso al botiquín de emergencia y primeros auxilios espirituales siempre será gratuito y libre. Para realizar el proceso completo de 30 días guiado por nuestros dos mentores de Esperanza y FE, realizas un <strong>único pago de 12.99 Dólares</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
+          <h2 className="font-editorial text-[18px] text-[#F1F5F9] font-normal">
+            Rescate inmediato permanente vs. Rehabilitación de 30 días
+          </h2>
+          <p className="text-[12.5px] text-[#94A3B8] leading-relaxed">
+            El botiquín para crisis nocturnas y oraciones de entrega siempre será gratuito. Para construir un refugio a prueba de tormentas, el proceso guiado con Clara Luz y Leo tiene un único pago de 12.99 USD (sin membresía ni suscripciones).
           </p>
         </div>
+
         <button
           type="button"
           onClick={onOpenPlan}
-          className="min-h-[46px] px-6 py-2.5 rounded-[12px] bg-[#060F1E] hover:bg-[#0B1E36] text-[13.5px] font-bold text-white shrink-0 transition-colors shadow-sm cursor-pointer border border-[#F59E0B]/40 flex items-center gap-2"
+          className="min-h-[44px] px-5 py-2 rounded-[12px] bg-white/[0.05] hover:bg-white/[0.1] text-[13px] font-medium text-[#F1F5F9] border border-white/[0.12] transition-colors shrink-0 cursor-pointer"
         >
-          <span>Ver Programa Completo</span>
-          <ArrowRight className="w-4 h-4 text-[#F59E0B]" strokeWidth={2.5} />
+          Consultar detalles
         </button>
       </div>
     </div>
