@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="text-left group cursor-pointer focus:outline-none flex items-center gap-2"
           aria-label="Ir al inicio de Tu Poder Mental F.E."
         >
-          <TuPoderMentalLogo size={42} showText={true} textColor="text-[#0B1E36]" />
+          <TuPoderMentalLogo size={46} showText={true} textColor="text-[#0B1E36]" />
         </button>
 
         {/* Top actions */}

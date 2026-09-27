@@ -293,15 +293,6 @@ export default function App() {
               Proceso 30 Días con Clara Luz y Leo (12.99 USD - Pago Único)
             </button>
             <span>•</span>
-            <button
-              type="button"
-              onClick={() => setCurrentScreen('error')}
-              className="hover:text-[#0B1E36] transition-colors cursor-pointer"
-              title="Comprobar pantalla de error canónica"
-            >
-              Simular error
-            </button>
-            <span>•</span>
             <span>Uso privado y seguro en tu equipo</span>
           </div>
         </div>
