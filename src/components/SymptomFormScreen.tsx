@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { SymptomId } from '../types';
-import { SYMPTOM_OPTIONS } from '../data/anchors';
-import { ArrowLeft, ArrowRight, Info, CheckCircle2 } from 'lucide-react';
+import { SymptomId, UserRoleProfile } from '../types';
+import { SYMPTOM_OPTIONS, ROLE_PROFILE_OPTIONS } from '../data/anchors';
+import { ArrowLeft, ArrowRight, Info, CheckCircle2, User, HeartPulse } from 'lucide-react';
 
 interface SymptomFormScreenProps {
   onBack: () => void;
-  onSubmit: (symptomId: SymptomId, reflection: string) => void;
+  onSubmit: (symptomId: SymptomId, reflection: string, roleProfile: UserRoleProfile) => void;
   isLoading: boolean;
 }
 
@@ -14,6 +14,7 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
   onSubmit,
   isLoading,
 }) => {
+  const [selectedRole, setSelectedRole] = useState<UserRoleProfile>('madre');
   const [selectedSymptom, setSelectedSymptom] = useState<SymptomId | null>(null);
   const [reflection, setReflection] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -25,8 +26,10 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
       return;
     }
     setErrorMessage(null);
-    onSubmit(selectedSymptom, reflection);
+    onSubmit(selectedSymptom, reflection, selectedRole);
   };
+
+  const currentRoleInfo = ROLE_PROFILE_OPTIONS.find((r) => r.id === selectedRole);
 
   return (
     <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -56,6 +59,60 @@ export const SymptomFormScreen: React.FC<SymptomFormScreenProps> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Niche Persona Context Selector */}
+        <div className="space-y-3">
+          <div className="flex items-baseline justify-between">
+            <label className="block text-[13px] font-medium text-[#E8EBE9] flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-[#2A6F68]" strokeWidth={1.5} />
+              <span>¿Desde qué lugar estás librando esta batalla hoy?</span>
+            </label>
+            <span className="text-[11px] text-[#3D7D68] uppercase tracking-wider font-medium">
+              Contexto personalizado
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            {ROLE_PROFILE_OPTIONS.map((role) => {
+              const isSelected = selectedRole === role.id;
+              return (
+                <button
+                  key={role.id}
+                  type="button"
+                  onClick={() => setSelectedRole(role.id)}
+                  className={`p-3.5 rounded-[6px] text-left border transition-all flex items-start justify-between gap-2.5 ${
+                    isSelected
+                      ? 'bg-[#1B322F] border-[#2A6F68] text-[#E8EBE9]'
+                      : 'bg-[#121A18] border-[#263330] text-[#A6B0AC] hover:text-[#E8EBE9]'
+                  }`}
+                >
+                  <div className="space-y-0.5">
+                    <span className="text-[13px] font-medium block text-[#E8EBE9]">
+                      {role.label}
+                    </span>
+                    <span className="text-[11px] text-[#6E7A75] block leading-snug">
+                      {role.sublabel}
+                    </span>
+                  </div>
+                  {isSelected && (
+                    <div className="w-4 h-4 rounded-full bg-[#2A6F68] flex items-center justify-center shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={1.5} />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {currentRoleInfo && (
+            <div className="p-3 rounded-[6px] bg-[#161F1E] border border-[#263330] text-[12px] text-[#A6B0AC] flex items-start gap-2">
+              <span className="text-[#C99757] font-medium shrink-0">•</span>
+              <p>
+                <strong className="text-[#E8EBE9]">Tensión de tu rol:</strong> {currentRoleInfo.contextDesc} {currentRoleInfo.specificTension}
+              </p>
+            </div>
+          )}
+        </div>
+
         {/* Selector de Síntomas / 7 Botiquines Temáticos */}
         <div className="space-y-3">
           <div className="flex items-baseline justify-between">

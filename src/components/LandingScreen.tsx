@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, HeartPulse, ArrowRight, Compass, HeartHandshake, Volume2, Sparkles, BookOpen } from 'lucide-react';
+import { ShieldCheck, HeartPulse, ArrowRight, Compass, HeartHandshake, Volume2, Sparkles, BookOpen, Users, Briefcase, Home, ShieldAlert } from 'lucide-react';
 
 interface LandingScreenProps {
   onStartFlow: () => void;
@@ -64,6 +64,47 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
         <p className="font-editorial text-[17px] sm:text-[18px] text-[#A6B0AC] leading-[1.5] max-w-[640px]">
           Un espacio para fortalecer el alma, renovar la esperanza y encontrar paz en medio de las dificultades. De sentirte sola frente a la tormenta a descansar anclada en una promesa superior.
         </p>
+      </div>
+
+      {/* Ampliación del Nicho: Las 3 realidades de la crisis nocturna */}
+      <div className="bg-[#121A18] border border-[#263330] rounded-[12px] p-6 space-y-4">
+        <div className="flex items-center gap-2">
+          <Users className="w-4 h-4 text-[#C99757]" strokeWidth={1.5} />
+          <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#C99757]">
+            Comprendemos tu batalla exacta
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+          <div className="space-y-1 border-l-2 border-[#2A6F68] pl-3 py-0.5">
+            <h4 className="text-[14px] font-medium text-[#E8EBE9] flex items-center gap-1.5">
+              <Home className="w-3.5 h-3.5 text-[#2A6F68]" strokeWidth={1.5} />
+              <span>Madres sobrecargadas</span>
+            </h4>
+            <p className="text-[12px] text-[#A6B0AC] leading-relaxed">
+              La rumiación nocturna sobre la salud, crianza y futuro de los hijos, cargando el peso de sentir que si te quiebras, el hogar se derrumba.
+            </p>
+          </div>
+
+          <div className="space-y-1 border-l-2 border-[#3D7D68] pl-3 py-0.5">
+            <h4 className="text-[14px] font-medium text-[#E8EBE9] flex items-center gap-1.5">
+              <Briefcase className="w-3.5 h-3.5 text-[#3D7D68]" strokeWidth={1.5} />
+              <span>Profesionales en hiperexigencia</span>
+            </h4>
+            <p className="text-[12px] text-[#A6B0AC] leading-relaxed">
+              Revisar pendientes laborales a las 3:00 AM, el temor constante a no rendir a la altura y la incapacidad fisiológica de desconectar la mente.
+            </p>
+          </div>
+        </div>
+
+        <div className="pt-2 border-t border-[#263330]/80">
+          <div className="flex items-start gap-2 text-[12px] text-[#E8EBE9]">
+            <ShieldAlert className="w-4 h-4 text-[#9E4D4D] shrink-0 mt-0.5" strokeWidth={1.5} />
+            <p className="font-editorial text-[14px] text-[#A6B0AC] leading-snug">
+              <strong className="text-[#E8EBE9]">El dolor invisible:</strong> El juicio en entornos religiosos donde te dicen que «es mental» o que «te falta oración», haciéndote sentir culpable por una respuesta somática involuntaria de tu sistema nervioso.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Acción principal canónica */}

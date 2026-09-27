@@ -7,6 +7,16 @@ export type SymptomId =
   | 'agotamiento'
   | 'culpa';
 
+export type UserRoleProfile = 'madre' | 'profesional' | 'hombre_proveedor' | 'creyente_abrumado';
+
+export interface RoleProfileOption {
+  id: UserRoleProfile;
+  label: string;
+  sublabel: string;
+  contextDesc: string;
+  specificTension: string;
+}
+
 export interface SymptomOption {
   id: SymptomId;
   label: string;
@@ -42,6 +52,7 @@ export interface SavedAnchor {
   id: string;
   dateISO: string;
   displayDate: string;
+  roleProfile?: UserRoleProfile;
   symptomId: SymptomId;
   symptomLabel: string;
   userReflection?: string;

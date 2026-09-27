@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { SymptomId, SavedAnchor, AnchorContent } from './types';
+import { SymptomId, SavedAnchor, AnchorContent, UserRoleProfile } from './types';
 import { ANCHOR_DATA } from './data/anchors';
 import { Header } from './components/Header';
 import { LandingScreen } from './components/LandingScreen';
@@ -23,6 +23,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('landing');
   const [activeContent, setActiveContent] = useState<AnchorContent>(ANCHOR_DATA.ansiedad);
   const [currentReflection, setCurrentReflection] = useState<string>('');
+  const [activeRole, setActiveRole] = useState<UserRoleProfile>('madre');
   const [savedAnchors, setSavedAnchors] = useState<SavedAnchor[]>([]);
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
   const [isPlanOpen, setIsPlanOpen] = useState<boolean>(false);
@@ -54,10 +55,11 @@ export default function App() {
     setCurrentScreen('form');
   };
 
-  const handleSymptomSubmit = (symptomId: SymptomId, reflection: string) => {
+  const handleSymptomSubmit = (symptomId: SymptomId, reflection: string, roleProfile: UserRoleProfile) => {
     const content = ANCHOR_DATA[symptomId];
     setActiveContent(content);
     setCurrentReflection(reflection);
+    setActiveRole(roleProfile);
 
     // Show peaceful loading state for 1.2s to encourage breathing pause
     setCurrentScreen('loading');
@@ -73,6 +75,7 @@ export default function App() {
           hour: '2-digit',
           minute: '2-digit',
         }),
+        roleProfile: roleProfile,
         symptomId: symptomId,
         symptomLabel: content.symptomLabel,
         userReflection: reflection.trim() || undefined,
@@ -96,6 +99,9 @@ export default function App() {
     const content = ANCHOR_DATA[anchor.symptomId] || ANCHOR_DATA.ansiedad;
     setActiveContent(content);
     setCurrentReflection(anchor.userReflection || '');
+    if (anchor.roleProfile) {
+      setActiveRole(anchor.roleProfile);
+    }
     setCurrentScreen('result');
   };
 
@@ -178,6 +184,7 @@ export default function App() {
           <ResultScreen
             content={activeContent}
             userReflection={currentReflection}
+            roleProfile={activeRole}
             onFinishAndRest={() => setCurrentScreen('landing')}
             onStartOver={() => setCurrentScreen('form')}
           />

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { AnchorContent } from '../types';
+import { AnchorContent, UserRoleProfile } from '../types';
+import { ROLE_PROFILE_OPTIONS } from '../data/anchors';
 import { BreathingGuide } from './BreathingGuide';
 import { SensoryGrounding } from './SensoryGrounding';
-import { BookOpen, Sparkles, Moon, ArrowLeft, Check, SunMedium, Compass } from 'lucide-react';
+import { BookOpen, Sparkles, Moon, ArrowLeft, Check, SunMedium, Compass, User } from 'lucide-react';
 
 interface ResultScreenProps {
   content: AnchorContent;
   userReflection?: string;
+  roleProfile?: UserRoleProfile;
   onFinishAndRest: () => void;
   onStartOver: () => void;
 }
@@ -14,11 +16,29 @@ interface ResultScreenProps {
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   content,
   userReflection,
+  roleProfile = 'madre',
   onFinishAndRest,
   onStartOver,
 }) => {
   const [isRestingMode, setIsRestingMode] = useState<boolean>(false);
   const [showSensoryModal, setShowSensoryModal] = useState<boolean>(false);
+
+  const roleInfo = ROLE_PROFILE_OPTIONS.find((r) => r.id === roleProfile) || ROLE_PROFILE_OPTIONS[0];
+
+  // Specific contextual declaration based on the user's role and tension
+  const getRolePersonalizedAffirmation = () => {
+    switch (roleProfile) {
+      case 'madre':
+        return 'Mis hijos y mi hogar están en manos más sabias y amorosas que las mías. Mi valor como madre no se mide por no cansarme; Dios vela por mi familia mientras duermo.';
+      case 'profesional':
+        return 'Mi productividad y mi trabajo no definen mi salvación ni mi valor delante de Dios. Esta noche cierro mi computadora y mi mente: el Señor es mi verdadero proveedor.';
+      case 'hombre_proveedor':
+        return 'Reconocer mi dolor y mi vulnerabilidad no me hace menos fuerte; me hace humano y dependiente de la gracia. Dios sostiene el hogar; yo entrego el control esta noche.';
+      case 'creyente_abrumado':
+      default:
+        return 'Tener taquicardia o rumiación no significa que me falte fe. Jesús conoce mi cuerpo de barro; ninguna condenación pesa sobre mí.';
+    }
+  };
 
   if (isRestingMode) {
     return (
@@ -33,7 +53,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           La guardia ha terminado por hoy
         </h2>
         <p className="font-editorial text-[17px] text-[#A6B0AC] max-w-[420px] mb-8 leading-relaxed">
-          Has nombrado tu carga y la has puesto en manos que no se cansan. Ahora puedes apagar tu dispositivo y cerrar los ojos en paz.
+          Has nombrado tu carga como {roleInfo.label.toLowerCase()} y la has puesto en manos que nunca duermen ni se cansan. Ahora puedes apagar tu dispositivo y cerrar los ojos en paz.
         </p>
 
         <div className="p-4 rounded-[8px] border border-[#263330] bg-[#161F1E] max-w-[380px] mb-8">
@@ -71,6 +91,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </button>
 
         <div className="flex items-center gap-2">
+          <span className="text-[11px] font-medium tracking-[0.08em] uppercase px-2 py-0.5 rounded-[4px] bg-[#161F1E] text-[#A6B0AC] border border-[#263330]">
+            {roleInfo.label}
+          </span>
           <span className="text-[11px] font-medium tracking-[0.08em] uppercase px-2.5 py-1 rounded-[4px] bg-[#1B322F] text-[#3D7D68] border border-[#2A6F68]/30">
             {content.symptomLabel}
           </span>
@@ -137,8 +160,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </p>
       </section>
 
-      {/* 3. Declaración de Anclaje */}
-      <section className="bg-[#161F1E] border border-[#263330] rounded-[12px] p-6 sm:p-8 space-y-3">
+      {/* 3. Declaración de Anclaje Adaptada */}
+      <section className="bg-[#161F1E] border border-[#263330] rounded-[12px] p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2 text-[#A6B0AC]">
           <Sparkles className="w-4 h-4 text-[#C99757]" strokeWidth={1.5} />
           <span className="text-[12px] font-medium tracking-[0.08em] uppercase text-[#C99757]">
@@ -149,6 +172,17 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <p className="font-editorial text-[18px] sm:text-[20px] text-[#E8EBE9] leading-relaxed">
           «{content.declaration}»
         </p>
+
+        {/* Declaración contextualizada al arquetipo */}
+        <div className="pt-3 border-t border-[#263330] bg-[#121A18] p-3.5 rounded-[6px]">
+          <span className="text-[11px] font-medium tracking-[0.08em] uppercase text-[#3D7D68] block mb-1">
+            Ancla específica para {roleInfo.label.toLowerCase()}:
+          </span>
+          <p className="font-editorial text-[15px] text-[#A6B0AC] italic leading-relaxed">
+            «{getRolePersonalizedAffirmation()}»
+          </p>
+        </div>
+
         <span className="text-[12px] text-[#6E7A75] block">
           Léela despacio una o dos veces, respirando al terminar cada frase.
         </span>

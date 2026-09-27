@@ -1,4 +1,35 @@
-import { SymptomOption, AnchorContent, SymptomId, DailyPlanDay, AudioFaithSession } from '../types';
+import { SymptomOption, AnchorContent, SymptomId, DailyPlanDay, AudioFaithSession, RoleProfileOption } from '../types';
+
+export const ROLE_PROFILE_OPTIONS: RoleProfileOption[] = [
+  {
+    id: 'madre',
+    label: 'Madre con Carga Doméstica',
+    sublabel: 'Crianza, hogar y futuro de los hijos',
+    contextDesc: 'Sientes que el bienestar de tu familia depende 100% de que nunca te quiebres ni descanses.',
+    specificTension: 'Rumiación sobre la salud, educación y seguridad de los hijos durante la madrugada.',
+  },
+  {
+    id: 'profesional',
+    label: 'Profesional Bajo Hiperexigencia',
+    sublabel: 'Responsabilidades laborales, finanzas y rendimiento',
+    contextDesc: 'La mente repasa reuniones, plazos pendientes y el temor constante a no rendir a la altura.',
+    specificTension: 'Taquicardia por el síndrome del impostor y la necesidad de sostener todo bajo control.',
+  },
+  {
+    id: 'hombre_proveedor',
+    label: 'Hombre en Batalla Silenciosa',
+    sublabel: 'Estrés de sustento, vulnerabilidad no exteriorizada',
+    contextDesc: 'El arquetipo de Carlos: sientes que no puedes mostrarte débil ni admitir pánico ante los tuyos.',
+    specificTension: 'Colapso silencioso por hipercontrol y la mentira de tener que ser invulnerable.',
+  },
+  {
+    id: 'creyente_abrumado',
+    label: 'Creyente en Crisis de Culpa',
+    sublabel: 'Heridas del legalismo y juicio del entorno',
+    contextDesc: 'Te dicen que te falta fe, ayuno u oración, sintiendo vergüenza de experimentar taquicardias.',
+    specificTension: 'El dolor espiritual de creer que tu cuerpo enfermo te aleja del amor de Dios.',
+  },
+];
 
 export const SYMPTOM_OPTIONS: SymptomOption[] = [
   {
