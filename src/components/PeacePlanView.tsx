@@ -54,13 +54,13 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
     : PEACE_ANCHOR_PLAN.filter((d) => d.category === selectedGalleryCategory);
 
   return (
-    <div className="w-full max-w-[720px] mx-auto space-y-5 sm:space-y-7 animate-fade-in overflow-hidden">
+    <div className="w-full max-w-5xl lg:max-w-6xl mx-auto space-y-6 sm:space-y-8 animate-fade-in overflow-hidden">
       {/* Header Banner */}
-      <div className="bg-[#0B1728] border border-white/[0.08] rounded-[18px] p-4 sm:p-7 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/[0.08] gap-2">
+      <div className="bg-[#0B1728] border border-white/[0.08] rounded-[20px] p-5 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-white/[0.08] gap-2">
           <div className="flex items-center gap-2">
             <Compass className="w-5 h-5 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
-            <span className="text-[11px] sm:text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1]">
+            <span className="text-[11.5px] sm:text-[12px] font-semibold tracking-wider uppercase text-[#CBD5E1]">
               Ruta 30 Días: El Mapa de Transformación en Dios
             </span>
           </div>
@@ -74,35 +74,35 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
           </div>
         </div>
 
-        <h1 className="font-editorial text-[22px] sm:text-[28px] text-[#F1F5F9] font-normal leading-snug">
+        <h1 className="font-editorial text-[22px] sm:text-[30px] lg:text-[32px] text-[#F1F5F9] font-normal leading-snug">
           El itinerario de 30 días para ordenar tu vida con Dios
         </h1>
-        <p className="text-[13px] sm:text-[14px] text-[#94A3B8] leading-relaxed">
+        <p className="text-[13.5px] sm:text-[15px] text-[#94A3B8] leading-relaxed max-w-[85ch]">
           Diseñado para madres, padres y profesionales que buscan transformar la sobrecarga en un hábito sólido de paz. Cada día incluye arte espiritual contemplativo, versículos con mensaje clave y acción de anclaje.
         </p>
 
         {/* Gallery button trigger */}
-        <div className="pt-1 flex items-center justify-between flex-wrap gap-2">
+        <div className="pt-1 flex items-center justify-between flex-wrap gap-2.5">
           <div className="flex items-center gap-2 flex-wrap">
             <button
               type="button"
               onClick={() => setIsGalleryOpen(true)}
-              className="min-h-[44px] px-3.5 py-1.5 rounded-[10px] bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border border-white/[0.1] text-[#FBBF24] text-[12px] sm:text-[12.5px] font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+              className="min-h-[44px] px-4 py-2 rounded-[10px] bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border border-white/[0.1] text-[#FBBF24] text-[12.5px] font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
             >
               <ImageIcon className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
-              <span>Ver Itinerario 30 Días</span>
+              <span>Ver Itinerario 30 Días (Galería)</span>
             </button>
 
             <a
               href="#galeria-santuario"
-              className="min-h-[44px] px-3 py-1.5 rounded-[10px] bg-white/[0.03] hover:bg-white/[0.08] text-[#CBD5E1] text-[12px] font-medium transition-colors flex items-center gap-1.5"
+              className="min-h-[44px] px-3.5 py-2 rounded-[10px] bg-white/[0.03] hover:bg-white/[0.08] text-[#CBD5E1] text-[12.5px] font-medium transition-colors flex items-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
               <span>Galería de Fe Aleatoria</span>
             </a>
           </div>
 
-          <span className="text-[11px] text-[#94A3B8]">
+          <span className="text-[11.5px] text-[#94A3B8]">
             Mentores: Clara Luz & Leo
           </span>
         </div>

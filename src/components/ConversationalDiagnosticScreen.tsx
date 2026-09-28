@@ -122,13 +122,13 @@ export const ConversationalDiagnosticScreen: React.FC<ConversationalDiagnosticPr
   };
 
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 py-8 sm:py-10 space-y-7 animate-fade-in">
+    <div className="w-full max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-7 sm:space-y-8 animate-fade-in">
       {/* Navigation Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div className="flex items-center justify-between pb-3.5 border-b border-white/[0.08]">
         <button
           type="button"
           onClick={step === 2 ? () => setStep(1) : onBack}
-          className="min-h-[44px] px-3 py-1.5 rounded-[10px] text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-white/[0.04] text-[13px] font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="min-h-[44px] px-3.5 py-1.5 rounded-[10px] text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-white/[0.04] text-[13px] font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
           <span>{step === 2 ? 'Cambiar estado de ánimo' : 'Volver al inicio'}</span>
@@ -219,7 +219,7 @@ export const ConversationalDiagnosticScreen: React.FC<ConversationalDiagnosticPr
             <button
               type="button"
               onClick={handleNext}
-              className="min-h-[48px] px-6 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center gap-2 cursor-pointer shadow-md"
+              className="w-full sm:w-auto min-h-[48px] px-6 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <span>Continuar al paso siguiente</span>
               <ArrowRight className="w-4 h-4" strokeWidth={1.75} />
@@ -296,11 +296,11 @@ export const ConversationalDiagnosticScreen: React.FC<ConversationalDiagnosticPr
           </div>
 
           {/* Action Row */}
-          <div className="pt-2 flex items-center justify-between gap-3">
+          <div className="pt-2 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="min-h-[46px] px-4 py-2 rounded-[10px] text-[#94A3B8] hover:text-[#F1F5F9] text-[13px] font-medium"
+              className="w-full sm:w-auto min-h-[46px] px-4 py-2 rounded-[10px] text-[#94A3B8] hover:text-[#F1F5F9] text-[13px] font-medium flex items-center justify-center transition-colors cursor-pointer"
             >
               Atrás
             </button>
@@ -308,7 +308,7 @@ export const ConversationalDiagnosticScreen: React.FC<ConversationalDiagnosticPr
             <button
               type="button"
               onClick={handleNext}
-              className="min-h-[48px] px-6 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center gap-2 cursor-pointer shadow-md"
+              className="w-full sm:w-auto min-h-[48px] px-6 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <span>Entrar al Santuario de Paz</span>
               <ArrowRight className="w-4 h-4" strokeWidth={1.75} />

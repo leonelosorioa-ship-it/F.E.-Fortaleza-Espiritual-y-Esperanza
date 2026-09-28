@@ -155,3 +155,24 @@ export interface GraceStreakState {
   totalCheckIns: number;
   graceShieldActive: boolean;
 }
+
+export interface ChatMessage {
+  id: string;
+  userId: string;
+  role: 'user' | 'model';
+  content: string;
+  mentor?: 'clara_luz' | 'leo' | 'ambos';
+  timestamp: string;
+}
+
+export interface UserProfile {
+  userId: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
+  activeRole?: UserRoleProfile;
+  currentDay?: number;
+  hasFullAccess?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

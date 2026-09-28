@@ -1,0 +1,219 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with role preferences and plan progress",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The Firebase Auth UID of the user",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User full or display name",
+          "maxLength": 120
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Avatar URL",
+          "maxLength": 512
+        },
+        "activeRole": {
+          "type": "string",
+          "description": "Selected spiritual journey role profile",
+          "maxLength": 64
+        },
+        "currentDay": {
+          "type": "number",
+          "description": "Current active day in the 30-day journey"
+        },
+        "hasFullAccess": {
+          "type": "boolean",
+          "description": "Whether user has unlocked full 30-day itinerary access"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Account registration timestamp",
+          "maxLength": 64
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["userId", "email"]
+    },
+    "SavedAnchor": {
+      "title": "SavedAnchor",
+      "description": "A saved devotional anchor with scriptures, reflections and liturgy",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the anchor entry",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the owner user",
+          "maxLength": 128
+        },
+        "dateISO": {
+          "type": "string",
+          "description": "ISO date string when the anchor was saved",
+          "maxLength": 64
+        },
+        "displayDate": {
+          "type": "string",
+          "description": "Formatted date for UI display",
+          "maxLength": 100
+        },
+        "roleProfile": {
+          "type": "string",
+          "description": "The user role at the time of reflection",
+          "maxLength": 64
+        },
+        "symptomId": {
+          "type": "string",
+          "description": "The symptom or spiritual need ID",
+          "maxLength": 64
+        },
+        "symptomLabel": {
+          "type": "string",
+          "description": "Human-readable label of the spiritual condition",
+          "maxLength": 128
+        },
+        "userReflection": {
+          "type": "string",
+          "description": "Personal reflection or prayer written by user",
+          "maxLength": 2000
+        },
+        "scriptureRef": {
+          "type": "string",
+          "description": "Biblical scripture reference citation",
+          "maxLength": 128
+        },
+        "declaration": {
+          "type": "string",
+          "description": "Spiritual affirmation of peace and authority",
+          "maxLength": 1000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "dateISO", "symptomId", "symptomLabel", "scriptureRef", "declaration"]
+    },
+    "GratitudeEntry": {
+      "title": "GratitudeEntry",
+      "description": "Evening gratitude journal entry with 3 items",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the journal entry",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the author",
+          "maxLength": 128
+        },
+        "dateISO": {
+          "type": "string",
+          "description": "ISO timestamp of the journal entry",
+          "maxLength": 64
+        },
+        "displayDate": {
+          "type": "string",
+          "description": "Human friendly date label",
+          "maxLength": 100
+        },
+        "items": {
+          "type": "array",
+          "description": "List of gratitude items (up to 5)",
+          "maxLength": 5
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "dateISO", "items"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Multi-turn Gemini conversational guidance message with mentors Clara Luz and Leo",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique message ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID",
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "model"],
+          "description": "Sender role: user or model",
+          "maxLength": 16
+        },
+        "content": {
+          "type": "string",
+          "description": "Text message content",
+          "maxLength": 4000
+        },
+        "mentor": {
+          "type": "string",
+          "enum": ["clara_luz", "leo", "ambos"],
+          "description": "Spiritual mentor persona responding",
+          "maxLength": 32
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "role", "content", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile, role and 30-day journey progress"
+    },
+    "/users/{userId}/savedAnchors/{anchorId}": {
+      "schema": "SavedAnchor",
+      "description": "Saved spiritual anchors, liturgia and verses"
+    },
+    "/users/{userId}/gratitudeEntries/{entryId}": {
+      "schema": "GratitudeEntry",
+      "description": "Evening gratitude journal entries"
+    },
+    "/users/{userId}/chatHistory/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Multi-turn Gemini chat session history"
+    }
+  }
+}

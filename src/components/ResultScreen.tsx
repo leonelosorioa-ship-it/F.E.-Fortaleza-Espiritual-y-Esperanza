@@ -52,7 +52,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
 
   if (isRestingMode) {
     return (
-      <div className="w-full min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-16 animate-fade-in">
+      <div className="w-full max-w-xl mx-auto min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-16 animate-fade-in">
         <div className="w-16 h-16 rounded-full bg-[#F59E0B]/15 border border-[#F59E0B]/40 flex items-center justify-center text-[#F59E0B] mb-6 shadow-md">
           <Heart className="w-8 h-8 fill-[#F59E0B]/20" strokeWidth={1.75} />
         </div>
@@ -66,7 +66,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           Has depositado tus anhelos en las manos del Creador. Puedes descansar en paz, sabiendo que Aquel que comenzó la buena obra en ti la perfeccionará.
         </p>
 
-        <div className="p-5 rounded-[16px] border border-white/[0.08] bg-[#0B1728] max-w-[460px] mb-8 text-left shadow-sm space-y-1">
+        <div className="p-5 rounded-[16px] border border-white/[0.08] bg-[#0B1728] max-w-[460px] w-full mb-8 text-left shadow-sm space-y-1">
           <span className="text-[10.5px] font-semibold tracking-wider uppercase text-[#F59E0B] block">
             Palabra para tu reposo
           </span>
@@ -88,9 +88,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   }
 
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 py-6 sm:py-8 space-y-7 animate-fade-in">
+    <div className="w-full max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-7 sm:space-y-8 animate-fade-in">
       {/* Top back navigation */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3.5 border-b border-white/[0.08]">
         <button
           type="button"
           onClick={onStartOver}
@@ -100,7 +100,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <span>Elegir otro momento</span>
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {symptomInfo?.quadrantLabel && (
             <span className="text-[10.5px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30">
               {symptomInfo.quadrantLabel}

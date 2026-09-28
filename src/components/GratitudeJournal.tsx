@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { HeartHandshake, Plus, Trash2, CheckCircle2, Sparkles, Heart, Sprout, Flower2, TreePine, Sun } from 'lucide-react';
+import { HeartHandshake, Plus, Trash2, CheckCircle2, Sparkles, Heart, Sprout, Flower2, TreePine, Sun, Cloud } from 'lucide-react';
 import { GratitudeEntry } from '../types';
+import { auth } from '../firebase';
+import {
+  subscribeToGratitudeEntries,
+  persistGratitudeEntry,
+} from '../services/firestoreService';
+import { User } from 'firebase/auth';
 
 export const GratitudeJournal: React.FC = () => {
   const [entries, setEntries] = useState<GratitudeEntry[]>([]);
@@ -8,16 +14,38 @@ export const GratitudeJournal: React.FC = () => {
   const [item2, setItem2] = useState<string>('');
   const [item3, setItem3] = useState<string>('');
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('fe_gratitude_entries');
-      if (stored) {
-        setEntries(JSON.parse(stored));
+    let unsubFirestore: (() => void) | null = null;
+
+    const unsubAuth = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      if (user) {
+        unsubFirestore = subscribeToGratitudeEntries(user.uid, (cloudEntries) => {
+          setEntries(cloudEntries);
+          try {
+            localStorage.setItem('fe_gratitude_entries', JSON.stringify(cloudEntries));
+          } catch {
+            // Ignore
+          }
+        });
+      } else {
+        try {
+          const stored = localStorage.getItem('fe_gratitude_entries');
+          if (stored) {
+            setEntries(JSON.parse(stored));
+          }
+        } catch {
+          // Ignore storage errors
+        }
       }
-    } catch {
-      // Ignore storage errors
-    }
+    });
+
+    return () => {
+      unsubAuth();
+      if (unsubFirestore) unsubFirestore();
+    };
   }, []);
 
   const handleSave = (e: React.FormEvent) => {
@@ -35,6 +63,10 @@ export const GratitudeJournal: React.FC = () => {
       }),
       items,
     };
+
+    if (currentUser) {
+      persistGratitudeEntry(currentUser.uid, newEntry).catch(console.error);
+    }
 
     const updated = [newEntry, ...entries];
     setEntries(updated);

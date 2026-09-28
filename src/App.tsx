@@ -18,7 +18,17 @@ import { FaithAudioCatalog } from './components/FaithAudioCatalog';
 import { PlanDetailsModal } from './components/PlanDetailsModal';
 import { Day7PaywallView } from './components/Day7PaywallView';
 import { EmergencyBypassButton } from './components/EmergencyBypassButton';
+import { GeminiMentorChat } from './components/GeminiMentorChat';
+import { UserAuthModal } from './components/UserAuthModal';
 import { CloudOff, RefreshCw, WifiOff, ArrowLeft } from 'lucide-react';
+import { auth } from './firebase';
+import {
+  subscribeToSavedAnchors,
+  persistSavedAnchor,
+  removeSavedAnchor,
+  syncUserProfile,
+} from './services/firestoreService';
+import { User } from 'firebase/auth';
 
 type Screen =
   | 'landing'
@@ -30,6 +40,7 @@ type Screen =
   | 'day7_paywall'
   | 'gratitude'
   | 'audios'
+  | 'chat'
   | 'error';
 
 export default function App() {
@@ -43,17 +54,66 @@ export default function App() {
   const [savedAnchors, setSavedAnchors] = useState<SavedAnchor[]>([]);
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
   const [isPlanOpen, setIsPlanOpen] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
 
-  // Load saved anchors from localStorage
+  // Initialize Auth & Firestore Synchronization
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('fe_saved_anchors');
-      if (stored) {
-        setSavedAnchors(JSON.parse(stored));
+    let unsubFirestore: (() => void) | null = null;
+
+    const unsubAuth = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+
+      if (user) {
+        // Sync profile to Firestore
+        syncUserProfile({
+          userId: user.uid,
+          email: user.email || '',
+          displayName: user.displayName || 'Creyente en Camino',
+          photoURL: user.photoURL || undefined,
+          activeRole,
+          currentDay: 1,
+          hasFullAccess: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }).catch(console.error);
+
+        // Subscribe to real-time Cloud Anchors
+        unsubFirestore = subscribeToSavedAnchors(user.uid, (cloudAnchors) => {
+          setSavedAnchors(cloudAnchors);
+
+          // Also keep updated in localStorage for offline resilience
+          try {
+            localStorage.setItem('fe_saved_anchors', JSON.stringify(cloudAnchors));
+          } catch {
+            // Safe fallback
+          }
+        });
+
+        // Sync any guest anchors previously saved locally into user's Firestore cloud account
+        try {
+          const stored = localStorage.getItem('fe_saved_anchors');
+          if (stored) {
+            const localList: SavedAnchor[] = JSON.parse(stored);
+            localList.forEach((localAnchor) => {
+              persistSavedAnchor(user.uid, localAnchor).catch(console.error);
+            });
+          }
+        } catch {
+          // Safe fallback
+        }
+      } else {
+        // Unauthenticated fallback: Load from localStorage
+        try {
+          const stored = localStorage.getItem('fe_saved_anchors');
+          if (stored) {
+            setSavedAnchors(JSON.parse(stored));
+          }
+        } catch {
+          // Safe fallback
+        }
       }
-    } catch {
-      // Safe fallback
-    }
+    });
 
     const handleOnline = () => setIsOffline(false);
     const handleOffline = () => setIsOffline(true);
@@ -62,10 +122,12 @@ export default function App() {
     window.addEventListener('offline', handleOffline);
 
     return () => {
+      unsubAuth();
+      if (unsubFirestore) unsubFirestore();
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, []);
+  }, [activeRole]);
 
   const handleStartFlow = (role: UserRoleProfile = 'madre_profesional', symptom: SymptomId = 'ansiedad_noche') => {
     setFormInitialRole(role);
@@ -83,7 +145,7 @@ export default function App() {
     setActiveRole(role);
     setActiveMood(mood);
 
-    // Save anchor entry to local history
+    // Save anchor entry
     const newEntry: SavedAnchor = {
       id: 'anchor_' + Date.now(),
       dateISO: new Date().toISOString(),
@@ -101,12 +163,17 @@ export default function App() {
       declaration: content.declaration,
     };
 
+    // Save to Firestore if authenticated, plus localStorage
+    if (currentUser) {
+      persistSavedAnchor(currentUser.uid, newEntry).catch(console.error);
+    }
+
     try {
       const updated = [newEntry, ...savedAnchors];
       setSavedAnchors(updated);
       localStorage.setItem('fe_saved_anchors', JSON.stringify(updated));
     } catch {
-      // Safe local storage fallback
+      // Safe fallback
     }
 
     // Enter 2.5-3s Haptic Breathing Transition Screen
@@ -128,16 +195,17 @@ export default function App() {
   };
 
   const handleClearHistory = () => {
+    if (currentUser) {
+      savedAnchors.forEach((a) => {
+        removeSavedAnchor(currentUser.uid, a.id).catch(console.error);
+      });
+    }
     setSavedAnchors([]);
     try {
       localStorage.removeItem('fe_saved_anchors');
     } catch {
       // Ignore
     }
-  };
-
-  const handleToggleOffline = () => {
-    setIsOffline((prev) => !prev);
   };
 
   return (
@@ -161,6 +229,8 @@ export default function App() {
         onOpenPeacePlan={() => setCurrentScreen('peace_plan')}
         onOpenGratitude={() => setCurrentScreen('gratitude')}
         onOpenAudios={() => setCurrentScreen('audios')}
+        onOpenChat={() => setCurrentScreen('chat')}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
         savedCount={savedAnchors.length}
       />
 
@@ -173,6 +243,15 @@ export default function App() {
             onOpenPeacePlan={() => setCurrentScreen('peace_plan')}
             onOpenGratitude={() => setCurrentScreen('gratitude')}
             onOpenAudios={() => setCurrentScreen('audios')}
+            onOpenChat={() => setCurrentScreen('chat')}
+            onOpenAuth={() => setIsAuthModalOpen(true)}
+          />
+        )}
+
+        {currentScreen === 'chat' && (
+          <GeminiMentorChat
+            onBack={() => setCurrentScreen('landing')}
+            onOpenPlan={() => setIsPlanOpen(true)}
           />
         )}
 
@@ -203,7 +282,7 @@ export default function App() {
         )}
 
         {currentScreen === 'peace_plan' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
+          <div className="w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
             <button
               type="button"
               onClick={() => setCurrentScreen('landing')}
@@ -227,7 +306,7 @@ export default function App() {
         )}
 
         {currentScreen === 'gratitude' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
+          <div className="w-full max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
             <button
               type="button"
               onClick={() => setCurrentScreen('landing')}
@@ -241,7 +320,7 @@ export default function App() {
         )}
 
         {currentScreen === 'audios' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
+          <div className="w-full max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
             <button
               type="button"
               onClick={() => setCurrentScreen('landing')}
@@ -266,7 +345,7 @@ export default function App() {
 
         {/* Estado Canónico de Error */}
         {currentScreen === 'error' && (
-          <div className="w-full max-w-[720px] mx-auto px-4 py-20 text-center flex flex-col items-center">
+          <div className="w-full max-w-xl mx-auto px-4 py-20 text-center flex flex-col items-center">
             <div className="w-14 h-14 rounded-full border border-[#EF4444]/30 bg-[#EF4444]/10 flex items-center justify-center mb-5 text-[#EF4444]">
               <CloudOff className="w-7 h-7" strokeWidth={1.75} />
             </div>
@@ -274,7 +353,7 @@ export default function App() {
               Conexión temporalmente interrumpida
             </h1>
             <p className="text-[14.5px] text-[#94A3B8] max-w-[42ch] mb-8 leading-relaxed">
-              Tus oraciones y anclas permanecen a salvo en tu dispositivo. Puedes leerlas y meditar en ellas sin conexión a internet.
+              Tus oraciones y anclas permanecen a salvo en tu dispositivo y en la nube. Puedes leerlas y meditar en ellas sin conexión a internet.
             </p>
             <button
               type="button"
@@ -290,13 +369,13 @@ export default function App() {
 
       {/* Botón flotante persistente de Bypass de Emergencia */}
       <EmergencyBypassButton
-        visible={currentScreen !== 'form' && currentScreen !== 'transition'}
+        visible={currentScreen !== 'form' && currentScreen !== 'transition' && currentScreen !== 'chat'}
         onClick={() => handleStartFlow('madre_profesional', 'ansiedad_noche')}
       />
 
       {/* Pie de página sobrio y editorial */}
       <footer className="w-full border-t border-white/[0.08] py-6 px-4 text-center bg-[#060F1E] mt-12">
-        <div className="max-w-[720px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#94A3B8]">
+        <div className="max-w-5xl lg:max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#94A3B8]">
           <div>
             El Mapa de tu Vida en Dios • F.E.™ Fortaleza Espiritual • Tu Poder Mental™
           </div>
@@ -309,7 +388,13 @@ export default function App() {
               Proceso 30 Días con Clara Luz y Leo (12.99 USD - Pago Único)
             </button>
             <span className="hidden xs:inline">•</span>
-            <span>Uso privado y seguro en tu equipo</span>
+            <button
+              type="button"
+              onClick={() => setIsAuthModalOpen(true)}
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {currentUser ? 'Cuenta sincronizada con Google' : 'Conectar con Google'}
+            </button>
           </div>
         </div>
       </footer>
@@ -318,6 +403,13 @@ export default function App() {
       <PlanDetailsModal
         isOpen={isPlanOpen}
         onClose={() => setIsPlanOpen(false)}
+      />
+
+      {/* Modal de autenticación con Firebase y Google Sign-In */}
+      <UserAuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        savedCount={savedAnchors.length}
       />
     </div>
   );
