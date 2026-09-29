@@ -20,6 +20,7 @@ import { Day7PaywallView } from './components/Day7PaywallView';
 import { EmergencyBypassButton } from './components/EmergencyBypassButton';
 import { GeminiMentorChat } from './components/GeminiMentorChat';
 import { UserAuthModal } from './components/UserAuthModal';
+import { JesusVideoModal } from './components/JesusVideoModal';
 import { CloudOff, RefreshCw, WifiOff, ArrowLeft } from 'lucide-react';
 import { auth } from './firebase';
 import {
@@ -55,6 +56,7 @@ export default function App() {
   const [isOffline, setIsOffline] = useState<boolean>(!navigator.onLine);
   const [isPlanOpen, setIsPlanOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isJesusVideoOpen, setIsJesusVideoOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
 
   // Initialize Auth & Firestore Synchronization
@@ -231,6 +233,7 @@ export default function App() {
         onOpenAudios={() => setCurrentScreen('audios')}
         onOpenChat={() => setCurrentScreen('chat')}
         onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenJesusVideo={() => setIsJesusVideoOpen(true)}
         savedCount={savedAnchors.length}
       />
 
@@ -410,6 +413,13 @@ export default function App() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         savedCount={savedAnchors.length}
+      />
+
+      {/* Modal de experiencia contemplativa y animación Jesús en Ti Confío */}
+      <JesusVideoModal
+        isOpen={isJesusVideoOpen}
+        onClose={() => setIsJesusVideoOpen(false)}
+        onStartFlow={() => handleStartFlow('hombre_fe', 'ansiedad_noche')}
       />
     </div>
   );

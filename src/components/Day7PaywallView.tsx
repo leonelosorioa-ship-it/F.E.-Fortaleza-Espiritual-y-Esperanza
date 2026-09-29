@@ -123,10 +123,10 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
             <button
               type="button"
               onClick={onProceedPurchase || onBackToFreeBotiquin}
-              className="w-full min-h-[48px] px-5 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[13.5px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="w-full min-h-[50px] px-5 py-2.5 rounded-full bg-[#C6F432] hover:bg-[#D9F95C] active:scale-[0.98] text-[#061A0E] font-bold text-[14px] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(198,244,50,0.35)]"
             >
               <span>Desbloquear 30 días (12.99 USD)</span>
-              <ArrowRight className="w-4 h-4" strokeWidth={1.75} />
+              <ArrowRight className="w-4 h-4 text-[#061A0E]" strokeWidth={2.5} />
             </button>
             <span className="text-[11px] text-[#94A3B8] text-center block">
               Garantía de gracia • Acceso vitalicio en tu dispositivo

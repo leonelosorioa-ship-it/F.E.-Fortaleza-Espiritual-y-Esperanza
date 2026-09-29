@@ -4,6 +4,7 @@ import { HeroCoupleIllustration } from './HeroCoupleIllustration';
 import { MapaCuadrantesInteractive } from './MapaCuadrantesInteractive';
 import { MentoresGuiaSection } from './MentoresGuiaSection';
 import { BrandValuesRibbon } from './BrandValuesRibbon';
+import { FlexiHeroAnimation } from './FlexiHeroAnimation';
 import { UserRoleProfile, SymptomId } from '../types';
 
 interface LandingScreenProps {
@@ -36,58 +37,14 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
   return (
     <div className="w-full max-w-5xl lg:max-w-6xl mx-auto px-3.5 sm:px-6 py-4 sm:py-8 space-y-7 sm:space-y-10 animate-fade-in overflow-hidden">
       {/* 
-        1. HERO SECTION OPTIMIZADO PARA VIEWPORT DE 375px (MOBILE FIRST) Y DESKTOP
+        1. HERO PRINCIPAL ESTILO "EJEMPLO FLEXI" CON ANIMACIÓN MULTI-COLUMNA CONTINUA
+        Y ESCENAS DE "JESÚS EN TI CONFÍO SIN AUDIO"
       */}
-      <div className="relative rounded-[22px] bg-gradient-to-b from-[#0B1728] via-[#0E223D] to-[#060F1E] border border-white/[0.08] p-5 sm:p-8 lg:p-10 text-[#F1F5F9] shadow-xl overflow-hidden">
-        <div className="space-y-4 max-w-[75ch]">
-          {/* Badge Editorial */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F59E0B]/10 border border-[#F59E0B]/30 text-[#F59E0B] text-[11px] font-semibold tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5 shrink-0" strokeWidth={1.75} />
-            <span>Santuario Litúrgico & Fisiológico</span>
-          </div>
-
-          {/* Titular con la Promesa Estricta */}
-          <h1 className="font-editorial text-[22px] sm:text-[30px] lg:text-[34px] text-[#F1F5F9] font-normal leading-snug tracking-tight">
-            Para el creyente abrumado, obtén un ancla de paz y descanso del sistema nervioso sin sentir culpa religiosa.
-          </h1>
-
-          {/* Línea de Apoyo */}
-          <p className="text-[13.5px] sm:text-[15px] lg:text-[16px] text-[#CBD5E1] leading-relaxed">
-            Si la ansiedad nocturna, la sobrecarga o el insomnio te visitan hoy, tu cuerpo no está fallando espiritualmente. Respira y entrega el control.
-          </p>
-
-          {/* Botón Principal y Acceso Rápido */}
-          <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
-            <button
-              type="button"
-              onClick={() => onStartFlow('madre_profesional', 'ansiedad_noche')}
-              className="w-full sm:w-auto min-h-[48px] px-6 py-3 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none shrink-0"
-            >
-              <span>Iniciar botiquín de paz</span>
-              <ArrowRight className="w-4 h-4" strokeWidth={1.75} />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleStartMotherSanctuary}
-              className="w-full sm:w-auto min-h-[46px] px-4.5 py-2.5 rounded-[12px] bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-[#CBD5E1] border border-white/[0.1] text-[13px] font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Moon className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
-              <span>Calma Nocturna (Madres y Profesionales)</span>
-            </button>
-          </div>
-
-          {/* Métricas de Confianza sutiles */}
-          <div className="pt-1 flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-[12px] text-[#94A3B8]">
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" strokeWidth={1.75} />
-              Refugio 100% gratuito permanente
-            </span>
-            <span>•</span>
-            <span>Sin juicios • Confidencial en tu equipo y seguro en la nube</span>
-          </div>
-        </div>
-      </div>
+      <FlexiHeroAnimation
+        onStartFlow={() => onStartFlow('hombre_fe', 'ansiedad_noche')}
+        onOpenMotherSanctuary={handleStartMotherSanctuary}
+        onOpenAuth={onOpenAuth}
+      />
 
       {/* 2. Emblema Visual Armonioso de Hombre y Mujer en Dios */}
       <HeroCoupleIllustration

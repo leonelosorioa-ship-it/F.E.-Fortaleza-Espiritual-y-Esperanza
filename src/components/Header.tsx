@@ -6,6 +6,7 @@ import {
   Volume2,
   Sparkles,
   User as UserIcon,
+  Play,
 } from 'lucide-react';
 import { TuPoderMentalLogo } from './TuPoderMentalLogo';
 import { auth } from '../firebase';
@@ -20,6 +21,7 @@ interface HeaderProps {
   onOpenAudios: () => void;
   onOpenChat: () => void;
   onOpenAuth: () => void;
+  onOpenJesusVideo?: () => void;
   savedCount: number;
 }
 
@@ -31,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAudios,
   onOpenChat,
   onOpenAuth,
+  onOpenJesusVideo,
   savedCount,
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
@@ -57,6 +60,20 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Top actions & navigation */}
         <nav aria-label="Navegación principal" className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+          {/* Jesús en Ti Confío Animation Video Trigger */}
+          {onOpenJesusVideo && (
+            <button
+              type="button"
+              onClick={onOpenJesusVideo}
+              className="min-h-[40px] sm:min-h-[42px] px-2 sm:px-2.5 py-1.5 rounded-[10px] bg-[#0F281E] hover:bg-[#153C2A] active:bg-[#1A4B34] border border-[#22C55E]/40 text-[11.5px] sm:text-[12px] font-semibold text-[#C6F432] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#C6F432]"
+              title="Ver animación litúrgica «Jesús en Ti Confío»"
+              aria-label="Ver animación Jesús en Ti Confío"
+            >
+              <Play className="w-3 h-3 fill-current text-[#C6F432] shrink-0" />
+              <span className="hidden xl:inline">Jesús en Ti Confío</span>
+            </button>
+          )}
+
           {/* Mentores Gemini Chat */}
           <button
             type="button"

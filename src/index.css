@@ -27,6 +27,16 @@
   --color-accent-subtle: rgba(245, 158, 11, 0.15);
   --color-accent-text: #060F1E;
 
+  /* ==========================================================================
+     PALETA EJEMPLO FLEXI (Vibrant Lime & High-Contrast Performance Sanctuary)
+     ========================================================================== */
+  --color-flexi-lime: #C6F432;
+  --color-flexi-lime-hover: #D9F95C;
+  --color-flexi-lime-glow: rgba(198, 244, 50, 0.35);
+  --color-flexi-dark: #060F17;
+  --color-flexi-badge-bg: #0F281E;
+  --color-flexi-badge-text: #A3E635;
+
   /* Toque de Sanidad y Sosiego (Esmeralda) */
   --color-emerald: #059669;
   --color-emerald-light: #10B981;
@@ -138,5 +148,73 @@ input:focus-visible {
 
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+/* ==========================================================================
+   EJEMPLO FLEXI: MULTI-COLUMN CONTINUOUS SCROLLING ANIMATION
+   ========================================================================== */
+@keyframes flexi-scroll-up {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes flexi-scroll-down {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-flexi-up {
+  animation: flexi-scroll-up 22s linear infinite;
+  will-change: transform;
+}
+
+.animate-flexi-down {
+  animation: flexi-scroll-down 26s linear infinite;
+  will-change: transform;
+}
+
+.animate-flexi-up-slow {
+  animation: flexi-scroll-up 32s linear infinite;
+  will-change: transform;
+}
+
+.hover-pause:hover {
+  animation-play-state: paused;
+}
+
+@keyframes float-petal {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(8deg);
+  }
+}
+
+.animate-float-petal {
+  animation: float-petal 4s ease-in-out infinite;
+}
+
+@keyframes shimmer-rays {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 6px rgba(254, 240, 138, 0.4));
+  }
+  50% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 16px rgba(254, 240, 138, 0.8));
+  }
+}
+
+.animate-shimmer-rays {
+  animation: shimmer-rays 3.5s ease-in-out infinite;
 }
 
