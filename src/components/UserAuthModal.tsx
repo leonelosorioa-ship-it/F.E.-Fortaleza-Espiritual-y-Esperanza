@@ -10,31 +10,62 @@ import {
   BookMarked,
   HeartHandshake,
   MessageSquare,
+  HardDrive,
+  Clock,
+  Laptop,
+  Smartphone,
+  FolderOpen,
+  History,
+  KeyRound,
+  UserCheck,
 } from 'lucide-react';
 import { auth, loginWithGoogle, logoutUser } from '../firebase';
+import { recordGoogleLogin, subscribeToLoginLogs } from '../services/firestoreService';
 import { User } from 'firebase/auth';
+import { LoginLog } from '../types';
 
 interface UserAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   savedCount: number;
+  filesCount?: number;
+  gratitudeCount?: number;
+  onOpenFiles?: () => void;
+  onOpenHistory?: () => void;
 }
 
 export const UserAuthModal: React.FC<UserAuthModalProps> = ({
   isOpen,
   onClose,
   savedCount,
+  filesCount = 0,
+  gratitudeCount = 0,
+  onOpenFiles,
+  onOpenHistory,
 }) => {
   const [user, setUser] = useState<User | null>(auth.currentUser);
+  const [loginLogs, setLoginLogs] = useState<LoginLog[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'profile' | 'logins'>('profile');
 
   useEffect(() => {
-    const unsub = auth.onAuthStateChanged((u) => {
+    const unsubAuth = auth.onAuthStateChanged((u) => {
       setUser(u);
     });
-    return () => unsub();
+    return () => unsubAuth();
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setLoginLogs([]);
+      return;
+    }
+    const unsubLogs = subscribeToLoginLogs(user.uid, (logs) => {
+      setLoginLogs(logs);
+    });
+    return () => unsubLogs();
+  }, [user]);
 
   if (!isOpen) return null;
 
@@ -42,7 +73,16 @@ export const UserAuthModal: React.FC<UserAuthModalProps> = ({
     setIsLoading(true);
     setError(null);
     try {
-      await loginWithGoogle();
+      const loggedUser = await loginWithGoogle();
+      // Record login in Firestore database
+      if (loggedUser) {
+        await recordGoogleLogin(
+          loggedUser.uid,
+          loggedUser.email || '',
+          loggedUser.displayName || undefined,
+          loggedUser.photoURL || undefined
+        );
+      }
       onClose();
     } catch (err: unknown) {
       console.error('Sign-in error:', err);
@@ -68,137 +108,299 @@ export const UserAuthModal: React.FC<UserAuthModalProps> = ({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-md animate-fade-in"
     >
-      <div className="relative w-full max-w-[440px] bg-[#0A1424] border border-amber-500/25 rounded-[20px] p-6 shadow-2xl text-[#F1F5F9] space-y-5">
-        {/* Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-[#94A3B8] hover:text-[#F1F5F9] rounded-full hover:bg-white/[0.06] transition-colors cursor-pointer"
-          aria-label="Cerrar ventana"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
+      <div className="relative w-full max-w-[500px] max-h-[92vh] flex flex-col bg-[#0B1728] border border-amber-500/25 rounded-[22px] shadow-2xl text-[#F1F5F9] overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-[#F59E0B]">
-            <ShieldCheck className="w-6 h-6" strokeWidth={1.75} />
+        <div className="p-4 sm:p-5 border-b border-white/[0.08] flex items-center justify-between shrink-0 bg-[#0F1E33]/60">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-[#F59E0B]">
+              <ShieldCheck className="w-6 h-6" strokeWidth={1.8} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-editorial text-[20px] sm:text-[21px] text-[#F1F5F9] font-normal leading-tight">
+                  Registro de Usuario & Base de Datos
+                </h2>
+              </div>
+              <p className="text-[12px] text-[#94A3B8]">
+                Autenticación Google & Sincronización Cloud Firestore
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="font-editorial text-[20px] text-[#F1F5F9] font-normal">
-              Cuenta & Respaldo en la Nube
-            </h2>
-            <p className="text-[12.5px] text-[#94A3B8]">
-              Firebase Authentication & Firestore
-            </p>
-          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-2 text-[#94A3B8] hover:text-[#F1F5F9] rounded-full hover:bg-white/[0.06] transition-colors cursor-pointer"
+            aria-label="Cerrar ventana"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {error && (
-          <div className="p-3 rounded-[10px] bg-red-500/15 border border-red-500/30 text-red-300 text-[12.5px]">
+          <div className="mx-4 sm:mx-6 mt-3 p-3 rounded-[10px] bg-red-500/15 border border-red-500/30 text-red-300 text-[12.5px]">
             {error}
           </div>
         )}
 
-        {user ? (
-          /* User Profile View */
-          <div className="space-y-4 pt-1">
-            <div className="flex items-center gap-3.5 p-3.5 rounded-[14px] bg-[#0F1E33] border border-white/[0.08]">
-              {user.photoURL ? (
-                <img
-                  src={user.photoURL}
-                  alt={user.displayName || 'Usuario'}
-                  className="w-12 h-12 rounded-full border border-amber-500/40 object-cover"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-amber-500/20 text-[#F59E0B] font-bold text-[18px] flex items-center justify-center border border-amber-500/30">
-                  {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+        {/* Content Body */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+          {user ? (
+            /* Signed-in user profile */
+            <div className="space-y-4">
+              {/* Profile Card */}
+              <div className="flex items-center gap-3.5 p-3.5 rounded-[16px] bg-[#0F1E33] border border-white/[0.08]">
+                {user.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName || 'Usuario'}
+                    className="w-13 h-13 rounded-full border border-amber-500/40 object-cover shrink-0"
+                  />
+                ) : (
+                  <div className="w-13 h-13 rounded-full bg-amber-500/20 text-[#F59E0B] font-bold text-[20px] flex items-center justify-center border border-amber-500/30 shrink-0">
+                    {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[15px] font-semibold text-[#F1F5F9] truncate">
+                      {user.displayName || 'Creyente en Camino'}
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-medium">
+                      Verificado
+                    </span>
+                  </div>
+                  <div className="text-[12.5px] text-[#94A3B8] truncate">{user.email}</div>
+                  <div className="text-[11px] font-mono text-[#64748B] mt-0.5 truncate">
+                    UID: {user.uid.substring(0, 16)}...
+                  </div>
+                </div>
+              </div>
+
+              {/* Subtabs: Resumen vs Historial de Logins */}
+              <div className="flex items-center gap-2 border-b border-white/[0.08] pb-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('profile')}
+                  className={`px-3 py-1.5 rounded-[8px] text-[12px] font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === 'profile'
+                      ? 'bg-amber-500/15 text-[#F59E0B] border border-amber-500/30'
+                      : 'text-[#94A3B8] hover:text-[#F1F5F9]'
+                  }`}
+                >
+                  <UserCheck className="w-3.5 h-3.5" />
+                  <span>Base de Datos del Usuario</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('logins')}
+                  className={`px-3 py-1.5 rounded-[8px] text-[12px] font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === 'logins'
+                      ? 'bg-amber-500/15 text-[#F59E0B] border border-amber-500/30'
+                      : 'text-[#94A3B8] hover:text-[#F1F5F9]'
+                  }`}
+                >
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span>Historial de Logins ({loginLogs.length})</span>
+                </button>
+              </div>
+
+              {activeTab === 'profile' && (
+                <div className="space-y-3">
+                  <div className="text-[11.5px] uppercase font-semibold text-[#CBD5E1] tracking-wider">
+                    Registros en tu cuenta de Firestore
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-[12px]">
+                    <div className="p-3 rounded-[12px] bg-white/[0.02] border border-white/[0.06] space-y-1">
+                      <div className="flex items-center gap-1.5 text-[#F59E0B]">
+                        <BookMarked className="w-4 h-4" />
+                        <span className="font-medium">Oraciones</span>
+                      </div>
+                      <div className="text-[18px] font-bold text-[#F1F5F9]">{savedCount}</div>
+                      <div className="text-[10.5px] text-[#94A3B8]">Anclas guardadas</div>
+                    </div>
+
+                    <div className="p-3 rounded-[12px] bg-white/[0.02] border border-white/[0.06] space-y-1">
+                      <div className="flex items-center gap-1.5 text-emerald-400">
+                        <HeartHandshake className="w-4 h-4" />
+                        <span className="font-medium">Gratitud</span>
+                      </div>
+                      <div className="text-[18px] font-bold text-[#F1F5F9]">{gratitudeCount}</div>
+                      <div className="text-[10.5px] text-[#94A3B8]">Entradas de diario</div>
+                    </div>
+
+                    <div className="p-3 rounded-[12px] bg-white/[0.02] border border-white/[0.06] space-y-1">
+                      <div className="flex items-center gap-1.5 text-sky-400">
+                        <FolderOpen className="w-4 h-4" />
+                        <span className="font-medium">Archivos</span>
+                      </div>
+                      <div className="text-[18px] font-bold text-[#F1F5F9]">{filesCount}</div>
+                      <div className="text-[10.5px] text-[#94A3B8]">Audios y documentos</div>
+                    </div>
+
+                    <div className="p-3 rounded-[12px] bg-white/[0.02] border border-white/[0.06] space-y-1">
+                      <div className="flex items-center gap-1.5 text-indigo-400">
+                        <MessageSquare className="w-4 h-4" />
+                        <span className="font-medium">Consejería</span>
+                      </div>
+                      <div className="text-[18px] font-bold text-[#F1F5F9]">Activa</div>
+                      <div className="text-[10.5px] text-[#94A3B8]">Gemini Mentores</div>
+                    </div>
+                  </div>
+
+                  {/* Actions buttons */}
+                  <div className="grid grid-cols-2 gap-2 pt-2">
+                    {onOpenFiles && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onClose();
+                          onOpenFiles();
+                        }}
+                        className="p-2.5 rounded-[10px] bg-sky-500/15 border border-sky-500/30 hover:bg-sky-500/25 text-sky-300 text-[12px] font-medium flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                      >
+                        <FolderOpen className="w-4 h-4" />
+                        <span>Mis Archivos de Fe</span>
+                      </button>
+                    )}
+
+                    {onOpenHistory && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onClose();
+                          onOpenHistory();
+                        }}
+                        className="p-2.5 rounded-[10px] bg-amber-500/15 border border-amber-500/30 hover:bg-amber-500/25 text-amber-300 text-[12px] font-medium flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                      >
+                        <History className="w-4 h-4" />
+                        <span>Ver Historial Total</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
-              <div className="min-w-0 flex-1">
-                <div className="text-[14px] font-semibold text-[#F1F5F9] truncate">
-                  {user.displayName || 'Hijo(a) de Dios'}
+
+              {activeTab === 'logins' && (
+                <div className="space-y-3">
+                  <div className="text-[11.5px] uppercase font-semibold text-[#CBD5E1] tracking-wider flex items-center justify-between">
+                    <span>Registro de Inicios de Sesión (Google)</span>
+                    <span className="text-[10px] text-[#94A3B8] font-normal">Auditoría segura</span>
+                  </div>
+
+                  {loginLogs.length === 0 ? (
+                    <div className="p-5 rounded-[12px] bg-white/[0.02] border border-white/[0.06] text-center text-[12.5px] text-[#94A3B8]">
+                      Registro de sesión actual inicializado en Firestore.
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                      {loginLogs.map((log) => (
+                        <div
+                          key={log.id}
+                          className="p-2.5 rounded-[10px] bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-[11.5px]"
+                        >
+                          <div className="flex items-center gap-2">
+                            {log.device?.toLowerCase().includes('móvil') ? (
+                              <Smartphone className="w-4 h-4 text-[#F59E0B]" />
+                            ) : (
+                              <Laptop className="w-4 h-4 text-sky-400" />
+                            )}
+                            <div>
+                              <div className="font-semibold text-[#F1F5F9]">
+                                {log.device || 'Navegador Web'}
+                              </div>
+                              <div className="text-[#94A3B8] text-[10.5px]">
+                                {new Date(log.loginTime).toLocaleDateString('es-ES', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 text-[10px] font-medium">
+                              Google OAuth
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className="text-[12px] text-[#94A3B8] truncate">{user.email}</div>
-                <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-400 font-medium">
-                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                  <span>Sincronización activa con Firestore</span>
-                </div>
-              </div>
+              )}
+
+              {/* Sign out button */}
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={isLoading}
+                className="w-full mt-2 min-h-[44px] py-2.5 px-4 rounded-[12px] border border-red-500/25 bg-red-500/10 hover:bg-red-500/20 text-[13px] font-medium text-red-400 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>{isLoading ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
+              </button>
             </div>
+          ) : (
+            /* Sign-in prompt view */
+            <div className="space-y-4">
+              <p className="text-[13.5px] text-[#94A3B8] leading-relaxed">
+                Registra tu usuario e inicia sesión con tu correo electrónico de Google para activar la base de datos persistente en Firestore:
+              </p>
 
-            {/* Cloud Sync Status Features */}
-            <div className="space-y-2 text-[12.5px] text-[#CBD5E1]">
-              <div className="flex items-center justify-between p-2.5 rounded-[10px] bg-white/[0.02] border border-white/[0.04]">
-                <div className="flex items-center gap-2">
-                  <BookMarked className="w-4 h-4 text-[#F59E0B]" />
-                  <span>Oraciones y anclas guardadas</span>
+              <div className="space-y-2.5 p-3.5 rounded-[16px] bg-[#0F1E33] border border-white/[0.08]">
+                <div className="flex items-start gap-2.5 text-[12.5px] text-[#CBD5E1]">
+                  <Cloud className="w-4 h-4 text-[#F59E0B] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#F1F5F9]">Base de datos de usuario:</strong> Guarda tu perfil, progreso y configuración de fe.
+                  </div>
                 </div>
-                <span className="font-semibold text-[#F59E0B]">{savedCount}</span>
+
+                <div className="flex items-start gap-2.5 text-[12.5px] text-[#CBD5E1]">
+                  <FolderOpen className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#F1F5F9]">Base de datos de archivos:</strong> Graba oraciones en audio y sube documentos devocionales.
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 text-[12.5px] text-[#CBD5E1]">
+                  <History className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#F1F5F9]">Base de datos de historial:</strong> Registra oraciones, diario de gratitud y auditoría de logins.
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 text-[12.5px] text-[#CBD5E1]">
+                  <KeyRound className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-[#F1F5F9]">Login seguro por correo Google:</strong> Acceso autenticado mediante OAuth 2.0.
+                  </div>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-[10px] bg-white/[0.02] border border-white/[0.04]">
-                <div className="flex items-center gap-2">
-                  <HeartHandshake className="w-4 h-4 text-[#10B981]" />
-                  <span>Diario de gratitud vespertino</span>
-                </div>
-                <span className="text-[11px] text-emerald-400">En la nube</span>
-              </div>
+              <button
+                type="button"
+                onClick={handleSignIn}
+                disabled={isLoading}
+                className="w-full min-h-[48px] py-2.5 px-4 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] flex items-center justify-center gap-2.5 transition-colors cursor-pointer shadow-md disabled:opacity-50"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>{isLoading ? 'Conectando con Google...' : 'Iniciar Sesión con Google'}</span>
+              </button>
 
-              <div className="flex items-center justify-between p-2.5 rounded-[10px] bg-white/[0.02] border border-white/[0.04]">
-                <div className="flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-[#0EA5E9]" />
-                  <span>Historial de consejería con Gemini</span>
-                </div>
-                <span className="text-[11px] text-sky-400">Protegido</span>
-              </div>
+              <p className="text-[11px] text-center text-[#64748B]">
+                Tus datos están protegidos por Firebase Security Rules ABAC. Nadie más puede acceder a tus oraciones.
+              </p>
             </div>
-
-            <button
-              type="button"
-              onClick={handleSignOut}
-              disabled={isLoading}
-              className="w-full min-h-[44px] py-2.5 px-4 rounded-[12px] border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.08] text-[13px] font-medium text-[#EF4444] flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <LogOut className="w-4 h-4" />
-              <span>Cerrar sesión</span>
-            </button>
-          </div>
-        ) : (
-          /* Sign-in prompt view */
-          <div className="space-y-4 pt-1">
-            <p className="text-[13.5px] text-[#94A3B8] leading-relaxed">
-              Inicia sesión con tu cuenta de Google para mantener tus oraciones litúrgicas, notas de gratitud y conversaciones con los mentores respaldadas de forma segura y permanente en la base de datos de Firestore.
-            </p>
-
-            <div className="space-y-2.5 py-1">
-              <div className="flex items-start gap-2.5 text-[12.5px] text-[#CBD5E1]">
-                <Cloud className="w-4 h-4 text-[#F59E0B] shrink-0 mt-0.5" />
-                <span>Acceso sincronizado en tu celular, tablet o computadora.</span>
-              </div>
-              <div className="flex items-start gap-2.5 text-[12.5px] text-[#CBD5E1]">
-                <Sparkles className="w-4 h-4 text-[#F59E0B] shrink-0 mt-0.5" />
-                <span>Conserva el historial completo de consejería de los 30 días.</span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleSignIn}
-              disabled={isLoading}
-              className="w-full min-h-[48px] py-2.5 px-4 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] flex items-center justify-center gap-2.5 transition-colors cursor-pointer shadow-md disabled:opacity-50"
-            >
-              <LogIn className="w-4 h-4" />
-              <span>{isLoading ? 'Conectando con Google...' : 'Continuar con Google'}</span>
-            </button>
-
-            <p className="text-[11px] text-center text-[#64748B]">
-              Tus datos son privados. Solo tú tienes acceso a tus oraciones y reflexiones.
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

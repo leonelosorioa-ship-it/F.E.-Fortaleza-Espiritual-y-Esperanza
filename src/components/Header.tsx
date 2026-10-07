@@ -7,6 +7,10 @@ import {
   Sparkles,
   User as UserIcon,
   Play,
+  Bell,
+  Sun,
+  FolderOpen,
+  Film,
 } from 'lucide-react';
 import { TuPoderMentalLogo } from './TuPoderMentalLogo';
 import { auth } from '../firebase';
@@ -22,6 +26,12 @@ interface HeaderProps {
   onOpenChat: () => void;
   onOpenAuth: () => void;
   onOpenJesusVideo?: () => void;
+  onOpenGallery?: () => void;
+  onOpenReminders?: () => void;
+  onOpenDailyPromise?: () => void;
+  onOpenFiles?: () => void;
+  filesCount?: number;
+  remindersActive?: boolean;
   savedCount: number;
 }
 
@@ -34,6 +44,12 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenChat,
   onOpenAuth,
   onOpenJesusVideo,
+  onOpenGallery,
+  onOpenReminders,
+  onOpenDailyPromise,
+  onOpenFiles,
+  filesCount = 0,
+  remindersActive,
   savedCount,
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
@@ -122,6 +138,34 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden md:inline">Audios</span>
           </button>
 
+          {/* Videos de Fe & Cine Litúrgico */}
+          {onOpenJesusVideo && (
+            <button
+              type="button"
+              onClick={onOpenJesusVideo}
+              className="min-h-[40px] sm:min-h-[42px] px-1.5 sm:px-2.5 py-1.5 rounded-[10px] text-[11.5px] sm:text-[12.5px] font-medium text-[#C6F432] hover:text-white hover:bg-[#C6F432]/10 active:bg-[#C6F432]/20 flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-[#C6F432]/30 focus-visible:ring-2 focus-visible:ring-[#C6F432] focus-visible:outline-none"
+              title="Cine de Fe & Videos Meditativos"
+              aria-label="Videos y Meditaciones Visuales"
+            >
+              <Film className="w-3.5 h-3.5 text-[#C6F432] shrink-0" strokeWidth={2} />
+              <span className="hidden sm:inline">Videos</span>
+            </button>
+          )}
+
+          {/* Galería Visual de Fe */}
+          {onOpenGallery && (
+            <button
+              type="button"
+              onClick={onOpenGallery}
+              className="min-h-[40px] sm:min-h-[42px] px-1.5 sm:px-2.5 py-1.5 rounded-[10px] text-[11.5px] sm:text-[12.5px] font-medium text-purple-300 hover:text-purple-100 hover:bg-purple-500/10 active:bg-purple-500/20 flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-purple-500/20 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:outline-none"
+              title="Galería Visual de Imágenes de Fe"
+              aria-label="Galería Visual de Arte de Fe"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0" strokeWidth={1.75} />
+              <span className="hidden lg:inline">Galería</span>
+            </button>
+          )}
+
           {/* Mis Oraciones (History) */}
           <button
             type="button"
@@ -138,6 +182,59 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             )}
           </button>
+
+          {/* Archivos & Grabaciones de Fe */}
+          {onOpenFiles && (
+            <button
+              type="button"
+              onClick={onOpenFiles}
+              className="min-h-[40px] sm:min-h-[42px] px-2 sm:px-2.5 py-1.5 rounded-[10px] border border-sky-500/20 bg-sky-500/10 hover:bg-sky-500/20 active:bg-sky-500/30 text-[11.5px] sm:text-[12px] font-medium text-sky-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none"
+              aria-label={`Ver archivos de fe (${filesCount})`}
+              title="Base de datos de archivos y grabaciones"
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-sky-400 shrink-0" strokeWidth={1.75} />
+              <span className="hidden xl:inline">Archivos</span>
+              {filesCount > 0 && (
+                <span className="text-[10px] tabular-nums px-1.5 py-0.2 rounded-full bg-sky-400 text-[#060F1E] font-bold">
+                  {filesCount}
+                </span>
+              )}
+            </button>
+          )}
+
+          {/* Promesa del Día */}
+          {onOpenDailyPromise && (
+            <button
+              type="button"
+              onClick={onOpenDailyPromise}
+              className="min-h-[40px] sm:min-h-[42px] px-1.5 sm:px-2.5 py-1.5 rounded-[10px] text-[11.5px] sm:text-[12.5px] font-medium text-[#FDE68A] hover:text-[#FEF08A] hover:bg-amber-500/10 active:bg-amber-500/20 flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:outline-none"
+              title="Ver Promesa Bíblica del Día"
+              aria-label="Ver Promesa Bíblica del Día"
+            >
+              <Sun className="w-4 h-4 text-amber-400 shrink-0" strokeWidth={1.75} />
+              <span className="hidden lg:inline">Promesa</span>
+            </button>
+          )}
+
+          {/* Recordatorios Diarios / Alertas */}
+          {onOpenReminders && (
+            <button
+              type="button"
+              onClick={onOpenReminders}
+              className="relative min-h-[40px] sm:min-h-[42px] px-2 sm:px-2.5 py-1.5 rounded-[10px] border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 text-[11.5px] sm:text-[12px] font-medium text-[#F59E0B] flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
+              title="Programar Recordatorios y Notificaciones Diarias"
+              aria-label="Programar recordatorios del diario de gratitud y promesa del día"
+            >
+              <Bell className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" strokeWidth={2} />
+              <span className="hidden xl:inline">Recordatorios</span>
+              {remindersActive && (
+                <span
+                  className="w-2 h-2 rounded-full bg-emerald-400 border border-[#060F1E] shrink-0"
+                  title="Recordatorios activos"
+                />
+              )}
+            </button>
+          )}
 
           {/* Google Account / Firebase Auth Status */}
           <button

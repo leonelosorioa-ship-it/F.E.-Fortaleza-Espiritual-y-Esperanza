@@ -3,7 +3,8 @@ import { AnchorContent, UserRoleProfile } from '../types';
 import { ROLE_PROFILE_OPTIONS, SYMPTOM_OPTIONS } from '../data/anchors';
 import { BreathingGuide } from './BreathingGuide';
 import { SensoryGrounding } from './SensoryGrounding';
-import { BookOpen, Sparkles, Moon, ArrowLeft, SunMedium, Compass, Heart, Share2, Check } from 'lucide-react';
+import { BookOpen, Sparkles, Moon, ArrowLeft, SunMedium, Compass, Heart, Share2, Check, Eye } from 'lucide-react';
+import { JesusEnTiConfioScene, JesusSceneKey } from './JesusEnTiConfioScene';
 
 interface ResultScreenProps {
   content: AnchorContent;
@@ -48,6 +49,25 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     navigator.clipboard?.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getSceneForAnchor = (): JesusSceneKey => {
+    switch (content.symptomId) {
+      case 'ansiedad_noche':
+        return 'campo_lavanda_juntos';
+      case 'perdon':
+        return 'adoracion_altar_misericordia';
+      case 'cansancio':
+        return 'leo_fortaleza_oracion';
+      case 'direccion':
+      case 'peticion':
+        return 'custodia_santisimo_radiante';
+      case 'presencia':
+      case 'confianza':
+      case 'gratitud':
+      default:
+        return 'fortaleza_espiritual_final';
+    }
   };
 
   if (isRestingMode) {
@@ -141,6 +161,30 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           </p>
         </div>
       )}
+
+      {/* Obra Visual Sacra Litúrgica para Contemplación */}
+      <div className="relative rounded-[22px] overflow-hidden border border-[#F59E0B]/30 bg-[#0A1624] shadow-xl group">
+        <div className="h-56 sm:h-64 w-full relative overflow-hidden">
+          <JesusEnTiConfioScene sceneKey={getSceneForAnchor()} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A1624] via-transparent to-black/25 pointer-events-none" />
+        </div>
+
+        <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/[0.08] bg-[#08121E]">
+          <div className="space-y-0.5">
+            <span className="text-[10.5px] uppercase font-bold tracking-wider text-[#F59E0B] flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Contemplación Visual Sagrada</span>
+            </span>
+            <p className="text-[13px] font-medium text-[#F1F5F9]">
+              {content.declaration}
+            </p>
+          </div>
+
+          <span className="text-[11px] text-[#FEF08A] italic shrink-0">
+            «Jesús, en Ti confío»
+          </span>
+        </div>
+      </div>
 
       {/* 1. Promesa Bíblica Viva */}
       <section className="bg-[#0B1728] border border-white/[0.08] rounded-[18px] p-6 sm:p-7 space-y-3.5">

@@ -196,6 +196,120 @@
         }
       },
       "required": ["id", "userId", "role", "content", "timestamp"]
+    },
+    "LoginLog": {
+      "title": "LoginLog",
+      "description": "Google email sign-in audit and session event record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique login log ID",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "Authenticated Google email address",
+          "maxLength": 256
+        },
+        "providerId": {
+          "type": "string",
+          "description": "Authentication provider ID (e.g. google.com)",
+          "maxLength": 64
+        },
+        "loginTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the login event",
+          "maxLength": 64
+        },
+        "device": {
+          "type": "string",
+          "description": "Device category or summary",
+          "maxLength": 64
+        },
+        "userAgent": {
+          "type": "string",
+          "description": "Browser user-agent string",
+          "maxLength": 256
+        },
+        "status": {
+          "type": "string",
+          "description": "Login result status",
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Record creation timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "email", "providerId", "loginTime"]
+    },
+    "UserFile": {
+      "title": "UserFile",
+      "description": "Uploaded or recorded devotional file, audio prayer, or document",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique file identifier",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the owner",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Original or assigned file title",
+          "maxLength": 160
+        },
+        "fileType": {
+          "type": "string",
+          "enum": ["audio", "pdf", "image", "document", "other"],
+          "description": "Categorized file type",
+          "maxLength": 32
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME content type",
+          "maxLength": 100
+        },
+        "sizeBytes": {
+          "type": "number",
+          "description": "File size in bytes"
+        },
+        "category": {
+          "type": "string",
+          "description": "Spiritual devotional category",
+          "maxLength": 64
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional notes or reflections accompanying the file",
+          "maxLength": 1000
+        },
+        "dataUrl": {
+          "type": "string",
+          "description": "Base64 data URL or payload content",
+          "maxLength": 2000000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Upload timestamp",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "userId", "name", "fileType", "sizeBytes", "createdAt"]
     }
   },
   "firestore": {
@@ -214,6 +328,14 @@
     "/users/{userId}/chatHistory/{messageId}": {
       "schema": "ChatMessage",
       "description": "Multi-turn Gemini chat session history"
+    },
+    "/users/{userId}/loginLogs/{logId}": {
+      "schema": "LoginLog",
+      "description": "Audit history of Google email authentication logins"
+    },
+    "/users/{userId}/userFiles/{fileId}": {
+      "schema": "UserFile",
+      "description": "Devotional files, recorded audio prayers, and study documents"
     }
   }
 }

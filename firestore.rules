@@ -31,14 +31,48 @@ service cloud.firestore {
     // User Profile Validation
     function isValidUserProfile(data, userId) {
       return data.keys().hasAll(['userId', 'email']) &&
-             data.keys().hasOnly(['userId', 'email', 'displayName', 'photoURL', 'activeRole', 'currentDay', 'hasFullAccess', 'createdAt', 'updatedAt']) &&
+             data.keys().hasOnly(['userId', 'email', 'displayName', 'photoURL', 'activeRole', 'currentDay', 'hasFullAccess', 'lastLoginAt', 'loginCount', 'storageQuotaUsedBytes', 'createdAt', 'updatedAt']) &&
              data.userId == userId &&
              data.email is string && data.email.size() <= 256 &&
              (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 120)) &&
              (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 512)) &&
              (!('activeRole' in data) || (data.activeRole is string && data.activeRole.size() <= 64)) &&
              (!('currentDay' in data) || (data.currentDay is number && data.currentDay >= 1 && data.currentDay <= 30)) &&
-             (!('hasFullAccess' in data) || (data.hasFullAccess is bool));
+             (!('hasFullAccess' in data) || (data.hasFullAccess is bool)) &&
+             (!('lastLoginAt' in data) || (data.lastLoginAt is string && data.lastLoginAt.size() <= 64)) &&
+             (!('loginCount' in data) || (data.loginCount is number && data.loginCount >= 0)) &&
+             (!('storageQuotaUsedBytes' in data) || (data.storageQuotaUsedBytes is number && data.storageQuotaUsedBytes >= 0));
+    }
+
+    // Login Log Audit Validation
+    function isValidLoginLog(data, userId) {
+      return data.keys().hasAll(['id', 'userId', 'email', 'providerId', 'loginTime']) &&
+             data.keys().hasOnly(['id', 'userId', 'email', 'providerId', 'loginTime', 'device', 'userAgent', 'status', 'createdAt']) &&
+             data.userId == userId &&
+             data.id is string && data.id.size() <= 128 &&
+             data.email is string && data.email.size() <= 256 &&
+             data.providerId is string && data.providerId.size() <= 64 &&
+             data.loginTime is string && data.loginTime.size() <= 64 &&
+             (!('device' in data) || (data.device is string && data.device.size() <= 64)) &&
+             (!('userAgent' in data) || (data.userAgent is string && data.userAgent.size() <= 256)) &&
+             (!('status' in data) || (data.status is string && data.status.size() <= 32)) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64));
+    }
+
+    // User File & Devotional Recording Validation
+    function isValidUserFile(data, userId) {
+      return data.keys().hasAll(['id', 'userId', 'name', 'fileType', 'sizeBytes', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'userId', 'name', 'fileType', 'mimeType', 'sizeBytes', 'category', 'description', 'dataUrl', 'createdAt']) &&
+             data.userId == userId &&
+             data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() <= 160 &&
+             data.fileType in ['audio', 'pdf', 'image', 'document', 'other'] &&
+             data.sizeBytes is number && data.sizeBytes >= 0 && data.sizeBytes <= 2500000 &&
+             data.createdAt is string && data.createdAt.size() <= 64 &&
+             (!('mimeType' in data) || (data.mimeType is string && data.mimeType.size() <= 100)) &&
+             (!('category' in data) || (data.category is string && data.category.size() <= 64)) &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 1000)) &&
+             (!('dataUrl' in data) || (data.dataUrl is string && data.dataUrl.size() <= 2000000));
     }
 
     // Saved Anchor Validation
@@ -149,6 +183,42 @@ service cloud.firestore {
                          isValidChatMessage(incoming(), userId);
 
         allow delete: if isOwner(userId) && isValidId(messageId);
+      }
+
+      // Subcollection: Google Login Logs
+      match /loginLogs/{logId} {
+        allow get: if isOwner(userId) && isValidId(logId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(logId) &&
+                         isValidLoginLog(incoming(), userId);
+
+        allow update: if isOwner(userId) &&
+                         isValidId(logId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().id == existing().id &&
+                         isValidLoginLog(incoming(), userId);
+
+        allow delete: if isOwner(userId) && isValidId(logId);
+      }
+
+      // Subcollection: Devotional Files & Recorded Audio Prayers
+      match /userFiles/{fileId} {
+        allow get: if isOwner(userId) && isValidId(fileId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(fileId) &&
+                         isValidUserFile(incoming(), userId);
+
+        allow update: if isOwner(userId) &&
+                         isValidId(fileId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().id == existing().id &&
+                         isValidUserFile(incoming(), userId);
+
+        allow delete: if isOwner(userId) && isValidId(fileId);
       }
     }
   }

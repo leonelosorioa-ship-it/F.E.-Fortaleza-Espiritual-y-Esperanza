@@ -8,7 +8,14 @@ import {
   handleFirestoreError,
   OperationType,
 } from '../firebase';
-import { SavedAnchor, GratitudeEntry, ChatMessage, UserProfile } from '../types';
+import {
+  SavedAnchor,
+  GratitudeEntry,
+  ChatMessage,
+  UserProfile,
+  LoginLog,
+  UserFile,
+} from '../types';
 
 /**
  * Creates or updates the user profile document in Firestore
@@ -188,6 +195,163 @@ export async function removeChatMessage(
   const path = `users/${userId}/chatHistory/${messageId}`;
   try {
     await deleteDoc(doc(db, 'users', userId, 'chatHistory', messageId));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, path);
+  }
+}
+
+/**
+ * Helper to determine device type from userAgent string
+ */
+function parseDeviceType(ua: string): string {
+  if (/mobile/i.test(ua)) return 'Dispositivo Móvil';
+  if (/ipad|tablet/i.test(ua)) return 'Tablet';
+  if (/mac/i.test(ua)) return 'Mac / macOS';
+  if (/win/i.test(ua)) return 'PC Windows';
+  if (/linux/i.test(ua)) return 'Linux';
+  return 'Navegador Web';
+}
+
+/**
+ * Record a successful Google email sign-in event in Firestore
+ */
+export async function recordGoogleLogin(
+  userId: string,
+  email: string,
+  displayName?: string,
+  photoURL?: string
+): Promise<LoginLog> {
+  const logId = `login_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+  const path = `users/${userId}/loginLogs/${logId}`;
+  const now = new Date().toISOString();
+  const ua = typeof navigator !== 'undefined' ? navigator.userAgent : 'Desconocido';
+  const device = typeof navigator !== 'undefined' ? parseDeviceType(navigator.userAgent) : 'Web';
+
+  const logEntry: LoginLog = {
+    id: logId,
+    userId,
+    email,
+    providerId: 'google.com',
+    loginTime: now,
+    device,
+    userAgent: ua.substring(0, 250),
+    status: 'success',
+    createdAt: now,
+  };
+
+  try {
+    // 1. Write login audit record
+    await setDoc(doc(db, 'users', userId, 'loginLogs', logId), logEntry);
+
+    // 2. Update user profile with latest login timestamp
+    await setDoc(
+      doc(db, 'users', userId),
+      {
+        userId,
+        email,
+        displayName: displayName || 'Creyente en Camino',
+        ...(photoURL ? { photoURL } : {}),
+        lastLoginAt: now,
+        updatedAt: now,
+      },
+      { merge: true }
+    );
+
+    return logEntry;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, path);
+    return logEntry;
+  }
+}
+
+/**
+ * Listen to Google login logs in real-time
+ */
+export function subscribeToLoginLogs(
+  userId: string,
+  onSuccess: (logs: LoginLog[]) => void
+): () => void {
+  const path = `users/${userId}/loginLogs`;
+  const logsRef = collection(db, 'users', userId, 'loginLogs');
+
+  return onSnapshot(
+    logsRef,
+    (snapshot) => {
+      const logs: LoginLog[] = [];
+      snapshot.forEach((d) => {
+        logs.push(d.data() as LoginLog);
+      });
+      // Sort newest first
+      logs.sort(
+        (a, b) => new Date(b.loginTime).getTime() - new Date(a.loginTime).getTime()
+      );
+      onSuccess(logs);
+    },
+    (error) => {
+      handleFirestoreError(error, OperationType.GET, path);
+    }
+  );
+}
+
+/**
+ * Listen to user files and recordings in real-time
+ */
+export function subscribeToUserFiles(
+  userId: string,
+  onSuccess: (files: UserFile[]) => void
+): () => void {
+  const path = `users/${userId}/userFiles`;
+  const filesRef = collection(db, 'users', userId, 'userFiles');
+
+  return onSnapshot(
+    filesRef,
+    (snapshot) => {
+      const files: UserFile[] = [];
+      snapshot.forEach((d) => {
+        files.push(d.data() as UserFile);
+      });
+      // Sort newest first
+      files.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      onSuccess(files);
+    },
+    (error) => {
+      handleFirestoreError(error, OperationType.GET, path);
+    }
+  );
+}
+
+/**
+ * Persist or upload a devotional file or audio recording in Firestore
+ */
+export async function persistUserFile(
+  userId: string,
+  file: UserFile
+): Promise<void> {
+  const path = `users/${userId}/userFiles/${file.id}`;
+  try {
+    const payload: UserFile = {
+      ...file,
+      userId,
+      createdAt: file.createdAt || new Date().toISOString(),
+    };
+    await setDoc(doc(db, 'users', userId, 'userFiles', file.id), payload);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, path);
+  }
+}
+
+/**
+ * Delete a user file from Firestore
+ */
+export async function removeUserFile(
+  userId: string,
+  fileId: string
+): Promise<void> {
+  const path = `users/${userId}/userFiles/${fileId}`;
+  try {
+    await deleteDoc(doc(db, 'users', userId, 'userFiles', fileId));
   } catch (error) {
     handleFirestoreError(error, OperationType.DELETE, path);
   }

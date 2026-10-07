@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CoreMoodOption } from './CoreFormScreen';
-import { ArrowLeft, BookOpen, Heart, Wind, Check, Play, Pause, RotateCcw } from 'lucide-react';
+import { ArrowLeft, BookOpen, Heart, Wind, Check, Play, Pause, RotateCcw, Sparkles } from 'lucide-react';
+import { JesusEnTiConfioScene, JesusSceneKey } from './JesusEnTiConfioScene';
 
 interface CoreResultScreenProps {
   mood: CoreMoodOption;
@@ -100,6 +101,21 @@ export const CoreResultScreen: React.FC<CoreResultScreenProps> = ({
   };
 
   const currentData = realisticData[mood];
+
+  const getCoreScene = (): JesusSceneKey => {
+    switch (mood) {
+      case 'ansiedad':
+        return 'campo_lavanda_juntos';
+      case 'soledad':
+        return 'clara_intimidad_paz';
+      case 'miedo':
+        return 'custodia_santisimo_radiante';
+      case 'agotamiento':
+        return 'leo_fortaleza_oracion';
+      default:
+        return 'fortaleza_espiritual_final';
+    }
+  };
 
   const phaseInstruction = {
     inhalar: 'Toma aire despacio por la nariz sintiendo la gracia de Dios',
@@ -223,6 +239,21 @@ export const CoreResultScreen: React.FC<CoreResultScreenProps> = ({
           >
             <RotateCcw className="w-4 h-4" strokeWidth={1.5} />
           </button>
+        </div>
+      </section>
+
+      {/* Obra Visual Sacra Litúrgica para Contemplación */}
+      <section
+        aria-label="Contemplación visual de fe"
+        className="rounded-[16px] overflow-hidden border border-[rgba(245,158,11,0.25)] bg-[#091524] shadow-lg"
+      >
+        <div className="h-44 sm:h-52 w-full relative overflow-hidden">
+          <JesusEnTiConfioScene sceneKey={getCoreScene()} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#091524] via-transparent to-black/20 pointer-events-none" />
+          <span className="absolute bottom-2.5 left-3 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-rotulo text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3 text-amber-400" />
+            <span>Contemplación Litúrgica • {currentData.moodLabel}</span>
+          </span>
         </div>
       </section>
 

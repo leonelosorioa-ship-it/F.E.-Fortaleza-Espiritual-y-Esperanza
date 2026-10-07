@@ -21,13 +21,28 @@ import { EmergencyBypassButton } from './components/EmergencyBypassButton';
 import { GeminiMentorChat } from './components/GeminiMentorChat';
 import { UserAuthModal } from './components/UserAuthModal';
 import { JesusVideoModal } from './components/JesusVideoModal';
-import { CloudOff, RefreshCw, WifiOff, ArrowLeft } from 'lucide-react';
+import { NotificationSettingsModal } from './components/NotificationSettingsModal';
+import { DailyPromiseModal } from './components/DailyPromiseModal';
+import { FileManagerModal } from './components/FileManagerModal';
+import { FaithGallery } from './components/FaithGallery';
+import {
+  checkAndFireScheduledReminders,
+  loadNotificationSettings,
+  getTodayDailyPromise,
+} from './services/notificationService';
+import { DailyPromiseData, UserFile, LoginLog, GratitudeEntry } from './types';
+import { CloudOff, RefreshCw, WifiOff, ArrowLeft, Film } from 'lucide-react';
 import { auth } from './firebase';
 import {
   subscribeToSavedAnchors,
   persistSavedAnchor,
   removeSavedAnchor,
   syncUserProfile,
+  subscribeToUserFiles,
+  persistUserFile,
+  removeUserFile,
+  subscribeToLoginLogs,
+  subscribeToGratitudeEntries,
 } from './services/firestoreService';
 import { User } from 'firebase/auth';
 
@@ -41,6 +56,7 @@ type Screen =
   | 'day7_paywall'
   | 'gratitude'
   | 'audios'
+  | 'gallery'
   | 'chat'
   | 'error';
 
@@ -57,11 +73,59 @@ export default function App() {
   const [isPlanOpen, setIsPlanOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isJesusVideoOpen, setIsJesusVideoOpen] = useState<boolean>(false);
+  const [activeVideoTrack, setActiveVideoTrack] = useState<string>('misericordia');
+  const [isReminderModalOpen, setIsReminderModalOpen] = useState<boolean>(false);
+  const [isDailyPromiseModalOpen, setIsDailyPromiseModalOpen] = useState<boolean>(false);
+  const [selectedDailyPromise, setSelectedDailyPromise] = useState<DailyPromiseData | null>(null);
+  const [hasActiveReminders, setHasActiveReminders] = useState<boolean>(() => {
+    const s = loadNotificationSettings();
+    return s.gratitude.enabled || s.dailyPromise.enabled;
+  });
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+  const [isFilesModalOpen, setIsFilesModalOpen] = useState<boolean>(false);
+  const [userFiles, setUserFiles] = useState<UserFile[]>(() => {
+    try {
+      const stored = localStorage.getItem('fe_user_files');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [loginLogs, setLoginLogs] = useState<LoginLog[]>([]);
+  const [gratitudeEntries, setGratitudeEntries] = useState<GratitudeEntry[]>(() => {
+    try {
+      const stored = localStorage.getItem('fe_gratitude_entries');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Background Web Notification Scheduler Check (every 30s)
+  useEffect(() => {
+    const checkReminders = () => {
+      checkAndFireScheduledReminders({
+        onOpenGratitude: () => {
+          setCurrentScreen('gratitude');
+        },
+        onOpenDailyPromise: (promise) => {
+          setSelectedDailyPromise(promise);
+          setIsDailyPromiseModalOpen(true);
+        },
+      });
+    };
+
+    checkReminders();
+    const timer = setInterval(checkReminders, 30000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Initialize Auth & Firestore Synchronization
   useEffect(() => {
-    let unsubFirestore: (() => void) | null = null;
+    let unsubAnchors: (() => void) | null = null;
+    let unsubFiles: (() => void) | null = null;
+    let unsubLogs: (() => void) | null = null;
+    let unsubGratitude: (() => void) | null = null;
 
     const unsubAuth = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -76,15 +140,14 @@ export default function App() {
           activeRole,
           currentDay: 1,
           hasFullAccess: false,
+          lastLoginAt: new Date().toISOString(),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         }).catch(console.error);
 
-        // Subscribe to real-time Cloud Anchors
-        unsubFirestore = subscribeToSavedAnchors(user.uid, (cloudAnchors) => {
+        // 1. Subscribe to real-time Cloud Anchors
+        unsubAnchors = subscribeToSavedAnchors(user.uid, (cloudAnchors) => {
           setSavedAnchors(cloudAnchors);
-
-          // Also keep updated in localStorage for offline resilience
           try {
             localStorage.setItem('fe_saved_anchors', JSON.stringify(cloudAnchors));
           } catch {
@@ -92,13 +155,46 @@ export default function App() {
           }
         });
 
+        // 2. Subscribe to real-time Cloud Files & Voice Audio
+        unsubFiles = subscribeToUserFiles(user.uid, (cloudFiles) => {
+          setUserFiles(cloudFiles);
+          try {
+            localStorage.setItem('fe_user_files', JSON.stringify(cloudFiles));
+          } catch {
+            // Safe fallback
+          }
+        });
+
+        // 3. Subscribe to Google Login Logs
+        unsubLogs = subscribeToLoginLogs(user.uid, (logs) => {
+          setLoginLogs(logs);
+        });
+
+        // 4. Subscribe to Gratitude Entries
+        unsubGratitude = subscribeToGratitudeEntries(user.uid, (entries) => {
+          setGratitudeEntries(entries);
+          try {
+            localStorage.setItem('fe_gratitude_entries', JSON.stringify(entries));
+          } catch {
+            // Safe fallback
+          }
+        });
+
         // Sync any guest anchors previously saved locally into user's Firestore cloud account
         try {
-          const stored = localStorage.getItem('fe_saved_anchors');
-          if (stored) {
-            const localList: SavedAnchor[] = JSON.parse(stored);
+          const storedAnchors = localStorage.getItem('fe_saved_anchors');
+          if (storedAnchors) {
+            const localList: SavedAnchor[] = JSON.parse(storedAnchors);
             localList.forEach((localAnchor) => {
               persistSavedAnchor(user.uid, localAnchor).catch(console.error);
+            });
+          }
+
+          const storedFiles = localStorage.getItem('fe_user_files');
+          if (storedFiles) {
+            const localFiles: UserFile[] = JSON.parse(storedFiles);
+            localFiles.forEach((f) => {
+              persistUserFile(user.uid, f).catch(console.error);
             });
           }
         } catch {
@@ -108,9 +204,11 @@ export default function App() {
         // Unauthenticated fallback: Load from localStorage
         try {
           const stored = localStorage.getItem('fe_saved_anchors');
-          if (stored) {
-            setSavedAnchors(JSON.parse(stored));
-          }
+          if (stored) setSavedAnchors(JSON.parse(stored));
+          const storedF = localStorage.getItem('fe_user_files');
+          if (storedF) setUserFiles(JSON.parse(storedF));
+          const storedG = localStorage.getItem('fe_gratitude_entries');
+          if (storedG) setGratitudeEntries(JSON.parse(storedG));
         } catch {
           // Safe fallback
         }
@@ -125,11 +223,44 @@ export default function App() {
 
     return () => {
       unsubAuth();
-      if (unsubFirestore) unsubFirestore();
+      if (unsubAnchors) unsubAnchors();
+      if (unsubFiles) unsubFiles();
+      if (unsubLogs) unsubLogs();
+      if (unsubGratitude) unsubGratitude();
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, [activeRole]);
+
+  // File persistence handler
+  const handleSaveUserFile = async (file: UserFile) => {
+    if (currentUser) {
+      await persistUserFile(currentUser.uid, file);
+    } else {
+      setUserFiles((prev) => {
+        const next = [file, ...prev];
+        try {
+          localStorage.setItem('fe_user_files', JSON.stringify(next));
+        } catch {}
+        return next;
+      });
+    }
+  };
+
+  // File deletion handler
+  const handleDeleteUserFile = async (fileId: string) => {
+    if (currentUser) {
+      await removeUserFile(currentUser.uid, fileId);
+    } else {
+      setUserFiles((prev) => {
+        const next = prev.filter((f) => f.id !== fileId);
+        try {
+          localStorage.setItem('fe_user_files', JSON.stringify(next));
+        } catch {}
+        return next;
+      });
+    }
+  };
 
   const handleStartFlow = (role: UserRoleProfile = 'madre_profesional', symptom: SymptomId = 'ansiedad_noche') => {
     setFormInitialRole(role);
@@ -196,6 +327,11 @@ export default function App() {
     setCurrentScreen('result');
   };
 
+  const handleOpenJesusVideo = (trackId: string = 'misericordia') => {
+    setActiveVideoTrack(trackId);
+    setIsJesusVideoOpen(true);
+  };
+
   const handleClearHistory = () => {
     if (currentUser) {
       savedAnchors.forEach((a) => {
@@ -233,7 +369,16 @@ export default function App() {
         onOpenAudios={() => setCurrentScreen('audios')}
         onOpenChat={() => setCurrentScreen('chat')}
         onOpenAuth={() => setIsAuthModalOpen(true)}
-        onOpenJesusVideo={() => setIsJesusVideoOpen(true)}
+        onOpenJesusVideo={() => handleOpenJesusVideo('misericordia')}
+        onOpenGallery={() => setCurrentScreen('gallery')}
+        onOpenReminders={() => setIsReminderModalOpen(true)}
+        onOpenDailyPromise={() => {
+          setSelectedDailyPromise(getTodayDailyPromise());
+          setIsDailyPromiseModalOpen(true);
+        }}
+        onOpenFiles={() => setIsFilesModalOpen(true)}
+        filesCount={userFiles.length}
+        remindersActive={hasActiveReminders}
         savedCount={savedAnchors.length}
       />
 
@@ -248,6 +393,14 @@ export default function App() {
             onOpenAudios={() => setCurrentScreen('audios')}
             onOpenChat={() => setCurrentScreen('chat')}
             onOpenAuth={() => setIsAuthModalOpen(true)}
+            onOpenReminders={() => setIsReminderModalOpen(true)}
+            onOpenDailyPromise={() => {
+              setSelectedDailyPromise(getTodayDailyPromise());
+              setIsDailyPromiseModalOpen(true);
+            }}
+            onOpenFiles={() => setIsFilesModalOpen(true)}
+            onOpenJesusVideo={(trackId) => handleOpenJesusVideo(trackId || 'misericordia')}
+            onOpenGallery={() => setCurrentScreen('gallery')}
           />
         )}
 
@@ -318,7 +471,7 @@ export default function App() {
               <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
               <span>Volver al botiquín</span>
             </button>
-            <GratitudeJournal />
+            <GratitudeJournal onOpenReminderSettings={() => setIsReminderModalOpen(true)} />
           </div>
         )}
 
@@ -336,6 +489,31 @@ export default function App() {
           </div>
         )}
 
+        {currentScreen === 'gallery' && (
+          <div className="w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setCurrentScreen('landing')}
+                className="min-h-[44px] px-3.5 py-1.5 rounded-[10px] text-[#94A3B8] hover:text-[#F1F5F9] hover:bg-white/[0.04] text-[13px] font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
+                <span>Volver al botiquín</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleOpenJesusVideo('misericordia')}
+                className="min-h-[42px] px-4 py-2 rounded-xl bg-[#C6F432] hover:bg-[#D9F95C] text-[#061A0E] font-bold text-[13px] flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(198,244,50,0.3)] transition-all"
+              >
+                <Film className="w-4 h-4 text-[#061A0E]" />
+                <span>Ver Cine de Fe & Videos</span>
+              </button>
+            </div>
+            <FaithGallery onSelectInspiringDay={() => setCurrentScreen('peace_plan')} />
+          </div>
+        )}
+
         {currentScreen === 'history' && (
           <HistoryView
             anchors={savedAnchors}
@@ -343,6 +521,12 @@ export default function App() {
             onStartNew={() => setCurrentScreen('form')}
             onClearAll={handleClearHistory}
             onBack={() => setCurrentScreen('landing')}
+            gratitudeEntries={gratitudeEntries}
+            userFiles={userFiles}
+            loginLogs={loginLogs}
+            onSelectGratitude={() => setCurrentScreen('gratitude')}
+            onOpenFilesManager={() => setIsFilesModalOpen(true)}
+            onOpenAuth={() => setIsAuthModalOpen(true)}
           />
         )}
 
@@ -413,13 +597,60 @@ export default function App() {
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         savedCount={savedAnchors.length}
+        filesCount={userFiles.length}
+        gratitudeCount={gratitudeEntries.length}
+        onOpenFiles={() => setIsFilesModalOpen(true)}
+        onOpenHistory={() => setCurrentScreen('history')}
+      />
+
+      {/* Modal de Gestor de Archivos y Grabaciones de Fe */}
+      <FileManagerModal
+        isOpen={isFilesModalOpen}
+        onClose={() => setIsFilesModalOpen(false)}
+        files={userFiles}
+        onSaveFile={handleSaveUserFile}
+        onDeleteFile={handleDeleteUserFile}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
       />
 
       {/* Modal de experiencia contemplativa y animación Jesús en Ti Confío */}
       <JesusVideoModal
         isOpen={isJesusVideoOpen}
         onClose={() => setIsJesusVideoOpen(false)}
+        initialVideoId={activeVideoTrack}
         onStartFlow={() => handleStartFlow('hombre_fe', 'ansiedad_noche')}
+      />
+
+      {/* Modal de Recordatorios y Notificaciones Diarias (Web Notification API) */}
+      <NotificationSettingsModal
+        isOpen={isReminderModalOpen}
+        onClose={() => {
+          setIsReminderModalOpen(false);
+          const s = loadNotificationSettings();
+          setHasActiveReminders(s.gratitude.enabled || s.dailyPromise.enabled);
+        }}
+        onOpenGratitude={() => {
+          setCurrentScreen('gratitude');
+        }}
+        onOpenDailyPromise={(promise) => {
+          setSelectedDailyPromise(promise);
+          setIsDailyPromiseModalOpen(true);
+        }}
+      />
+
+      {/* Modal de Promesa Bíblica del Día */}
+      <DailyPromiseModal
+        isOpen={isDailyPromiseModalOpen}
+        onClose={() => setIsDailyPromiseModalOpen(false)}
+        promise={selectedDailyPromise}
+        onOpenGratitude={() => {
+          setIsDailyPromiseModalOpen(false);
+          setCurrentScreen('gratitude');
+        }}
+        onOpenReminderSettings={() => {
+          setIsDailyPromiseModalOpen(false);
+          setIsReminderModalOpen(true);
+        }}
       />
     </div>
   );

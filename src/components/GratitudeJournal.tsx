@@ -1,20 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { HeartHandshake, Plus, Trash2, CheckCircle2, Sparkles, Heart, Sprout, Flower2, TreePine, Sun, Cloud } from 'lucide-react';
+import {
+  HeartHandshake,
+  Plus,
+  Trash2,
+  CheckCircle2,
+  Sparkles,
+  Heart,
+  Sprout,
+  Flower2,
+  TreePine,
+  Sun,
+  Cloud,
+  Bell,
+  Clock,
+} from 'lucide-react';
 import { GratitudeEntry } from '../types';
 import { auth } from '../firebase';
 import {
   subscribeToGratitudeEntries,
   persistGratitudeEntry,
 } from '../services/firestoreService';
+import { loadNotificationSettings } from '../services/notificationService';
 import { User } from 'firebase/auth';
 
-export const GratitudeJournal: React.FC = () => {
+interface GratitudeJournalProps {
+  onOpenReminderSettings?: () => void;
+}
+
+export const GratitudeJournal: React.FC<GratitudeJournalProps> = ({ onOpenReminderSettings }) => {
   const [entries, setEntries] = useState<GratitudeEntry[]>([]);
   const [item1, setItem1] = useState<string>('');
   const [item2, setItem2] = useState<string>('');
   const [item3, setItem3] = useState<string>('');
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+  const [reminderConfig, setReminderConfig] = useState(() => loadNotificationSettings().gratitude);
+
+  useEffect(() => {
+    setReminderConfig(loadNotificationSettings().gratitude);
+  }, []);
 
   useEffect(() => {
     let unsubFirestore: (() => void) | null = null;
@@ -128,6 +152,29 @@ export const GratitudeJournal: React.FC = () => {
         <p className="text-[14px] text-[#94A3B8] leading-relaxed">
           «Bendice, alma mía, al Señor, y no olvides ninguno de sus beneficios» (Salmo 103:2). Nombrar tres muestras de su fidelidad antes de dormir calma la amígdala cerebral y entrena el reposo.
         </p>
+
+        {/* Reminder notification scheduler pill */}
+        {onOpenReminderSettings && (
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06]">
+            <div className="flex items-center gap-2 text-[12.5px] text-[#CBD5E1]">
+              <Clock className="w-3.5 h-3.5 text-emerald-400" />
+              <span>
+                Recordatorio diario programado:{' '}
+                <strong className="text-emerald-400 font-mono">
+                  {reminderConfig.enabled ? `${reminderConfig.time} hrs` : 'Desactivado'}
+                </strong>
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={onOpenReminderSettings}
+              className="text-[12px] text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+            >
+              <Bell className="w-3.5 h-3.5" />
+              <span>{reminderConfig.enabled ? 'Cambiar hora o sonido' : 'Programar hora'}</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Visual Progressive Garden Banner */}

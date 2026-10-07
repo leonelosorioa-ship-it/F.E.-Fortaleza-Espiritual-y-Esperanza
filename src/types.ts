@@ -173,6 +173,69 @@ export interface UserProfile {
   activeRole?: UserRoleProfile;
   currentDay?: number;
   hasFullAccess?: boolean;
+  lastLoginAt?: string;
+  loginCount?: number;
+  storageQuotaUsedBytes?: number;
   createdAt: string;
   updatedAt: string;
 }
+
+export interface LoginLog {
+  id: string;
+  userId: string;
+  email: string;
+  providerId: string;
+  loginTime: string;
+  device?: string;
+  userAgent?: string;
+  status?: string;
+  createdAt?: string;
+}
+
+export type UserFileCategory =
+  | 'oracion'
+  | 'reflexion'
+  | 'diario'
+  | 'audio_devocional'
+  | 'estudio'
+  | 'otro';
+
+export type UserFileType = 'audio' | 'pdf' | 'image' | 'document' | 'other';
+
+export interface UserFile {
+  id: string;
+  userId: string;
+  name: string;
+  fileType: UserFileType;
+  mimeType?: string;
+  sizeBytes: number;
+  category?: UserFileCategory;
+  description?: string;
+  dataUrl?: string; // Base64 data URL or audio recording data
+  createdAt: string;
+}
+
+export interface ReminderItemConfig {
+  enabled: boolean;
+  time: string; // "HH:MM" e.g. "21:00"
+  title: string;
+  body: string;
+  lastFiredDate?: string; // "YYYY-MM-DD"
+}
+
+export interface NotificationScheduleConfig {
+  soundEnabled: boolean;
+  gratitude: ReminderItemConfig;
+  dailyPromise: ReminderItemConfig;
+}
+
+export interface DailyPromiseData {
+  id: string;
+  theme: string;
+  verse: string;
+  reference: string;
+  reflection: string;
+  prayer: string;
+  quadrant?: LifeQuadrant;
+}
+
