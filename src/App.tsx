@@ -17,7 +17,6 @@ import { GratitudeJournal } from './components/GratitudeJournal';
 import { FaithAudioCatalog } from './components/FaithAudioCatalog';
 import { PlanDetailsModal } from './components/PlanDetailsModal';
 import { Day7PaywallView } from './components/Day7PaywallView';
-import { EmergencyBypassButton } from './components/EmergencyBypassButton';
 import { GeminiMentorChat } from './components/GeminiMentorChat';
 import { UserAuthModal } from './components/UserAuthModal';
 import { JesusVideoModal } from './components/JesusVideoModal';
@@ -367,52 +366,32 @@ export default function App() {
         </aside>
       )}
 
-      {/* Barra de navegación superior sobria en Santuario Nocturno */}
+      {/* Barra de navegación superior simple y limpia */}
       <Header
         onGoHome={() => setCurrentScreen('landing')}
         onOpenHistory={() => setCurrentScreen('history')}
-        onOpenPlan={() => setIsPlanOpen(true)}
-        onOpenPeacePlan={() => setCurrentScreen('peace_plan')}
         onOpenGratitude={() => setCurrentScreen('gratitude')}
-        onOpenAudios={() => setCurrentScreen('audios')}
         onOpenChat={() => setCurrentScreen('chat')}
         onOpenAuth={() => setIsAuthModalOpen(true)}
-        onOpenJesusVideo={() => handleOpenJesusVideo('misericordia')}
-        onOpenGallery={() => setCurrentScreen('gallery')}
-        onOpenReminders={() => setIsReminderModalOpen(true)}
-        onOpenDailyPromise={() => {
-          setSelectedDailyPromise(getTodayDailyPromise());
-          setIsDailyPromiseModalOpen(true);
-        }}
-        onOpenFiles={() => setIsFilesModalOpen(true)}
-        onOpenGoogleDrive={() => setIsGoogleDriveOpen(true)}
         onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
-        filesCount={userFiles.length}
-        remindersActive={hasActiveReminders}
         savedCount={savedAnchors.length}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col justify-start pb-24 sm:pb-12">
+      <main className="flex-1 flex flex-col justify-start pb-12">
         {currentScreen === 'landing' && (
           <LandingScreen
             onStartFlow={handleStartFlow}
-            onOpenPlan={() => setIsPlanOpen(true)}
             onOpenPeacePlan={() => setCurrentScreen('peace_plan')}
             onOpenGratitude={() => setCurrentScreen('gratitude')}
-            onOpenAudios={() => setCurrentScreen('audios')}
             onOpenChat={() => setCurrentScreen('chat')}
             onOpenAuth={() => setIsAuthModalOpen(true)}
-            onOpenReminders={() => setIsReminderModalOpen(true)}
             onOpenDailyPromise={() => {
               setSelectedDailyPromise(getTodayDailyPromise());
               setIsDailyPromiseModalOpen(true);
             }}
-            onOpenFiles={() => setIsFilesModalOpen(true)}
-            onOpenGoogleDrive={() => setIsGoogleDriveOpen(true)}
             onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
-            onOpenJesusVideo={(trackId) => handleOpenJesusVideo(trackId || 'misericordia')}
-            onOpenGallery={() => setCurrentScreen('gallery')}
+            onOpenGoogleDrive={() => setIsGoogleDriveOpen(true)}
           />
         )}
 
@@ -570,33 +549,19 @@ export default function App() {
         )}
       </main>
 
-      {/* Botón flotante persistente de Bypass de Emergencia */}
-      <EmergencyBypassButton
-        visible={currentScreen !== 'form' && currentScreen !== 'transition' && currentScreen !== 'chat'}
-        onClick={() => handleStartFlow('madre_profesional', 'ansiedad_noche')}
-      />
-
-      {/* Pie de página sobrio y editorial */}
-      <footer className="w-full border-t border-white/[0.08] py-6 px-4 text-center bg-[#060F1E] mt-12">
-        <div className="max-w-5xl lg:max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#94A3B8]">
-          <div>
-            El Mapa de tu Vida en Dios • F.E.™ Fortaleza Espiritual • Tu Poder Mental™
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-center">
-            <button
-              type="button"
-              onClick={() => setIsPlanOpen(true)}
-              className="hover:text-[#F59E0B] font-semibold transition-colors cursor-pointer"
-            >
-              Proceso 30 Días con Clara Luz y Leo (12.99 USD - Pago Único)
-            </button>
-            <span className="hidden xs:inline">•</span>
+      {/* Pie de página simple, sobrio y pacífico */}
+      <footer className="w-full border-t border-white/[0.08] py-6 px-4 bg-[#060F1E] mt-12">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#94A3B8] text-center sm:text-left">
+          <p>
+            F.E.™ Fortaleza Espiritual • Tu espacio de paz mental y encuentro con Dios.
+          </p>
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
+              className="text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
             >
-              {currentUser ? 'Cuenta sincronizada con Google' : 'Conectar con Google'}
+              {currentUser ? `Cuenta: ${currentUser.email}` : 'Conectar con Google'}
             </button>
           </div>
         </div>

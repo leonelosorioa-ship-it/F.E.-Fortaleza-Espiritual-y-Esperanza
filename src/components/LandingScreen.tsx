@@ -1,37 +1,26 @@
 import React from 'react';
 import {
-  Heart,
-  ArrowRight,
-  Compass,
-  HeartHandshake,
-  Volume2,
-  ShieldCheck,
   Moon,
   Sparkles,
-  Sun,
-  Bell,
-  FolderOpen,
-  HardDrive,
+  Heart,
+  HeartHandshake,
+  Compass,
   FileSpreadsheet,
-  KeyRound,
-  Film,
-  Play,
-  Eye,
+  HardDrive,
+  Sun,
+  BookOpen,
+  ArrowRight,
+  ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react';
-import { HeroCoupleIllustration } from './HeroCoupleIllustration';
-import { MapaCuadrantesInteractive } from './MapaCuadrantesInteractive';
-import { MentoresGuiaSection } from './MentoresGuiaSection';
-import { BrandValuesRibbon } from './BrandValuesRibbon';
-import { FlexiHeroAnimation } from './FlexiHeroAnimation';
-import { JesusEnTiConfioScene } from './JesusEnTiConfioScene';
 import { UserRoleProfile, SymptomId } from '../types';
 
 interface LandingScreenProps {
   onStartFlow: (initialRole?: UserRoleProfile, initialSymptom?: SymptomId) => void;
-  onOpenPlan: () => void;
+  onOpenPlan?: () => void;
   onOpenPeacePlan: () => void;
   onOpenGratitude: () => void;
-  onOpenAudios: () => void;
+  onOpenAudios?: () => void;
   onOpenChat: () => void;
   onOpenAuth: () => void;
   onOpenReminders?: () => void;
@@ -45,500 +34,262 @@ interface LandingScreenProps {
 
 export const LandingScreen: React.FC<LandingScreenProps> = ({
   onStartFlow,
-  onOpenPlan,
-  onOpenPeacePlan,
   onOpenGratitude,
-  onOpenAudios,
   onOpenChat,
-  onOpenAuth,
-  onOpenReminders,
   onOpenDailyPromise,
-  onOpenFiles,
-  onOpenGoogleDrive,
   onOpenGoogleSheets,
-  onOpenJesusVideo,
-  onOpenGallery,
+  onOpenGoogleDrive,
+  onOpenAuth,
 }) => {
-  const handleStartMotherSanctuary = () => {
-    onStartFlow('madre_profesional', 'ansiedad_noche');
-  };
-
-  const handleQuadrantFlow = (symptomId: SymptomId, role?: UserRoleProfile) => {
-    onStartFlow(role || 'hombre_fe', symptomId);
-  };
-
   return (
-    <div className="w-full max-w-5xl lg:max-w-6xl mx-auto px-3.5 sm:px-6 py-4 sm:py-8 space-y-7 sm:space-y-10 animate-fade-in overflow-hidden">
-      {/* 
-        1. HERO PRINCIPAL ESTILO "EJEMPLO FLEXI" CON ANIMACIÓN MULTI-COLUMNA CONTINUA
-        Y ESCENAS DE "JESÚS EN TI CONFÍO SIN AUDIO"
-      */}
-      <FlexiHeroAnimation
-        onStartFlow={() => onStartFlow('hombre_fe', 'ansiedad_noche')}
-        onOpenMotherSanctuary={handleStartMotherSanctuary}
-        onOpenAuth={onOpenAuth}
-      />
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10 animate-fade-in">
+      {/* 1. HERO PRINCIPAL: OBJETIVO CLARO Y SERENO */}
+      <div className="text-center space-y-4 max-w-2xl mx-auto pt-2">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wide">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span>F.E.™ Fortaleza Espiritual • Tu Refugio de Calma</span>
+        </div>
 
-      {/* 2. Emblema Visual Armonioso de Hombre y Mujer en Dios */}
-      <HeroCoupleIllustration
-        onStart={() => onStartFlow('hombre_fe', 'presencia')}
-        onOpenMotherSanctuary={handleStartMotherSanctuary}
-      />
+        <h1 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-[#F1F5F9] font-normal tracking-tight leading-tight">
+          Encuentra Paz para tu Mente y Descanso para tu Alma
+        </h1>
 
-      {/* 3. El Mapa Interactivo de los 4 Cuadrantes: Cuerpo, Mente, Alma, Propósito */}
-      <MapaCuadrantesInteractive onSelectQuadrantFlow={handleQuadrantFlow} />
+        <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+          Un espacio sencillo y práctico para entregar la ansiedad en manos de Dios, meditar en sus promesas y organizar tus oraciones diarias sin distracciones.
+        </p>
+      </div>
 
-      {/* 4. Nuestros 2 Guías y Mentores: Clara Luz y Leo */}
-      <MentoresGuiaSection
-        onSelectMentor={(role, symptom) => onStartFlow(role, symptom)}
-        onOpenPlanDetails={onOpenPlan}
-      />
-
-      {/* 5. Cinta de Principios (Neurociencia + Verdad Bíblica) */}
-      <BrandValuesRibbon />
-
-      {/* 6. Módulos de Bienestar Espiritual y Hábitos */}
-      <div className="space-y-3.5">
-        <span className="text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1] block">
-          Herramientas de Paz y Retención
-        </span>
-
-        {/* Banner Destacado: Chatbot con Gemini 3.8 Flash */}
-        <div className="relative overflow-hidden rounded-[18px] bg-gradient-to-r from-[#0F223D] via-[#122A4E] to-[#0A1728] border border-amber-500/30 p-4 sm:p-5 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1.5 max-w-[460px]">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-[#F59E0B] text-[11px] font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Acompañante Gemini 3.8 Flash • Multi-Turno</span>
-            </div>
-            <h2 className="font-editorial text-[17px] sm:text-[19px] text-[#F1F5F9] font-normal">
-              Conversa con los Mentores Clara Luz & Leo
+      {/* 2. BOTIQUÍN DE AUXILIO RÁPIDO: ¿CÓMO TE SIENTES HOY? */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
+          <div>
+            <h2 className="text-base sm:text-lg font-bold text-[#F1F5F9] flex items-center gap-2">
+              <Heart className="w-4 h-4 text-amber-400" />
+              <span>Botiquín de Calma Inmediata</span>
             </h2>
-            <p className="text-[12.5px] text-[#CBD5E1] leading-relaxed">
-              Recibe consejería espiritual personalizada, oraciones guiadas y versículos de fortaleza para tus luchas de hoy. Respaldado en la nube.
+            <p className="text-xs text-[#94A3B8]">
+              Selecciona lo que estás experimentando para recibir una promesa bíblica y oración guiada:
             </p>
           </div>
+        </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          {/* Opción 1: Ansiedad / Insomnio */}
+          <button
+            type="button"
+            onClick={() => onStartFlow('madre_profesional', 'ansiedad_noche')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-[#0B1A2E] to-[#071220] border border-amber-500/25 hover:border-amber-400/60 text-left transition-all group cursor-pointer shadow-sm hover:shadow-md hover:shadow-amber-500/5"
+          >
+            <div className="flex items-start justify-between">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center mb-3">
+                <Moon className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#64748B] group-hover:text-amber-300 group-hover:translate-x-1 transition-all" />
+            </div>
+            <h3 className="text-base font-bold text-[#F1F5F9] group-hover:text-amber-300 transition-colors">
+              Ansiedad o Insomnio Nocturno
+            </h3>
+            <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
+              «En paz me acostaré, y asimismo dormiré; porque solo tú, Señor, me haces vivir confiado» (Salmo 4:8).
+            </p>
+          </button>
+
+          {/* Opción 2: Cansancio / Carga */}
+          <button
+            type="button"
+            onClick={() => onStartFlow('hombre_fe', 'cansancio')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-[#0B1A2E] to-[#071220] border border-sky-500/25 hover:border-sky-400/60 text-left transition-all group cursor-pointer shadow-sm hover:shadow-md hover:shadow-sky-500/5"
+          >
+            <div className="flex items-start justify-between">
+              <div className="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center mb-3">
+                <Compass className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#64748B] group-hover:text-sky-300 group-hover:translate-x-1 transition-all" />
+            </div>
+            <h3 className="text-base font-bold text-[#F1F5F9] group-hover:text-sky-300 transition-colors">
+              Cansancio & Sobrecarga Mental
+            </h3>
+            <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
+              «Él da esfuerzo al cansado, y multiplica las fuerzas al que no tiene ningunas» (Isaías 40:29).
+            </p>
+          </button>
+
+          {/* Opción 3: Incertidumbre / Miedo */}
+          <button
+            type="button"
+            onClick={() => onStartFlow('madre_profesional', 'confianza')}
+            className="p-5 rounded-2xl bg-gradient-to-br from-[#0B1A2E] to-[#071220] border border-emerald-500/25 hover:border-emerald-400/60 text-left transition-all group cursor-pointer shadow-sm hover:shadow-md hover:shadow-emerald-500/5"
+          >
+            <div className="flex items-start justify-between">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-3">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#64748B] group-hover:text-emerald-300 group-hover:translate-x-1 transition-all" />
+            </div>
+            <h3 className="text-base font-bold text-[#F1F5F9] group-hover:text-emerald-300 transition-colors">
+              Incertidumbre o Miedo al Mañana
+            </h3>
+            <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
+              «Por nada estéis afanosos, sino sean conocidas vuestras peticiones delante de Dios» (Filipenses 4:6).
+            </p>
+          </button>
+
+          {/* Opción 4: Hablar con los Mentores */}
           <button
             type="button"
             onClick={onOpenChat}
-            className="min-h-[44px] px-5 py-2.5 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[13.5px] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-md shrink-0"
+            className="p-5 rounded-2xl bg-gradient-to-br from-[#122238] to-[#091524] border border-amber-400/40 hover:border-amber-400 text-left transition-all group cursor-pointer shadow-sm"
           >
-            <Sparkles className="w-4 h-4" />
-            <span>Hablar con los Mentores</span>
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {/* Módulo 1: Ruta 30 Días */}
-          <button
-            type="button"
-            onClick={onOpenPeacePlan}
-            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-[#F59E0B]/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B]"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <Compass className="w-5 h-5 text-[#F59E0B]" strokeWidth={1.75} />
-              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30">
-                Semana 1 Libre
-              </span>
+            <div className="flex items-start justify-between">
+              <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center mb-3">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#64748B] group-hover:text-amber-300 group-hover:translate-x-1 transition-all" />
             </div>
-            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
-              Ruta 30 Días en Dios
-            </h2>
-            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
-              Itinerario estructurado con Clara Luz y Leo para entrenar tu mente y sistema nervioso.
-            </p>
-          </button>
-
-          {/* Módulo 2: Diario de Gratitud con Jardín */}
-          <button
-            type="button"
-            onClick={onOpenGratitude}
-            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-[#10B981]/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#10B981]"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <HeartHandshake className="w-5 h-5 text-[#10B981]" strokeWidth={1.75} />
-              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30">
-                Jardín Vivo
-              </span>
-            </div>
-            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
-              Diario de Gratitud
-            </h2>
-            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
-              Siembra 3 regalos diarios para florecer un jardín botánico interior de alabanza.
-            </p>
-          </button>
-
-          {/* Módulo 3: Promesa Bíblica del Día & Recordatorios */}
-          <button
-            type="button"
-            onClick={onOpenDailyPromise || onOpenReminders}
-            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-amber-400/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <Sun className="w-5 h-5 text-amber-400" strokeWidth={1.75} />
-              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">
-                Diario & Alerta
-              </span>
-            </div>
-            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
-              Promesa del Día
-            </h2>
-            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
-              Palabra bíblica viva y recordatorio programable con la Web Notification API.
-            </p>
-          </button>
-
-          {/* Módulo 4: Audios de Fe */}
-          <button
-            type="button"
-            onClick={onOpenAudios}
-            className="p-4 rounded-[14px] bg-[#0B1728] border border-white/[0.08] hover:border-[#6366F1]/50 text-left transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366F1]"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <Volume2 className="w-5 h-5 text-[#0EA5E9]" strokeWidth={1.75} />
-              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/[0.05] text-[#CBD5E1]">
-                Sueño & Reposo
-              </span>
-            </div>
-            <h2 className="font-editorial text-[15.5px] text-[#F1F5F9] font-normal mb-1">
-              Audios de Fe
-            </h2>
-            <p className="text-[12px] text-[#94A3B8] leading-relaxed">
-              Lectura reposada de la Escritura con paisajes sonoros orgánicos de descanso.
+            <h3 className="text-base font-bold text-[#F1F5F9] group-hover:text-amber-300 transition-colors">
+              Consejería con Mentores de Fe
+            </h3>
+            <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed">
+              Conversa con Clara Luz y Leo para recibir acompañamiento espiritual, discernimiento y oración personalizada.
             </p>
           </button>
         </div>
+      </div>
 
-        {/* Quick access to notification scheduling */}
-        {onOpenReminders && (
-          <div className="bg-[#091524] border border-amber-500/25 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[13px]">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-                <Bell className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-medium text-[#F1F5F9]">¿Deseas no olvidar tu tiempo con Dios?</span>
-                <p className="text-[12px] text-[#94A3B8]">
-                  Programa recordatorios locales a una hora específica del día para tu Diario de Gratitud o Promesa del Día.
-                </p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={onOpenReminders}
-              className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 active:bg-amber-500/35 border border-amber-500/30 text-amber-300 font-semibold text-[12.5px] transition-all cursor-pointer shrink-0 flex items-center gap-1.5"
-            >
-              <Bell className="w-3.5 h-3.5" />
-              <span>Programar recordatorio</span>
-            </button>
-          </div>
-        )}
-
-        {/* Cloud Database, User Registration & Files Storage Banner */}
-        <div className="bg-gradient-to-r from-[#0F1E33] to-[#0A1424] border border-sky-500/25 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[13px]">
-          <div className="flex items-start sm:items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0 mt-0.5 sm:mt-0">
-              <HardDrive className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-[#F1F5F9] text-[14px]">
-                  Base de Datos Cloud Firestore & Cuenta Google
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  En Línea
-                </span>
-              </div>
-              <p className="text-[12px] text-[#94A3B8] mt-0.5 max-w-[62ch]">
-                Registro de usuarios con correo Google, repositorio de archivos y oraciones grabadas con tu voz, e historial sincronizado de fe.
-              </p>
-            </div>
+      {/* 3. PROMESA BÍBLICA DEL DÍA: SERENA Y DIRECTA */}
+      <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-[#09182C] via-[#0E223D] to-[#0A1624] border border-amber-500/30 shadow-xl relative overflow-hidden">
+        <div className="relative space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
+              <Sun className="w-4 h-4" />
+              Promesa Bíblica para Hoy
+            </span>
+            {onOpenDailyPromise && (
+              <button
+                type="button"
+                onClick={onOpenDailyPromise}
+                className="text-xs text-amber-300 hover:text-white underline cursor-pointer"
+              >
+                Ver reflexión completa
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            {onOpenFiles && (
-              <button
-                type="button"
-                onClick={onOpenFiles}
-                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/35 text-sky-300 font-semibold text-[12.5px] transition-all cursor-pointer flex items-center gap-1.5"
-              >
-                <FolderOpen className="w-3.5 h-3.5 text-sky-400" />
-                <span>Mis Archivos</span>
-              </button>
-            )}
+          <blockquote className="font-editorial text-lg sm:text-xl text-[#F1F5F9] italic leading-relaxed">
+            «Mi presencia irá contigo, y te daré descanso.»
+          </blockquote>
+          <p className="text-xs font-semibold text-amber-400 font-mono">
+            — Éxodo 33:14
+          </p>
 
-            {onOpenGoogleDrive && (
-              <button
-                type="button"
-                onClick={onOpenGoogleDrive}
-                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-200 font-semibold text-[12.5px] transition-all cursor-pointer flex items-center gap-1.5"
-                title="Google Drive Espiritual"
-              >
-                <HardDrive className="w-3.5 h-3.5 text-sky-400" />
-                <span>Google Drive</span>
-              </button>
-            )}
+          <p className="text-xs text-[#CBD5E1] pt-1 leading-relaxed max-w-xl">
+            No tienes que llevar la carga en tus propias fuerzas hoy. Dios camina a tu lado en cada paso.
+          </p>
 
-            {onOpenGoogleSheets && (
-              <button
-                type="button"
-                onClick={onOpenGoogleSheets}
-                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-emerald-200 font-semibold text-[12.5px] transition-all cursor-pointer flex items-center gap-1.5"
-                title="Google Sheets - Registro de Peticiones y Diario"
-              >
-                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Google Sheets</span>
-              </button>
-            )}
-
+          <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               type="button"
-              onClick={onOpenAuth}
-              className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-[#060F1E] font-semibold text-[12.5px] transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              onClick={() => onStartFlow('hombre_fe', 'presencia')}
+              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-[#060F1E] font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm"
             >
-              <KeyRound className="w-3.5 h-3.5" />
-              <span>Registro Google</span>
+              <span>Orar con este versículo</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
+      </div>
 
-        {/* ====================================================================
-            7. NUEVO SECTOR VISUAL: CINE DE FE & GALERÍA DE IMÁGENES SACRAS
-           ==================================================================== */}
-        <div className="space-y-4 pt-2">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#C6F432]/10 border border-[#C6F432]/30 text-[#C6F432] text-[11px] font-bold tracking-wider uppercase mb-1">
-                <Film className="w-3.5 h-3.5" />
-                <span>Cine Litúrgico & Experiencia Audiovisual de Fe</span>
+      {/* 4. HERRAMIENTAS PRÁCTICAS: DIARIO DE GRATITUD & GOOGLE SHEETS */}
+      <div className="space-y-4">
+        <div className="border-b border-white/[0.08] pb-2">
+          <h2 className="text-base sm:text-lg font-bold text-[#F1F5F9] flex items-center gap-2">
+            <HeartHandshake className="w-4 h-4 text-emerald-400" />
+            <span>Tus Herramientas Prácticas</span>
+          </h2>
+          <p className="text-xs text-[#94A3B8]">
+            Escribe tus motivos de agradecimiento y guarda tus peticiones de forma privada.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Tarjeta 1: Diario de Gratitud */}
+          <div className="p-5 rounded-2xl bg-[#091524] border border-emerald-500/20 hover:border-emerald-500/40 transition-all flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                <HeartHandshake className="w-4 h-4" />
               </div>
-              <h2 className="font-editorial text-[20px] sm:text-[23px] text-[#F1F5F9] font-normal">
-                Videos Meditativos y Obras Visuales
-              </h2>
-              <p className="text-[12.5px] text-[#94A3B8]">
-                Contempla la paz divina con animaciones litúrgicas, paisajes sagrados y paisajes sonoros en vivo.
+              <h3 className="text-base font-bold text-[#F1F5F9]">
+                Diario de Gratitud Nocturna
+              </h3>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                Nombrar 3 bendiciones del día antes de dormir reduce el estrés, calma la amígdala cerebral y entrena el descanso en Dios.
               </p>
             </div>
-
-            {onOpenGallery && (
-              <button
-                type="button"
-                onClick={onOpenGallery}
-                className="min-h-[40px] px-4 py-2 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 hover:text-white font-semibold text-[12.5px] transition-all flex items-center gap-2 cursor-pointer shrink-0 self-start sm:self-auto"
-              >
-                <Sparkles className="w-4 h-4 text-purple-400" />
-                <span>Ver Galería Completa</span>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={onOpenGratitude}
+              className="w-full py-2.5 px-4 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 border border-emerald-500/30 text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <span>Abrir Diario de Gratitud</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
-          {/* Grid de 4 Videos de Fe */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-            {/* Video 1: Jesús de la Divina Misericordia */}
-            <div className="group relative rounded-2xl bg-[#091524] border border-amber-500/30 overflow-hidden shadow-lg hover:border-amber-400 transition-all flex flex-col">
-              <div className="relative aspect-[16/10] bg-[#0A1624] overflow-hidden">
-                <JesusEnTiConfioScene sceneKey="adoracion_altar_misericordia" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#091524] via-transparent to-black/30 pointer-events-none" />
-                <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] text-amber-300 font-bold border border-amber-500/40">
-                  3:45 min
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onOpenJesusVideo?.('misericordia')}
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors cursor-pointer"
-                  title="Reproducir Jesús de la Divina Misericordia"
-                >
-                  <span className="w-11 h-11 rounded-full bg-[#C6F432] group-hover:scale-110 text-[#061A0E] flex items-center justify-center transition-transform shadow-[0_0_20px_rgba(198,244,50,0.5)]">
-                    <Play className="w-5 h-5 fill-current ml-0.5" />
-                  </span>
-                </button>
+          {/* Tarjeta 2: Google Sheets & Drive */}
+          <div className="p-5 rounded-2xl bg-[#091524] border border-sky-500/20 hover:border-sky-500/40 transition-all flex flex-col justify-between space-y-4">
+            <div className="space-y-2">
+              <div className="w-9 h-9 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center">
+                <FileSpreadsheet className="w-4 h-4" />
               </div>
-
-              <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2">
-                <div>
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-amber-400 block mb-0.5">
-                    Misericordia & Altar
-                  </span>
-                  <h3 className="text-[13.5px] font-semibold text-[#F1F5F9] leading-snug">
-                    Jesús de la Divina Misericordia
-                  </h3>
-                  <p className="text-[11.5px] text-[#94A3B8] mt-1 line-clamp-2">
-                    Rayos sagrados de sangre y agua, adoración ante la custodia y descanso total.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => onOpenJesusVideo?.('misericordia')}
-                  className="w-full py-1.5 px-2.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 font-medium text-[11.5px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Play className="w-3.5 h-3.5" />
-                  <span>Ver Video</span>
-                </button>
-              </div>
+              <h3 className="text-base font-bold text-[#F1F5F9]">
+                Peticiones en Google Sheets
+              </h3>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                Visualiza y gestiona tu registro de oraciones y testimonios en tu propia hoja de cálculo conectada a Google Workspace.
+              </p>
             </div>
-
-            {/* Video 2: Aguas de Reposo (Salmo 23) */}
-            <div className="group relative rounded-2xl bg-[#091524] border border-emerald-500/30 overflow-hidden shadow-lg hover:border-emerald-400 transition-all flex flex-col">
-              <div className="relative aspect-[16/10] bg-[#0A1624] overflow-hidden">
-                <JesusEnTiConfioScene sceneKey="campo_lavanda_juntos" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#091524] via-transparent to-black/30 pointer-events-none" />
-                <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] text-emerald-300 font-bold border border-emerald-500/40">
-                  3:20 min
-                </span>
+            <div className="flex items-center gap-2">
+              {onOpenGoogleSheets && (
                 <button
                   type="button"
-                  onClick={() => onOpenJesusVideo?.('aguas_reposo')}
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors cursor-pointer"
-                  title="Reproducir Aguas de Reposo"
+                  onClick={onOpenGoogleSheets}
+                  className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 border border-emerald-500/30 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <span className="w-11 h-11 rounded-full bg-[#10B981] group-hover:scale-110 text-[#061A0E] flex items-center justify-center transition-transform shadow-[0_0_20px_rgba(16,185,129,0.5)]">
-                    <Play className="w-5 h-5 fill-current ml-0.5 text-white" />
-                  </span>
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  <span>Google Sheets</span>
                 </button>
-              </div>
-
-              <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2">
-                <div>
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-400 block mb-0.5">
-                    Salmo 23 & Naturaleza
-                  </span>
-                  <h3 className="text-[13.5px] font-semibold text-[#F1F5F9] leading-snug">
-                    Amanecer en Aguas de Reposo
-                  </h3>
-                  <p className="text-[11.5px] text-[#94A3B8] mt-1 line-clamp-2">
-                    Clara Luz & Leo en el amanecer con respiración guiada para apagar la rumiación.
-                  </p>
-                </div>
-
+              )}
+              {onOpenGoogleDrive && (
                 <button
                   type="button"
-                  onClick={() => onOpenJesusVideo?.('aguas_reposo')}
-                  className="w-full py-1.5 px-2.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 font-medium text-[11.5px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  onClick={onOpenGoogleDrive}
+                  className="py-2.5 px-3 rounded-xl bg-sky-600/30 hover:bg-sky-600/50 text-sky-200 border border-sky-500/30 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  title="Ver archivos en Google Drive"
                 >
-                  <Play className="w-3.5 h-3.5" />
-                  <span>Ver Video</span>
+                  <HardDrive className="w-3.5 h-3.5" />
+                  <span>Drive</span>
                 </button>
-              </div>
-            </div>
-
-            {/* Video 3: Fortaleza en la Prueba & Oración */}
-            <div className="group relative rounded-2xl bg-[#091524] border border-sky-500/30 overflow-hidden shadow-lg hover:border-sky-400 transition-all flex flex-col">
-              <div className="relative aspect-[16/10] bg-[#0A1624] overflow-hidden">
-                <JesusEnTiConfioScene sceneKey="leo_fortaleza_oracion" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#091524] via-transparent to-black/30 pointer-events-none" />
-                <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] text-sky-300 font-bold border border-sky-500/40">
-                  3:30 min
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onOpenJesusVideo?.('fortaleza_oracion')}
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors cursor-pointer"
-                  title="Reproducir Fortaleza en la Prueba"
-                >
-                  <span className="w-11 h-11 rounded-full bg-sky-500 group-hover:scale-110 text-[#061A0E] flex items-center justify-center transition-transform shadow-[0_0_20px_rgba(14,165,233,0.5)]">
-                    <Play className="w-5 h-5 fill-current ml-0.5 text-white" />
-                  </span>
-                </button>
-              </div>
-
-              <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2">
-                <div>
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-sky-400 block mb-0.5">
-                    Isaías 40 & Valentía
-                  </span>
-                  <h3 className="text-[13.5px] font-semibold text-[#F1F5F9] leading-snug">
-                    Fortaleza en la Prueba & Renovación
-                  </h3>
-                  <p className="text-[11.5px] text-[#94A3B8] mt-1 line-clamp-2">
-                    Leo en oración ferviente levantando alas como las águilas ante la adversidad.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => onOpenJesusVideo?.('fortaleza_oracion')}
-                  className="w-full py-1.5 px-2.5 rounded-lg bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 font-medium text-[11.5px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Play className="w-3.5 h-3.5" />
-                  <span>Ver Video</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Video 4: El Altar del Hogar */}
-            <div className="group relative rounded-2xl bg-[#091524] border border-purple-500/30 overflow-hidden shadow-lg hover:border-purple-400 transition-all flex flex-col">
-              <div className="relative aspect-[16/10] bg-[#0A1624] overflow-hidden">
-                <JesusEnTiConfioScene sceneKey="custodia_santisimo_radiante" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#091524] via-transparent to-black/30 pointer-events-none" />
-                <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] text-purple-300 font-bold border border-purple-500/40">
-                  3:15 min
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onOpenJesusVideo?.('altar_familiar')}
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors cursor-pointer"
-                  title="Reproducir El Altar del Hogar"
-                >
-                  <span className="w-11 h-11 rounded-full bg-purple-500 group-hover:scale-110 text-white flex items-center justify-center transition-transform shadow-[0_0_20px_rgba(168,85,247,0.5)]">
-                    <Play className="w-5 h-5 fill-current ml-0.5" />
-                  </span>
-                </button>
-              </div>
-
-              <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2">
-                <div>
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-purple-400 block mb-0.5">
-                    Josué 24 & Hogar
-                  </span>
-                  <h3 className="text-[13.5px] font-semibold text-[#F1F5F9] leading-snug">
-                    El Altar del Hogar & Bendición
-                  </h3>
-                  <p className="text-[11.5px] text-[#94A3B8] mt-1 line-clamp-2">
-                    Protección sagrada para padres, hijos y matrimonios bajo la custodia de Dios.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => onOpenJesusVideo?.('altar_familiar')}
-                  className="w-full py-1.5 px-2.5 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 font-medium text-[11.5px] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Play className="w-3.5 h-3.5" />
-                  <span>Ver Video</span>
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* 7. Rescate vs Rehabilitación: Transparencia del Proceso */}
-      <div className="border border-white/[0.08] bg-[#0B1728] rounded-[18px] p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="space-y-1 max-w-[480px]">
-          <div className="flex items-center gap-2">
-            <span className="text-[10.5px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30">
-              Botiquín Gratuito
-            </span>
-            <span className="text-[11.5px] font-semibold text-[#F59E0B]">
-              • Programa de 30 Días: 12.99 USD (Pago Único)
-            </span>
-          </div>
-          <h2 className="font-editorial text-[18px] text-[#F1F5F9] font-normal">
-            Rescate inmediato permanente vs. Rehabilitación de 30 días
-          </h2>
-          <p className="text-[12.5px] text-[#94A3B8] leading-relaxed">
-            El botiquín para crisis nocturnas y oraciones de entrega siempre será gratuito. Para construir un refugio a prueba de tormentas, el proceso guiado con Clara Luz y Leo tiene un único pago de 12.99 USD (sin membresía ni suscripciones).
-          </p>
+      {/* 5. SEGURIDAD Y PRIVACIDAD EN TU CUENTA */}
+      <div className="p-4 rounded-xl bg-[#071220] border border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#94A3B8]">
+        <div className="flex items-center gap-2.5 text-center sm:text-left">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>
+            Tus oraciones son 100% privadas y seguras en tu cuenta de Google.
+          </span>
         </div>
 
         <button
           type="button"
-          onClick={onOpenPlan}
-          className="min-h-[44px] px-5 py-2 rounded-[12px] bg-white/[0.05] hover:bg-white/[0.1] text-[13px] font-medium text-[#F1F5F9] border border-white/[0.12] transition-colors shrink-0 cursor-pointer"
+          onClick={onOpenAuth}
+          className="text-xs text-amber-400 hover:text-amber-300 font-medium underline cursor-pointer"
         >
-          Consultar detalles
+          Gestionar cuenta y accesos
         </button>
       </div>
     </div>
