@@ -4,9 +4,13 @@ import { Volume2, Play, Pause, Waves, Moon, Clock, Lock } from 'lucide-react';
 
 interface FaithAudioCatalogProps {
   onOpenPlanDetails?: () => void;
+  selectedMentor?: 'clara_luz' | 'leo';
 }
 
-export const FaithAudioCatalog: React.FC<FaithAudioCatalogProps> = ({ onOpenPlanDetails }) => {
+export const FaithAudioCatalog: React.FC<FaithAudioCatalogProps> = ({
+  onOpenPlanDetails,
+  selectedMentor = 'clara_luz',
+}) => {
   const [playingId, setPlayingId] = useState<string | null>(null);
 
   const togglePlay = (id: string, isFreePreview: boolean = true) => {
@@ -17,17 +21,19 @@ export const FaithAudioCatalog: React.FC<FaithAudioCatalogProps> = ({ onOpenPlan
     setPlayingId((prev) => (prev === id ? null : id));
   };
 
+  const mentorName = selectedMentor === 'clara_luz' ? 'Clara Luz' : 'Leo';
+
   return (
     <div className="w-full max-w-[720px] mx-auto bg-[#0B1728] border border-white/[0.08] rounded-[18px] p-6 sm:p-7 space-y-6 shadow-sm animate-fade-in">
-      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Volume2 className="w-5 h-5 text-[#0EA5E9]" strokeWidth={1.75} />
           <span className="text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1]">
-            Audios de Fe y Paisajes Sonoros Devocionales
+            Audios de Fe • Guiados por {mentorName}
           </span>
         </div>
-        <span className="text-[10.5px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30">
-          Inducción al sueño y sosiego
+        <span className="text-[10.5px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-[#10B981]/15 text-[#34D399] border border-[#10B981]/30">
+          Tu Guía: {mentorName}
         </span>
       </div>
 

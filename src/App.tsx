@@ -16,8 +16,8 @@ import { PeacePlanView } from './components/PeacePlanView';
 import { GratitudeJournal } from './components/GratitudeJournal';
 import { FaithAudioCatalog } from './components/FaithAudioCatalog';
 import { PlanDetailsModal } from './components/PlanDetailsModal';
+import { SpiritualQuizModal } from './components/SpiritualQuizModal';
 import { Day7PaywallView } from './components/Day7PaywallView';
-import { EmergencyBypassButton } from './components/EmergencyBypassButton';
 import { GeminiMentorChat } from './components/GeminiMentorChat';
 import { UserAuthModal } from './components/UserAuthModal';
 import { JesusVideoModal } from './components/JesusVideoModal';
@@ -27,6 +27,7 @@ import { FileManagerModal } from './components/FileManagerModal';
 import { FaithGallery } from './components/FaithGallery';
 import { GoogleDriveModal } from './components/GoogleDriveModal';
 import { GoogleSheetsModal } from './components/GoogleSheetsModal';
+import { TuPoderMentalLogo } from './components/TuPoderMentalLogo';
 import {
   checkAndFireScheduledReminders,
   loadNotificationSettings,
@@ -40,6 +41,7 @@ import {
   persistSavedAnchor,
   removeSavedAnchor,
   syncUserProfile,
+  subscribeToUserProfile,
   subscribeToUserFiles,
   persistUserFile,
   removeUserFile,
@@ -105,6 +107,46 @@ export default function App() {
       return [];
     }
   });
+  const [selectedMentor, setSelectedMentor] = useState<'clara_luz' | 'leo'>(() => {
+    try {
+      const stored = localStorage.getItem('fe_selected_mentor');
+      return (stored === 'leo' || stored === 'clara_luz') ? stored : 'clara_luz';
+    } catch {
+      return 'clara_luz';
+    }
+  });
+  const [chatInitialPrompt, setChatInitialPrompt] = useState<string>('');
+  // Test de 7 Preguntas: Diagnóstico Espiritual y de Esperanza (se abre la primera vez automáticamente)
+  const [isSpiritualQuizOpen, setIsSpiritualQuizOpen] = useState<boolean>(() => {
+    try {
+      const completed = localStorage.getItem('fe_spiritual_quiz_completed');
+      const dismissed = sessionStorage.getItem('fe_spiritual_quiz_dismissed');
+      return !completed && !dismissed;
+    } catch {
+      return false;
+    }
+  });
+
+  const handleSelectMentor = (mentor: 'clara_luz' | 'leo') => {
+    try {
+      if (localStorage.getItem('fe_mentor_locked') === 'true') {
+        const stored = localStorage.getItem('fe_selected_mentor');
+        if (stored === 'leo' || stored === 'clara_luz') {
+          setSelectedMentor(stored);
+          return;
+        }
+      }
+      localStorage.setItem('fe_selected_mentor', mentor);
+      localStorage.setItem('fe_mentor_chosen', 'true');
+      localStorage.setItem('fe_mentor_locked', 'true');
+    } catch {}
+    setSelectedMentor(mentor);
+  };
+
+  const handleChooseMentorGuide = (mentor: 'clara_luz' | 'leo') => {
+    handleSelectMentor(mentor);
+    setCurrentScreen('peace_plan');
+  };
 
   // Background Web Notification Scheduler Check (every 30s)
   useEffect(() => {
@@ -387,6 +429,7 @@ export default function App() {
         onOpenFiles={() => setIsFilesModalOpen(true)}
         onOpenGoogleDrive={() => setIsGoogleDriveOpen(true)}
         onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
+        onOpenSpiritualQuiz={() => setIsSpiritualQuizOpen(true)}
         filesCount={userFiles.length}
         remindersActive={hasActiveReminders}
         savedCount={savedAnchors.length}
@@ -413,6 +456,9 @@ export default function App() {
             onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
             onOpenJesusVideo={(trackId) => handleOpenJesusVideo(trackId || 'misericordia')}
             onOpenGallery={() => setCurrentScreen('gallery')}
+            onOpenSpiritualQuiz={() => setIsSpiritualQuizOpen(true)}
+            activeMentor={selectedMentor}
+            onChooseMentorGuide={handleChooseMentorGuide}
           />
         )}
 
@@ -420,6 +466,8 @@ export default function App() {
           <GeminiMentorChat
             onBack={() => setCurrentScreen('landing')}
             onOpenPlan={() => setIsPlanOpen(true)}
+            defaultMentor={selectedMentor}
+            initialPrompt={chatInitialPrompt}
           />
         )}
 
@@ -460,6 +508,13 @@ export default function App() {
               <span>Volver al botiquín</span>
             </button>
             <PeacePlanView
+              selectedMentor={selectedMentor}
+              onSelectMentor={handleSelectMentor}
+              onOpenChatWithMentor={(mentor, prompt) => {
+                handleSelectMentor(mentor);
+                if (prompt) setChatInitialPrompt(prompt);
+                setCurrentScreen('chat');
+              }}
               onOpenPlanDetails={() => setIsPlanOpen(true)}
               onOpenDay7Paywall={() => setCurrentScreen('day7_paywall')}
             />
@@ -570,36 +625,76 @@ export default function App() {
         )}
       </main>
 
-      {/* Botón flotante persistente de Bypass de Emergencia (solo en pantallas secundarias) */}
-      <EmergencyBypassButton
-        visible={currentScreen !== 'landing' && currentScreen !== 'form' && currentScreen !== 'transition' && currentScreen !== 'chat'}
-        onClick={() => handleStartFlow('madre_profesional', 'ansiedad_noche')}
-      />
+      {/* Pie de página sobrio, limpio y estructurado - Marca Tu Poder Mental™ */}
+      <footer className="w-full border-t border-white/[0.08] pt-14 pb-16 px-4 sm:px-6 bg-[#060F1E] mt-20 relative z-10">
+        <div className="max-w-5xl lg:max-w-6xl mx-auto space-y-8">
+          {/* Fila Principal de la Marca y Enlaces */}
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 text-center md:text-left">
+            {/* Marca Completa Tu Poder Mental */}
+            <div className="space-y-3 max-w-md flex flex-col items-center md:items-start">
+              <button
+                type="button"
+                onClick={() => setCurrentScreen('landing')}
+                className="cursor-pointer text-left focus:outline-none"
+                aria-label="Ir al inicio de Tu Poder Mental"
+              >
+                <TuPoderMentalLogo size={48} showText={true} />
+              </button>
+              <p className="text-[13px] text-[#94A3B8] leading-relaxed">
+                De la saturación mental al orden pacífico que Dios diseñó para ti. Dos únicos guías en este programa: <strong>Clara Luz y Leo</strong>.
+              </p>
+            </div>
 
-      {/* Pie de página sobrio y editorial */}
-      <footer className="w-full border-t border-white/[0.08] py-8 sm:py-10 px-4 sm:px-6 text-center bg-[#060F1E] mt-16 relative z-10">
-        <div className="max-w-5xl lg:max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[12.5px] text-[#94A3B8]">
-          <div className="text-center sm:text-left">
-            <span className="font-medium text-[#CBD5E1]">Tu Poder Mental™</span>
-            <span className="mx-1.5">•</span>
-            <span>F.E.™ Fortaleza Espiritual</span>
+            {/* Enlaces de Navegación Limpios (sin iconos que recarguen) */}
+            <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-3 text-[13px] text-[#CBD5E1]">
+              <button
+                type="button"
+                onClick={() => setCurrentScreen('peace_plan')}
+                className="hover:text-[#F59E0B] font-semibold transition-colors cursor-pointer"
+              >
+                Ruta 30 Días (Clara Luz o Leo)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleStartFlow('madre_profesional', 'ansiedad_noche')}
+                className="hover:text-[#F1F5F9] transition-colors cursor-pointer"
+              >
+                Botiquín de Paz
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentScreen('gratitude')}
+                className="hover:text-[#10B981] transition-colors cursor-pointer"
+              >
+                Diario de Gratitud
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentScreen('audios')}
+                className="hover:text-[#0EA5E9] transition-colors cursor-pointer"
+              >
+                Audios de Fe
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsAuthModalOpen(true)}
+                className="hover:text-emerald-400 transition-colors cursor-pointer"
+              >
+                {currentUser ? 'Cuenta Google Sincronizada' : 'Conectar con Google'}
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5 text-center">
-            <button
-              type="button"
-              onClick={() => setIsPlanOpen(true)}
-              className="hover:text-[#F59E0B] font-semibold transition-colors cursor-pointer"
-            >
-              Ruta 30 Días con Clara Luz y Leo
-            </button>
-            <span className="hidden xs:inline">•</span>
-            <button
-              type="button"
-              onClick={() => setIsAuthModalOpen(true)}
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
-            >
-              {currentUser ? 'Cuenta sincronizada con Google' : 'Conectar con Google'}
-            </button>
+
+          {/* Línea Divisoria y Legales con Precio Oficial */}
+          <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#64748B] text-center sm:text-left">
+            <div>
+              <span>© {new Date().getFullYear()} Tu Poder Mental™. Todos los derechos reservados.</span>
+              <span className="mx-2 hidden sm:inline">•</span>
+              <span className="block sm:inline">F.E.™ Fortaleza Espiritual</span>
+            </div>
+            <div className="text-[#94A3B8]">
+              Programa guiado de 30 días: <strong className="text-[#FBBF24]">USD 7.99 o $29.900 COL</strong> (Pago Único, sin membresías)
+            </div>
           </div>
         </div>
       </footer>
@@ -608,6 +703,26 @@ export default function App() {
       <PlanDetailsModal
         isOpen={isPlanOpen}
         onClose={() => setIsPlanOpen(false)}
+      />
+
+      {/* Modal del Test de Recepción Espiritual de 7 Preguntas */}
+      <SpiritualQuizModal
+        isOpen={isSpiritualQuizOpen}
+        onClose={() => {
+          setIsSpiritualQuizOpen(false);
+          try {
+            sessionStorage.setItem('fe_spiritual_quiz_dismissed', 'true');
+          } catch {}
+        }}
+        onStart30DayPlan={() => {
+          setIsSpiritualQuizOpen(false);
+          setCurrentScreen('peace_plan');
+        }}
+        onSelectMentorGuide={handleChooseMentorGuide}
+        onExploreFreeBotiquin={() => {
+          setIsSpiritualQuizOpen(false);
+          handleStartFlow('madre_profesional', 'ansiedad_noche');
+        }}
       />
 
       {/* Modal de autenticación con Firebase y Google Sign-In */}

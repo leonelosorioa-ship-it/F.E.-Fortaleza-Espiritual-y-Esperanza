@@ -14,7 +14,7 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
   textColor = 'text-[#0B1E36]',
 }) => {
   return (
-    <div className={`flex items-center gap-2 sm:gap-2.5 min-w-0 ${className}`}>
+    <div className={`flex items-center gap-2 sm:gap-2.5 min-w-0 shrink-0 whitespace-nowrap ${className}`}>
       {/* 
         Exact Vector Representation of "Nuevo Logo Tu Poder Mental"
         - Navy circular frame
@@ -27,7 +27,8 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
         viewBox="0 0 220 220"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 shrink-0 drop-shadow-sm select-none"
+        className="shrink-0 drop-shadow-md select-none rounded-full"
+        style={size ? { width: `${size}px`, height: `${size}px` } : undefined}
         aria-label="Logo Tu Poder Mental"
       >
         <defs>
@@ -80,6 +81,14 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
             <stop offset="100%" stopColor="#0F766E" />
           </linearGradient>
         </defs>
+
+        {/* Crisp Base Disc ensuring silhouettes, leaves and gold hearts are 100% visible on dark background */}
+        <circle
+          cx="110"
+          cy="104"
+          r="84"
+          fill="#FFFFFF"
+        />
 
         {/* 1. OUTER CIRCULAR RING */}
         <circle

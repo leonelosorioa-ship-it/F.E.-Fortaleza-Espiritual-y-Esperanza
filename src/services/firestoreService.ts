@@ -30,6 +30,31 @@ export async function syncUserProfile(profile: UserProfile): Promise<void> {
 }
 
 /**
+ * Listen to user profile document in real-time
+ */
+export function subscribeToUserProfile(
+  userId: string,
+  onSuccess: (profile: UserProfile | null) => void
+): () => void {
+  const path = `users/${userId}`;
+  const userRef = doc(db, 'users', userId);
+
+  return onSnapshot(
+    userRef,
+    (snapshot) => {
+      if (snapshot.exists()) {
+        onSuccess(snapshot.data() as UserProfile);
+      } else {
+        onSuccess(null);
+      }
+    },
+    (error) => {
+      handleFirestoreError(error, OperationType.GET, path);
+    }
+  );
+}
+
+/**
  * Listen to user saved anchors in real-time
  */
 export function subscribeToSavedAnchors(

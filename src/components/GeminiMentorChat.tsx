@@ -26,6 +26,8 @@ import {
 interface GeminiMentorChatProps {
   onBack: () => void;
   onOpenPlan?: () => void;
+  defaultMentor?: 'clara_luz' | 'leo';
+  initialPrompt?: string;
 }
 
 type MentorChoice = 'clara_luz' | 'leo' | 'ambos';
@@ -52,11 +54,13 @@ const QUICK_PROMPTS = [
 export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
   onBack,
   onOpenPlan,
+  defaultMentor = 'clara_luz',
+  initialPrompt,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(initialPrompt || '');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedMentor, setSelectedMentor] = useState<MentorChoice>('ambos');
+  const assignedMentor: 'clara_luz' | 'leo' = defaultMentor || (typeof window !== 'undefined' ? (localStorage.getItem('fe_selected_mentor') as 'clara_luz' | 'leo') : null) || 'clara_luz';
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isSpeaking, setIsSpeaking] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -96,16 +100,18 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
         initializeDefaultMessages();
       }
     }
-  }, [currentUser]);
+  }, [currentUser, assignedMentor]);
 
   const initializeDefaultMessages = () => {
     const welcomeMsg: ChatMessage = {
       id: 'welcome_' + Date.now(),
       userId: currentUser?.uid || 'guest',
       role: 'model',
-      mentor: 'ambos',
+      mentor: assignedMentor,
       content:
-        'Paz a ti. Te damos la bienvenida a este espacio sagrado de consejería y fortaleza espiritual. Somos Clara Luz y Leo. Si tu mente está cansada o tu espíritu afligido por la ansiedad, compártenos qué carga llevas esta noche. Te acompañaremos con la verdad de las Escrituras, sosiego litúrgico y principios de renovación mental.',
+        assignedMentor === 'clara_luz'
+          ? 'Paz y bendición a tu corazón. Soy Clara Luz, tu guía personal para tu programa de 30 días de F.E.™ Fortaleza Espiritual. Todo nuestro camino juntos está diseñado para traer calma a tu mente, descanso a tu sistema nervioso y gracia sin culpa. Dime, amado(a), ¿qué carga o inquietud tienes hoy? Estoy aquí para escucharte y orar contigo.'
+          : '¡Un saludo fraternal en Cristo! Soy Leo, tu guía personal para tu programa de 30 días de F.E.™ Fortaleza Espiritual. Todo nuestro camino juntos está enfocado en forjar una fe inquebrantable, dominio propio, disciplina y dirección divina. Dime, hermano(a), ¿qué desafío o prueba estás enfrentando hoy? Caminemos juntos en la Palabra.',
       timestamp: new Date().toISOString(),
     };
     setMessages([welcomeMsg]);
@@ -156,13 +162,13 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
             role: m.role,
             content: m.content,
           })),
-          mentor: selectedMentor,
+          mentor: assignedMentor,
         }),
       });
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || 'Error al comunicarse con los mentores');
+        throw new Error(errData.error || 'Error al comunicarse con tu guía');
       }
 
       const data = await response.json();
@@ -170,7 +176,7 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
         id: 'msg_model_' + Date.now(),
         userId: currentUser?.uid || 'guest',
         role: 'model',
-        mentor: selectedMentor,
+        mentor: assignedMentor,
         content: data.reply,
         timestamp: new Date().toISOString(),
       };
@@ -193,7 +199,7 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
         id: 'msg_err_' + Date.now(),
         userId: currentUser?.uid || 'guest',
         role: 'model',
-        mentor: selectedMentor,
+        mentor: assignedMentor,
         content:
           '«No temas, porque yo estoy contigo; no desmayes, porque yo soy tu Dios que te esfuerzo» (Isaías 41:10).\n\nHubo una interrupción en la señal, pero tu paz está resguardada. Toma una respiración profunda en 4 tiempos, inhala el aire fresco de la gracia y exhala la tensión. Intenta enviar tu mensaje nuevamente.',
         timestamp: new Date().toISOString(),
@@ -224,7 +230,7 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'es-ES';
     utterance.rate = 0.9; // Calming, slow pace
-    utterance.pitch = selectedMentor === 'clara_luz' ? 1.05 : 0.95;
+    utterance.pitch = assignedMentor === 'clara_luz' ? 1.05 : 0.95;
 
     utterance.onend = () => setIsSpeaking(null);
     utterance.onerror = () => setIsSpeaking(null);
@@ -302,47 +308,33 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
           </div>
         </div>
 
-        {/* Mentor Selector Chips */}
-        <div className="mt-4 pt-3 border-t border-white/[0.06] flex flex-wrap items-center gap-2">
-          <span className="text-[11.5px] text-[#94A3B8] font-medium mr-1">Voz del Mentor:</span>
-          <button
-            type="button"
-            onClick={() => setSelectedMentor('ambos')}
-            className={`min-h-[34px] px-3 py-1 rounded-[8px] text-[12px] font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-              selectedMentor === 'ambos'
-                ? 'bg-[#F59E0B] text-[#060F1E] font-semibold shadow-xs'
-                : 'bg-white/[0.04] text-[#CBD5E1] hover:bg-white/[0.08] border border-white/[0.08]'
-            }`}
-          >
-            <Compass className="w-3.5 h-3.5" />
-            <span>Clara Luz & Leo</span>
-          </button>
+        {/* Guía Oficial Asignado - Permanente y Personalizado */}
+        <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between flex-wrap gap-2.5">
+          <div className="flex items-center gap-2">
+            <span className="text-[11.5px] text-[#94A3B8] font-medium">Tu Guía Oficial:</span>
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold ${
+              assignedMentor === 'clara_luz'
+                ? 'bg-[#14B8A6]/20 text-[#5EEAD4] border border-[#14B8A6]/40'
+                : 'bg-[#F59E0B]/20 text-[#FBBF24] border border-[#F59E0B]/40'
+            }`}>
+              {assignedMentor === 'clara_luz' ? (
+                <>
+                  <Heart className="w-3.5 h-3.5 fill-current" />
+                  <span>Clara Luz • Acompañamiento Personalizado</span>
+                </>
+              ) : (
+                <>
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Leo • Acompañamiento Personalizado</span>
+                </>
+              )}
+            </span>
+          </div>
 
-          <button
-            type="button"
-            onClick={() => setSelectedMentor('clara_luz')}
-            className={`min-h-[34px] px-3 py-1 rounded-[8px] text-[12px] font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-              selectedMentor === 'clara_luz'
-                ? 'bg-rose-500 text-white font-semibold shadow-xs'
-                : 'bg-white/[0.04] text-[#CBD5E1] hover:bg-white/[0.08] border border-white/[0.08]'
-            }`}
-          >
-            <Heart className="w-3.5 h-3.5" />
-            <span>Mentora Clara Luz (Ternura & Gracia)</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setSelectedMentor('leo')}
-            className={`min-h-[34px] px-3 py-1 rounded-[8px] text-[12px] font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
-              selectedMentor === 'leo'
-                ? 'bg-sky-500 text-[#060F1E] font-semibold shadow-xs'
-                : 'bg-white/[0.04] text-[#CBD5E1] hover:bg-white/[0.08] border border-white/[0.08]'
-            }`}
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Mentor Leo (Fortaleza & Dominio)</span>
-          </button>
+          <div className="text-[11px] text-[#94A3B8] flex items-center gap-1.5 bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.06]">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>Conversación 100% personalizada con tu guía</span>
+          </div>
         </div>
       </div>
 
@@ -350,6 +342,7 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
       <div className="flex-1 space-y-4 overflow-y-auto pr-1 pb-4">
         {messages.map((msg) => {
           const isUser = msg.role === 'user';
+          const isClara = (msg.mentor || assignedMentor) === 'clara_luz';
           return (
             <div
               key={msg.id}
@@ -362,17 +355,17 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
                 className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold ${
                   isUser
                     ? 'bg-amber-500/20 text-[#F59E0B] border border-amber-500/30'
-                    : msg.mentor === 'clara_luz'
-                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                    : msg.mentor === 'leo'
-                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                    : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                    : isClara
+                    ? 'bg-[#14B8A6]/20 text-[#5EEAD4] border border-[#14B8A6]/40'
+                    : 'bg-[#F59E0B]/20 text-[#FBBF24] border border-[#F59E0B]/40'
                 }`}
               >
                 {isUser ? (
                   <UserIcon className="w-4 h-4" />
+                ) : isClara ? (
+                  <Heart className="w-4 h-4 fill-current" />
                 ) : (
-                  <Bot className="w-4 h-4" />
+                  <ShieldCheck className="w-4 h-4" />
                 )}
               </div>
 
@@ -387,11 +380,7 @@ export const GeminiMentorChat: React.FC<GeminiMentorChatProps> = ({
                 {!isUser && (
                   <div className="flex items-center justify-between text-[11px] text-[#F59E0B] font-medium mb-1.5 border-b border-white/[0.06] pb-1">
                     <span>
-                      {msg.mentor === 'clara_luz'
-                        ? 'Mentora Clara Luz'
-                        : msg.mentor === 'leo'
-                        ? 'Mentor Leo'
-                        : 'Mentores Clara Luz & Leo'}
+                      {isClara ? 'Mentora Clara Luz (Tu Guía)' : 'Mentor Leo (Tu Guía)'}
                     </span>
 
                     {/* Action buttons */}

@@ -173,6 +173,8 @@ export interface UserProfile {
   activeRole?: UserRoleProfile;
   currentDay?: number;
   hasFullAccess?: boolean;
+  selectedMentor?: 'clara_luz' | 'leo';
+  isMentorLocked?: boolean;
   lastLoginAt?: string;
   loginCount?: number;
   storageQuotaUsedBytes?: number;

@@ -35,6 +35,7 @@ interface HeaderProps {
   onOpenFiles?: () => void;
   onOpenGoogleDrive?: () => void;
   onOpenGoogleSheets?: () => void;
+  onOpenSpiritualQuiz?: () => void;
   filesCount?: number;
   remindersActive?: boolean;
   savedCount: number;
@@ -55,6 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenFiles,
   onOpenGoogleDrive,
   onOpenGoogleSheets,
+  onOpenSpiritualQuiz,
   filesCount = 0,
   remindersActive,
   savedCount,
@@ -97,83 +99,43 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Clean, uncluttered Navigation */}
-        <nav aria-label="Navegación principal" className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Desktop/Tablet Direct Shortcuts (Hidden on mobile to preserve brand space) */}
-          <div className="hidden md:flex items-center gap-1.5 lg:gap-2">
-            {/* Mentores Chat */}
+        <nav aria-label="Navegación principal" className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Test Espiritual de 7 Preguntas */}
+          {onOpenSpiritualQuiz && (
             <button
               type="button"
-              onClick={onOpenChat}
-              className="min-h-[40px] px-3 py-1.5 rounded-[10px] bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 border border-amber-500/30 text-[12.5px] font-medium text-[#F59E0B] flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Conversar con Clara Luz & Leo"
+              onClick={onOpenSpiritualQuiz}
+              className="min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-[10px] bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 border border-amber-500/30 text-[12px] sm:text-[13px] font-semibold text-amber-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Evaluación de 7 Preguntas: Diagnóstico Espiritual y de Esperanza"
             >
-              <Sparkles className="w-3.5 h-3.5 shrink-0" strokeWidth={2} />
-              <span>Mentores</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden xs:inline">Test Espiritual</span>
+              <span className="xs:hidden">Test</span>
             </button>
+          )}
 
-            {/* Ruta 30D */}
-            <button
-              type="button"
-              onClick={onOpenPeacePlan}
-              className="min-h-[40px] px-2.5 py-1.5 rounded-[10px] text-[12.5px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Ruta 30 Días en Dios"
-            >
-              <Compass className="w-4 h-4 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
-              <span>Ruta 30D</span>
-            </button>
+          {/* Ruta 30 Días - Primary Direct Action */}
+          <button
+            type="button"
+            onClick={onOpenPeacePlan}
+            className="min-h-[40px] px-3 sm:px-3.5 py-1.5 rounded-[10px] bg-amber-500/15 hover:bg-amber-500/25 active:bg-amber-500/35 border border-amber-500/35 text-[12px] sm:text-[13px] font-semibold text-[#FBBF24] flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+            title="Ruta 30 Días en Dios con Clara Luz o Leo"
+          >
+            <span>Ruta 30 Días</span>
+            <span className="hidden lg:inline text-[11px] font-normal text-[#FDE68A]/80">• Clara Luz y Leo</span>
+          </button>
 
-            {/* Gratitud */}
-            <button
-              type="button"
-              onClick={onOpenGratitude}
-              className="min-h-[40px] px-2.5 py-1.5 rounded-[10px] text-[12.5px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Diario de Gratitud"
-            >
-              <HeartHandshake className="w-4 h-4 text-[#10B981] shrink-0" strokeWidth={1.75} />
-              <span>Gratitud</span>
-            </button>
-
-            {/* Audios */}
-            <button
-              type="button"
-              onClick={onOpenAudios}
-              className="min-h-[40px] px-2.5 py-1.5 rounded-[10px] text-[12.5px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center gap-1.5 transition-colors cursor-pointer"
-              title="Audios de Fe"
-            >
-              <Volume2 className="w-4 h-4 text-[#0EA5E9] shrink-0" strokeWidth={1.75} />
-              <span>Audios</span>
-            </button>
-
-            {/* Mis Oraciones (with counter badge) */}
-            <button
-              type="button"
-              onClick={onOpenHistory}
-              className="min-h-[40px] px-3 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-[12.5px] font-medium text-[#F1F5F9] flex items-center gap-1.5 transition-colors cursor-pointer"
-              aria-label={`Ver oraciones guardadas (${savedCount})`}
-              title="Mis oraciones guardadas"
-            >
-              <Bookmark className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
-              <span>Oraciones</span>
-              {savedCount > 0 && (
-                <span className="text-[10.5px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#F59E0B] text-[#060F1E] font-bold">
-                  {savedCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Mobile-only visible quick action: Oraciones */}
+          {/* Mis Oraciones (with counter badge) */}
           <button
             type="button"
             onClick={onOpenHistory}
-            className="md:hidden min-h-[40px] px-2.5 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-[12px] font-medium text-[#F1F5F9] flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-[12px] sm:text-[12.5px] font-medium text-[#F1F5F9] flex items-center gap-1.5 transition-colors cursor-pointer"
             aria-label={`Ver oraciones guardadas (${savedCount})`}
             title="Mis oraciones guardadas"
           >
-            <Bookmark className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
-            <span className="hidden xs:inline text-[11.5px]">Oraciones</span>
+            <span>Oraciones</span>
             {savedCount > 0 && (
-              <span className="text-[10px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#F59E0B] text-[#060F1E] font-bold">
+              <span className="text-[10px] sm:text-[10.5px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#F59E0B] text-[#060F1E] font-bold">
                 {savedCount}
               </span>
             )}
@@ -258,6 +220,20 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
                   Experiencias de Fe
                 </div>
+
+                {onOpenSpiritualQuiz && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      onOpenSpiritualQuiz();
+                    }}
+                    className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-amber-300 hover:text-amber-200 flex items-center gap-2.5 transition-colors cursor-pointer font-semibold"
+                  >
+                    <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Test Espiritual (7 Preguntas)</span>
+                  </button>
+                )}
 
                 {onOpenDailyPromise && (
                   <button

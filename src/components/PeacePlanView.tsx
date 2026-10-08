@@ -1,26 +1,71 @@
 import React, { useState } from 'react';
 import { PEACE_ANCHOR_PLAN } from '../data/anchors';
-import { Compass, Lock, Sparkles, ShieldCheck, Heart, ArrowRight, Image as ImageIcon, CheckCircle2, ChevronRight, X, Eye } from 'lucide-react';
+import {
+  Compass,
+  Lock,
+  Sparkles,
+  ShieldCheck,
+  Heart,
+  ArrowRight,
+  Image as ImageIcon,
+  CheckCircle2,
+  ChevronRight,
+  X,
+  Eye,
+  UserCheck,
+  RefreshCw,
+  MessageCircle,
+  Shield,
+} from 'lucide-react';
 import { GraceStreakTracker } from './GraceStreakTracker';
 import { DayIllustrationCard } from './DayIllustrationCard';
 import { FaithGallery } from './FaithGallery';
+import { MentorSelectorModal } from './MentorSelectorModal';
+import {
+  getMentorDailyGuidance,
+  CLARA_LUZ_PROFILE,
+  LEO_PROFILE,
+} from '../data/mentorProgramGuidance';
 
 interface PeacePlanViewProps {
   onOpenPlanDetails?: () => void;
   onOpenDay7Paywall?: () => void;
+  selectedMentor?: 'clara_luz' | 'leo';
+  onSelectMentor?: (mentor: 'clara_luz' | 'leo') => void;
+  onOpenChatWithMentor?: (mentor: 'clara_luz' | 'leo', prompt?: string) => void;
 }
 
 export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
   onOpenPlanDetails,
   onOpenDay7Paywall,
+  selectedMentor = 'clara_luz',
+  onSelectMentor,
+  onOpenChatWithMentor,
 }) => {
   const [selectedDay, setSelectedDay] = useState<number>(1);
   const [activeWeekTab, setActiveWeekTab] = useState<number>(1);
   const [completedDays, setCompletedDays] = useState<number[]>([1, 2]);
   const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(false);
   const [selectedGalleryCategory, setSelectedGalleryCategory] = useState<string>('todos');
+  const [isMentorModalOpen, setIsMentorModalOpen] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('fe_mentor_locked') !== 'true' && localStorage.getItem('fe_mentor_chosen') !== 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [localMentor, setLocalMentor] = useState<'clara_luz' | 'leo'>(selectedMentor);
 
+  React.useEffect(() => {
+    if (selectedMentor) {
+      setLocalMentor(selectedMentor);
+    }
+  }, [selectedMentor]);
+
+  const activeMentor = selectedMentor || localMentor;
+  const mentorProfile = activeMentor === 'clara_luz' ? CLARA_LUZ_PROFILE : LEO_PROFILE;
   const currentPlan = PEACE_ANCHOR_PLAN.find((p) => p.dayNumber === selectedDay) || PEACE_ANCHOR_PLAN[0];
+  const mentorGuidance = getMentorDailyGuidance(currentPlan.dayNumber, activeMentor);
 
   const weeks = [
     { number: 1, label: 'Semana 1', range: 'Días 1 - 7', desc: 'Fundamentos de Fe & Esperanza', isFree: true, quadrant: 'Cuerpo & Mente' },
@@ -31,6 +76,19 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
   ];
 
   const filteredDays = PEACE_ANCHOR_PLAN.filter((d) => d.weekNumber === activeWeekTab);
+
+  const handleChooseMentor = (mentor: 'clara_luz' | 'leo') => {
+    setLocalMentor(mentor);
+    try {
+      localStorage.setItem('fe_mentor_chosen', 'true');
+      localStorage.setItem('fe_mentor_locked', 'true');
+      localStorage.setItem('fe_selected_mentor', mentor);
+    } catch {}
+    if (onSelectMentor) {
+      onSelectMentor(mentor);
+    }
+    setIsMentorModalOpen(false);
+  };
 
   const toggleDayCompletion = (dayNum: number) => {
     setCompletedDays((prev) =>
@@ -55,8 +113,8 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
 
   return (
     <div className="w-full max-w-5xl lg:max-w-6xl mx-auto space-y-6 sm:space-y-8 animate-fade-in overflow-hidden">
-      {/* Header Banner */}
-      <div className="bg-[#0B1728] border border-white/[0.08] rounded-[20px] p-5 sm:p-8 space-y-4">
+      {/* 1. Header Banner & Mentor Information */}
+      <div className="bg-[#0B1728] border border-white/[0.08] rounded-[20px] p-5 sm:p-8 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3.5 border-b border-white/[0.08] gap-2">
           <div className="flex items-center gap-2">
             <Compass className="w-5 h-5 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
@@ -74,11 +132,67 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
           </div>
         </div>
 
-        <h1 className="font-editorial text-[22px] sm:text-[30px] lg:text-[32px] text-[#F1F5F9] font-normal leading-snug">
+        {/* 2. CARD DEL GUÍA SELECCIONADO PARA EL PROGRAMA DE 30 DÍAS */}
+        <div className={`p-4 sm:p-5 rounded-[18px] border-2 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
+          activeMentor === 'clara_luz'
+            ? 'bg-gradient-to-r from-[#072428] via-[#091D2F] to-[#071322] border-[#14B8A6]/60 shadow-[0_4px_20px_rgba(20,184,166,0.2)]'
+            : 'bg-gradient-to-r from-[#241707] via-[#1F190D] to-[#071322] border-[#F59E0B]/60 shadow-[0_4px_20px_rgba(245,158,11,0.2)]'
+        }`}>
+          <div className="flex items-start sm:items-center gap-3.5">
+            {/* Avatar Glowing */}
+            <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5 shrink-0 ${
+              activeMentor === 'clara_luz'
+                ? 'bg-gradient-to-tr from-[#14B8A6] via-[#0D9488] to-[#F59E0B] shadow-[0_0_15px_rgba(20,184,166,0.4)]'
+                : 'bg-gradient-to-tr from-[#0EA5E9] via-[#F59E0B] to-[#10B981] shadow-[0_0_15px_rgba(245,158,11,0.4)]'
+            }`}>
+              <div className="w-full h-full rounded-full bg-[#071322] flex items-center justify-center overflow-hidden border border-white/40">
+                {activeMentor === 'clara_luz' ? (
+                  <svg className="w-8 h-8 text-[#99F6E4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                    <path d="M12 14c2.5 0 4.5 1.5 4.5 3.5" />
+                  </svg>
+                ) : (
+                  <svg className="w-8 h-8 text-[#93C5FD]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                    <path d="M9 7h6" strokeWidth={2.5} />
+                  </svg>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#CBD5E1]">
+                  Tu Guía Oficial de los 30 Días:
+                </span>
+                <span className={`text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full ${mentorProfile.badgeBg} ${mentorProfile.badgeText} border ${mentorProfile.border}`}>
+                  {mentorProfile.fullName} • {mentorProfile.title}
+                </span>
+              </div>
+              <h2 className="font-editorial text-[18px] sm:text-[21px] text-white font-normal leading-snug">
+                Programa guiado por {mentorProfile.fullName}
+              </h2>
+              <p className="text-[12.5px] text-[#CBD5E1] line-clamp-1 max-w-[65ch]">
+                {mentorProfile.specialty}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 self-end md:self-center w-full md:w-auto justify-end">
+            <div className="px-3.5 py-2 rounded-[10px] bg-white/[0.05] border border-white/[0.12] text-[12px] font-semibold text-[#CBD5E1] flex items-center gap-2 shadow-xs">
+              <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+              <span>Guía Permanente de tus 30 Días</span>
+            </div>
+          </div>
+        </div>
+
+        <h1 className="font-editorial text-[22px] sm:text-[28px] lg:text-[30px] text-[#F1F5F9] font-normal leading-snug">
           El itinerario de 30 días para ordenar tu vida con Dios
         </h1>
-        <p className="text-[13.5px] sm:text-[15px] text-[#94A3B8] leading-relaxed max-w-[85ch]">
-          Diseñado para madres, padres y profesionales que buscan transformar la sobrecarga en un hábito sólido de paz. Cada día incluye arte espiritual contemplativo, versículos con mensaje clave y acción de anclaje.
+        <p className="text-[13.5px] sm:text-[14.5px] text-[#94A3B8] leading-relaxed max-w-[85ch]">
+          Diseñado para madres, padres y profesionales que buscan transformar la sobrecarga en un hábito sólido de paz. Todo tu proceso es acompañado por tu guía elegido ({mentorProfile.fullName}), con arte contemplativo, reflexiones personalizadas y acciones de anclaje.
         </p>
 
         {/* Gallery button trigger */}
@@ -87,7 +201,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
             <button
               type="button"
               onClick={() => setIsGalleryOpen(true)}
-              className="min-h-[44px] px-4 py-2 rounded-[10px] bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border border-white/[0.1] text-[#FBBF24] text-[12.5px] font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+              className="min-h-[42px] px-4 py-2 rounded-[10px] bg-white/[0.05] hover:bg-white/[0.1] active:bg-white/[0.15] border border-white/[0.1] text-[#FBBF24] text-[12.5px] font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-xs"
             >
               <ImageIcon className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
               <span>Ver Itinerario 30 Días (Galería)</span>
@@ -95,15 +209,15 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
 
             <a
               href="#galeria-santuario"
-              className="min-h-[44px] px-3.5 py-2 rounded-[10px] bg-white/[0.03] hover:bg-white/[0.08] text-[#CBD5E1] text-[12.5px] font-medium transition-colors flex items-center gap-1.5"
+              className="min-h-[42px] px-3.5 py-2 rounded-[10px] bg-white/[0.03] hover:bg-white/[0.08] text-[#CBD5E1] text-[12.5px] font-medium transition-colors flex items-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
-              <span>Galería de Fe Aleatoria</span>
+              <span>Galería de Fe</span>
             </a>
           </div>
 
-          <span className="text-[11.5px] text-[#94A3B8]">
-            Mentores: Clara Luz & Leo
+          <span className="text-[12px] font-medium text-[#CBD5E1]">
+            Guía activo: <strong className="text-[#FBBF24]">{mentorProfile.fullName}</strong>
           </span>
         </div>
       </div>
@@ -119,123 +233,121 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
         }}
       />
 
-      {/* Week Selector Tabs - Horizontal Swipeable on Mobile */}
-      <div className="space-y-1.5">
-        <span className="text-[10.5px] sm:text-[11px] uppercase tracking-wider font-semibold text-[#94A3B8] block">
-          Semanas del Proceso:
-        </span>
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none snap-x -mx-1 px-1">
-          {weeks.map((w) => {
-            const isActive = activeWeekTab === w.number;
-            return (
-              <button
-                key={w.number}
-                type="button"
-                onClick={() => {
-                  setActiveWeekTab(w.number);
-                  const firstDayOfWeek = PEACE_ANCHOR_PLAN.find((d) => d.weekNumber === w.number);
-                  if (firstDayOfWeek) setSelectedDay(firstDayOfWeek.dayNumber);
-                }}
-                className={`min-h-[44px] px-3.5 py-2 rounded-[12px] text-left transition-all border shrink-0 snap-start cursor-pointer min-w-[130px] sm:min-w-0 sm:flex-1 ${
-                  isActive
-                    ? 'bg-[#0E223D] text-[#F1F5F9] border-[#F59E0B] shadow-sm ring-1 ring-[#F59E0B]/30'
-                    : 'bg-[#0B1728] text-[#94A3B8] border-white/[0.08] hover:bg-[#0B1728]/80 hover:text-[#CBD5E1]'
-                }`}
-              >
-                <div className="flex items-center gap-1.5 justify-between">
-                  <span className="text-[12px] font-semibold whitespace-nowrap">{w.label}</span>
-                  {!w.isFree ? (
-                    <Lock className="w-3 h-3 text-[#F59E0B]" strokeWidth={2} />
-                  ) : (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-                  )}
-                </div>
-                <span className={`text-[9.5px] block truncate mt-0.5 ${isActive ? 'text-[#F59E0B]' : 'text-[#64748B]'}`}>
-                  {w.range}
+      {/* Selector de Semanas (Tabs) */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[11.5px] font-semibold tracking-wider uppercase text-[#CBD5E1]">
+            Itinerario Semanal (30 Días de Transformación)
+          </span>
+          <span className="text-[11px] text-[#94A3B8]">
+            {completedDays.length} de 30 días sellados
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          {weeks.map((week) => (
+            <button
+              key={week.number}
+              type="button"
+              onClick={() => setActiveWeekTab(week.number)}
+              className={`p-3 rounded-[12px] text-left transition-all cursor-pointer border ${
+                activeWeekTab === week.number
+                  ? 'bg-[#0E223D] border-[#F59E0B] shadow-sm'
+                  : 'bg-[#060F1E] border-white/[0.08] hover:border-white/[0.15]'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className={`text-[11px] font-bold ${activeWeekTab === week.number ? 'text-[#F59E0B]' : 'text-[#F1F5F9]'}`}>
+                  {week.label}
                 </span>
-              </button>
-            );
-          })}
+                {week.isFree ? (
+                  <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded-full bg-[#10B981]/15 text-[#34D399]">
+                    Libre
+                  </span>
+                ) : (
+                  <Lock className="w-3 h-3 text-[#94A3B8]" />
+                )}
+              </div>
+              <span className="text-[10px] text-[#94A3B8] block">{week.range}</span>
+              <span className="text-[10.5px] text-[#CBD5E1] line-clamp-1 mt-0.5">{week.desc}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Days Grid in Active Week - Responsive 3 col on mobile, 4 on tablet, 7 on desktop */}
-      <div className="space-y-1.5">
-        <span className="text-[10.5px] sm:text-[11px] uppercase tracking-wider font-semibold text-[#94A3B8] block">
-          Días en {weeks.find((w) => w.number === activeWeekTab)?.label}:
-        </span>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
+      {/* Grid de Días de la Semana Activa */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-[12px] text-[#94A3B8]">
+          <span>Selecciona un día para meditar con tu guía {mentorProfile.fullName}:</span>
+          <span>{weeks.find(w => w.number === activeWeekTab)?.quadrant}</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-7 gap-2">
           {filteredDays.map((day) => {
             const isSelected = selectedDay === day.dayNumber;
-            const isFree = day.isFreePreview !== false;
-            const isDone = completedDays.includes(day.dayNumber);
+            const isCompleted = completedDays.includes(day.dayNumber);
 
             return (
               <button
                 key={day.dayNumber}
                 type="button"
                 onClick={() => setSelectedDay(day.dayNumber)}
-                className={`p-2.5 sm:p-3 rounded-[12px] text-center transition-all border flex flex-col items-center justify-between min-h-[76px] sm:min-h-[82px] cursor-pointer ${
+                className={`p-2.5 rounded-[12px] border text-left transition-all cursor-pointer relative ${
                   isSelected
-                    ? 'bg-[#0E223D] border-[#F59E0B] ring-1 ring-[#F59E0B]/50 shadow-md'
-                    : 'bg-[#0B1728] border-white/[0.08] hover:border-white/[0.2] hover:bg-[#0B1728]/90'
+                    ? 'bg-[#0E223D] border-[#F59E0B] ring-1 ring-[#F59E0B]/40 shadow-sm'
+                    : isCompleted
+                    ? 'bg-[#061814] border-[#10B981]/40 hover:border-[#10B981]'
+                    : 'bg-[#060F1E] border-white/[0.08] hover:border-white/[0.18]'
                 }`}
               >
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-[11px] sm:text-[11.5px] font-bold text-[#F1F5F9]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className={`text-[11px] font-bold ${isSelected ? 'text-[#F59E0B]' : 'text-[#F1F5F9]'}`}>
                     Día {day.dayNumber}
                   </span>
-                  {!isFree ? (
-                    <Lock className="w-3 h-3 text-[#F59E0B]" strokeWidth={2} />
-                  ) : isDone ? (
-                    <span className="w-2 h-2 rounded-full bg-[#10B981]" />
+                  {isCompleted ? (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#10B981]" />
+                  ) : !day.isFreePreview ? (
+                    <Lock className="w-3 h-3 text-[#94A3B8]" />
                   ) : null}
                 </div>
-
-                <span className="text-[9.5px] sm:text-[10px] text-[#CBD5E1] line-clamp-2 text-left w-full mt-1 leading-snug">
+                <span className="text-[10px] text-[#CBD5E1] line-clamp-2 leading-tight">
                   {day.theme}
                 </span>
-
-                {isSelected && <div className="w-2.5 h-1 rounded-full bg-[#F59E0B] mt-1 shrink-0" />}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Selected Day Process Card */}
-      <div className="bg-[#0B1728] border border-white/[0.08] rounded-[18px] p-4 sm:p-6 space-y-4 shadow-xl">
-        {/* Day Header Info */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#F59E0B]">
-                {currentPlan.categoryLabel || currentPlan.theme}
+      {/* CONTENIDO DEL DÍA SELECCIONADO */}
+      <div className="bg-[#0B1728] border border-white/[0.08] rounded-[20px] p-5 sm:p-7 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/[0.08] gap-3">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <span className="text-[10.5px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#F59E0B]/15 text-[#FBBF24] border border-[#F59E0B]/30">
+                Semana {currentPlan.weekNumber} • Día {currentPlan.dayNumber} de 30
               </span>
-              <span className="text-[#64748B]">•</span>
-              <span className="text-[10.5px] text-[#94A3B8] font-semibold">
-                Día {currentPlan.dayNumber} de 30
+              <span className={`text-[10.5px] font-semibold uppercase px-2 py-0.5 rounded-full ${mentorProfile.badgeBg} ${mentorProfile.badgeText} border ${mentorProfile.border}`}>
+                Acompañado por {mentorProfile.fullName}
               </span>
             </div>
-            <h2 className="font-editorial text-[19px] sm:text-[23px] text-[#F1F5F9] font-normal leading-snug">
+            <h2 className="font-editorial text-[22px] sm:text-[25px] text-[#F1F5F9] font-normal leading-snug">
               {currentPlan.title}
             </h2>
           </div>
 
-          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={() => toggleDayCompletion(currentPlan.dayNumber)}
-              className={`min-h-[44px] px-3.5 py-1.5 rounded-[10px] text-[12px] font-medium border cursor-pointer transition-colors flex items-center gap-1.5 ${
+              className={`min-h-[40px] px-3.5 py-2 rounded-[10px] text-[12.5px] font-semibold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs ${
                 completedDays.includes(currentPlan.dayNumber)
-                  ? 'bg-[#10B981]/20 border-[#10B981] text-[#A7F3D0]'
-                  : 'bg-white/[0.04] border-white/[0.1] text-[#CBD5E1] hover:bg-white/[0.08]'
+                  ? 'bg-[#10B981] text-[#060F1E]'
+                  : 'bg-white/[0.05] hover:bg-white/[0.1] text-[#CBD5E1] border border-white/[0.1]'
               }`}
             >
-              {completedDays.includes(currentPlan.dayNumber) && (
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#10B981]" />
-              )}
-              <span>{completedDays.includes(currentPlan.dayNumber) ? 'Completado' : 'Marcar completado'}</span>
+              <CheckCircle2 className="w-4 h-4" />
+              <span>{completedDays.includes(currentPlan.dayNumber) ? 'Día Completado' : 'Marcar como Completado'}</span>
             </button>
           </div>
         </div>
@@ -249,12 +361,88 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
           />
         </div>
 
-        {/* 2. MENSAJE CLAVE DESTACADO (Solicitado por el usuario) */}
+        {/* 2. CARD EXCLUSIVO DE TU GUÍA OFICIAL (CLARA LUZ O LEO) */}
+        <div className={`p-5 rounded-[18px] border-2 transition-all space-y-4 ${
+          activeMentor === 'clara_luz'
+            ? 'bg-gradient-to-br from-[#072528] via-[#091D2F] to-[#071322] border-[#14B8A6]/70 shadow-lg'
+            : 'bg-gradient-to-br from-[#291807] via-[#1E180D] to-[#071322] border-[#F59E0B]/70 shadow-lg'
+        }`}>
+          {/* Header de la Reflexión del Guía */}
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] flex-wrap gap-2">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center border shrink-0 ${
+                activeMentor === 'clara_luz'
+                  ? 'bg-[#14B8A6]/20 border-[#14B8A6] text-[#5EEAD4]'
+                  : 'bg-[#F59E0B]/20 border-[#F59E0B] text-[#FBBF24]'
+              }`}>
+                {activeMentor === 'clara_luz' ? (
+                  <Heart className="w-5 h-5 fill-current" />
+                ) : (
+                  <Shield className="w-5 h-5 fill-current" />
+                )}
+              </div>
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-wider block text-white">
+                  Acompañamiento del Guía: {mentorProfile.fullName}
+                </span>
+                <span className={`text-[12px] font-medium ${mentorProfile.badgeText}`}>
+                  {mentorGuidance.toneLabel}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {onOpenChatWithMentor && (
+                <button
+                  type="button"
+                  onClick={() => onOpenChatWithMentor(activeMentor, `Hola ${mentorProfile.fullName}, estoy en el Día ${currentPlan.dayNumber}: «${currentPlan.title}». ¿Qué consejo espiritual tienes para mí hoy?`)}
+                  className="px-3 py-1.5 rounded-[10px] bg-white/[0.08] hover:bg-white/[0.15] text-[11.5px] font-semibold text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-[#F59E0B]" />
+                  <span>Hablar con {mentorProfile.fullName}</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Mensaje pastoral de Clara Luz o Leo */}
+          <div className="space-y-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#CBD5E1] block">
+              Mensaje Personal de {mentorProfile.fullName} para tu Día {currentPlan.dayNumber}
+            </span>
+            <p className="font-editorial text-[14.5px] sm:text-[15.5px] text-[#F1F5F9] leading-relaxed italic bg-black/25 p-3.5 rounded-[12px] border border-white/[0.05]">
+              {mentorGuidance.reflectionMessage}
+            </p>
+          </div>
+
+          {/* Oración Guiada de Clara Luz o Leo */}
+          <div className="space-y-1.5">
+            <span className={`text-[10.5px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${mentorProfile.badgeText}`}>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Oración de Entrega con {mentorProfile.fullName}</span>
+            </span>
+            <p className="text-[13px] sm:text-[13.5px] text-[#CBD5E1] leading-relaxed bg-white/[0.03] p-3 rounded-[12px] border border-white/[0.05]">
+              {mentorGuidance.guidedPrayer}
+            </p>
+          </div>
+
+          {/* Desafío Práctico de Fe de Clara Luz o Leo */}
+          <div className="space-y-1 pt-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#A7F3D0] block">
+              Desafío de Calma y Fe Guiado por {mentorProfile.fullName}:
+            </span>
+            <p className="text-[12.5px] text-[#D1FAE5]">
+              {mentorGuidance.mentorChallenge}
+            </p>
+          </div>
+        </div>
+
+        {/* 3. MENSAJE CLAVE DESTACADO */}
         {currentPlan.keyMessage && (
           <div className="p-4 rounded-[14px] bg-gradient-to-r from-[#F59E0B]/15 via-[#0E223D] to-[#0B1728] border border-[#F59E0B]/40 shadow-sm space-y-1">
             <span className="text-[10px] sm:text-[10.5px] font-bold text-[#FBBF24] uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" strokeWidth={2.5} />
-              <span>Mensaje Clave para Renovar el Ánimo y la Confianza</span>
+              <span>Mensaje Clave Bíblico</span>
             </span>
             <p className="text-[13px] sm:text-[14px] text-[#F1F5F9] font-medium leading-relaxed">
               {currentPlan.keyMessage}
@@ -270,7 +458,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
                 Cierre de la Primera Semana
               </span>
               <p className="text-[13px] text-[#F1F5F9]">
-                Construye un refugio a prueba de tormentas con Clara Luz y Leo durante los 30 días.
+                Construye un refugio a prueba de tormentas con tu guía {mentorProfile.fullName} durante los 30 días.
               </p>
             </div>
             <button
@@ -290,7 +478,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
             <div className="flex items-start gap-2.5">
               <ShieldCheck className="w-5 h-5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={1.75} />
               <div className="text-[12.5px] sm:text-[13px] text-[#CBD5E1]">
-                <strong>Proceso de 30 Días con Clara Luz y Leo:</strong> Este día forma parte del itinerario guiado por nuestros dos mentores de Fe y Esperanza. Accede por un <strong>único valor de USD 7.99 o $29.900 COL</strong> (sin membresía ni pagos recurrentes).
+                <strong>Proceso de 30 Días con {mentorProfile.fullName}:</strong> Este día forma parte del itinerario guiado. Accede por un <strong>único valor de USD 7.99 o $29.900 COL</strong> (sin membresía ni pagos recurrentes).
               </div>
             </div>
             {onOpenPlanDetails && (
@@ -339,10 +527,23 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
         </div>
       </div>
 
-      {/* COMPONENTE GALERÍA VISUAL DE FE (FAMILIAS, NATURALEZA, ORACIÓN - MODO SANTUARIO NOCTURNO) */}
+      {/* COMPONENTE GALERÍA VISUAL DE FE */}
       <div id="galeria-santuario" className="pt-2">
         <FaithGallery />
       </div>
+
+      {/* MODAL: Selector de Guía (Clara Luz o Leo) - Elección Permanente Obligatoria */}
+      <MentorSelectorModal
+        isOpen={isMentorModalOpen}
+        onClose={() => {
+          if (localStorage.getItem('fe_mentor_chosen') === 'true') {
+            setIsMentorModalOpen(false);
+          }
+        }}
+        currentMentor={activeMentor}
+        onSelectMentor={handleChooseMentor}
+        isLocked={true}
+      />
 
       {/* MODAL: Galería de Ilustraciones Espirituales (30 Días) */}
       {isGalleryOpen && (

@@ -7,16 +7,18 @@ interface FlexiHeroAnimationProps {
   onStartFlow: () => void;
   onOpenMotherSanctuary?: () => void;
   onOpenAuth?: () => void;
+  onOpenSpiritualQuiz?: () => void;
 }
 
 export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
   onStartFlow,
   onOpenMotherSanctuary,
   onOpenAuth,
+  onOpenSpiritualQuiz,
 }) => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
-  // Column 1 Scenes (Repeated for seamless infinite loop)
+  // Column 1 Scenes (Scrolls upwards for dynamic infinite loop)
   const col1Scenes: JesusSceneKey[] = [
     'campo_lavanda_juntos',
     'clara_intimidad_paz',
@@ -28,7 +30,7 @@ export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
     'custodia_santisimo_radiante',
   ];
 
-  // Column 2 Scenes (Scrolls downwards for dynamic counter-motion)
+  // Column 2 Scenes (Scrolls downwards for counter-motion)
   const col2Scenes: JesusSceneKey[] = [
     'fortaleza_espiritual_final',
     'leo_fortaleza_oracion',
@@ -40,67 +42,42 @@ export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
     'adoracion_altar_misericordia',
   ];
 
-  // Column 3 Scenes (For tablet & desktop viewports)
-  const col3Scenes: JesusSceneKey[] = [
-    'custodia_santisimo_radiante',
-    'campo_lavanda_juntos',
-    'fortaleza_espiritual_final',
-    'clara_intimidad_paz',
-    'custodia_santisimo_radiante',
-    'campo_lavanda_juntos',
-    'fortaleza_espiritual_final',
-    'clara_intimidad_paz',
-  ];
-
   return (
     <>
       <section
         className="relative w-full rounded-[24px] sm:rounded-[32px] overflow-hidden bg-[#060F17] border border-[#22C55E]/30 shadow-2xl min-h-[580px] sm:min-h-[640px] lg:min-h-[680px] flex flex-col justify-end p-5 sm:p-8 lg:p-12 select-none"
-        aria-label="Animación principal de bienvenida estilo Flexi"
+        aria-label="Animación principal de bienvenida con dos filas dinámicas"
       >
         {/* ====================================================================
-            1. BACKGROUND: TILTED MULTI-COLUMN CONTINUOUS SCROLLING ANIMATION
-            Matches the dynamic perspective and flow of "Ejemplo Flexi"
-            with real scenes from "Jesus en ti confio sin audio".
+            1. BACKGROUND: EXACTLY TWO DYNAMIC COLUMNS (ONE UP, ONE DOWN)
+            Optimized for Mobile, Tablet, Laptop and PC for maximum visual clarity.
            ==================================================================== */}
         <div
-          className="absolute inset-0 pointer-events-none overflow-hidden opacity-90"
+          className="absolute inset-0 pointer-events-none overflow-hidden opacity-95"
           style={{
-            transform: 'rotate(-4deg) scale(1.12)',
+            transform: 'rotate(-3.5deg) scale(1.08)',
             transformOrigin: 'center center',
           }}
         >
-          <div className="w-full h-[220%] -top-[60%] relative flex justify-center gap-3 sm:gap-4 md:gap-5">
+          <div className="w-full h-[220%] -top-[60%] relative flex justify-center gap-3.5 sm:gap-6 md:gap-8">
             {/* COLUMN 1: Scrolls Upwards */}
-            <div className="w-[170px] sm:w-[210px] md:w-[240px] flex flex-col gap-3 sm:gap-4 animate-flexi-up">
+            <div className="w-[165px] xs:w-[195px] sm:w-[250px] md:w-[290px] lg:w-[330px] flex flex-col gap-3.5 sm:gap-5 md:gap-6 animate-flexi-up">
               {col1Scenes.map((key, i) => (
                 <div
                   key={`col1-${i}`}
-                  className="w-full aspect-[9/13] rounded-[18px] sm:rounded-[22px] border border-white/10 bg-[#0A1624] overflow-hidden shadow-2xl shrink-0"
+                  className="w-full aspect-[9/13] rounded-[20px] sm:rounded-[26px] border border-white/20 bg-[#0A1624] overflow-hidden shadow-2xl shrink-0 transition-transform"
                 >
                   <JesusEnTiConfioScene sceneKey={key} />
                 </div>
               ))}
             </div>
 
-            {/* COLUMN 2: Scrolls Downwards (Counter-motion) */}
-            <div className="w-[170px] sm:w-[210px] md:w-[240px] flex flex-col gap-3 sm:gap-4 animate-flexi-down">
+            {/* COLUMN 2: Scrolls Downwards */}
+            <div className="w-[165px] xs:w-[195px] sm:w-[250px] md:w-[290px] lg:w-[330px] flex flex-col gap-3.5 sm:gap-5 md:gap-6 animate-flexi-down">
               {col2Scenes.map((key, i) => (
                 <div
                   key={`col2-${i}`}
-                  className="w-full aspect-[9/13] rounded-[18px] sm:rounded-[22px] border border-white/10 bg-[#0A1624] overflow-hidden shadow-2xl shrink-0"
-                >
-                  <JesusEnTiConfioScene sceneKey={key} />
-                </div>
-              ))}
-            </div>
-
-            {/* COLUMN 3: Scrolls Upwards (Visible on Tablet/Desktop) */}
-            <div className="hidden sm:flex w-[210px] md:w-[240px] flex-col gap-3 sm:gap-4 animate-flexi-up-slow">
-              {col3Scenes.map((key, i) => (
-                <div
-                  key={`col3-${i}`}
-                  className="w-full aspect-[9/13] rounded-[18px] sm:rounded-[22px] border border-white/10 bg-[#0A1624] overflow-hidden shadow-2xl shrink-0"
+                  className="w-full aspect-[9/13] rounded-[20px] sm:rounded-[26px] border border-white/20 bg-[#0A1624] overflow-hidden shadow-2xl shrink-0 transition-transform"
                 >
                   <JesusEnTiConfioScene sceneKey={key} />
                 </div>
@@ -145,6 +122,18 @@ export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
               </span>
               <span>Ver animación «Jesús en Ti Confío»</span>
             </button>
+
+            {/* Test Espiritual de 7 Preguntas Pill */}
+            {onOpenSpiritualQuiz && (
+              <button
+                type="button"
+                onClick={onOpenSpiritualQuiz}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F59E0B]/20 hover:bg-[#F59E0B]/30 border border-[#F59E0B]/50 text-[#F59E0B] text-[11px] sm:text-[11.5px] font-bold backdrop-blur-md transition-all cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.25)] hover:scale-[1.02]"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
+                <span>Test Espiritual de 7 Preguntas</span>
+              </button>
+            )}
           </div>
 
           {/* Big Bold Headline with the vibrant Flexi Lime Accent */}
