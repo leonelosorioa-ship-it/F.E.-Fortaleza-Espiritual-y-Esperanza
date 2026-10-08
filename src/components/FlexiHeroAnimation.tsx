@@ -205,7 +205,7 @@ export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
 
             <span className="flex items-center gap-1.5 text-[#A3E635] font-medium">
               <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
-              Días 1 a 7 libres • luego USD 12.99 pago único
+              Refugio de paz espiritual • 100% Gratuito y confidencial
             </span>
           </div>
         </div>
