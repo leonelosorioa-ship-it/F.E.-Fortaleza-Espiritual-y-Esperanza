@@ -25,7 +25,7 @@ export const MentoresGuiaSection: React.FC<MentoresProps> = ({
         </h2>
 
         <p className="text-[13.5px] sm:text-[15.5px] text-[#CBD5E1] leading-relaxed">
-          No estás solo en este camino. Nuestros dos mentores te acompañarán paso a paso en tus 4 cuadrantes (Cuerpo, Mente, Alma y Propósito) <strong>durante los 30 días por un único valor de 12.99 Dólares</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
+          No estás solo en este camino. Nuestros dos mentores te acompañarán paso a paso en tus 4 cuadrantes (Cuerpo, Mente, Alma y Propósito) <strong>durante los 30 días por un único valor de USD 7.99 o $29.900 COL</strong>. <em>Por el momento no existirá una membresía, es un único pago.</em>
         </p>
       </div>
 
@@ -195,7 +195,7 @@ export const MentoresGuiaSection: React.FC<MentoresProps> = ({
         </div>
       </div>
 
-      {/* Banner de Valor Único: $12.99 USD Pago Único (Sin membresías) */}
+      {/* Banner de Valor Único: USD 7.99 o $29.900 COL Pago Único (Sin membresías) */}
       <div className="rounded-[20px] bg-gradient-to-r from-[#0B1728] via-[#0E223D] to-[#0A1A2F] border-2 border-[#F59E0B] p-6 sm:p-7 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-[#F1F5F9]">
         <div className="space-y-1.5 max-w-[540px]">
           <div className="flex items-center gap-2">
@@ -208,11 +208,11 @@ export const MentoresGuiaSection: React.FC<MentoresProps> = ({
           </div>
 
           <h3 className="font-editorial text-[20px] sm:text-[23px] text-[#F1F5F9] font-normal">
-            El Mapa Completo de 30 Días con Clara Luz y Leo: 12.99 USD
+            El Mapa Completo de 30 Días con Clara Luz y Leo: USD 7.99 o $29.900 COL
           </h3>
 
           <p className="text-[13.5px] text-[#CBD5E1] leading-relaxed">
-            Realizas un <strong>único pago de 12.99 USD</strong> y desbloqueas el itinerario íntegro de 30 días, las vigilias de insomnio prolongado narradas por Clara Luz y Leo, y el acompañamiento en tus 4 cuadrantes. <em>Por el momento no existirá membresía ni cargos mensuales.</em>
+            Realizas un <strong>único pago de USD 7.99 o $29.900 COL</strong> y desbloqueas el itinerario íntegro de 30 días, las vigilias de insomnio prolongado narradas por Clara Luz y Leo, y el acompañamiento en tus 4 cuadrantes. <em>Por el momento no existirá membresía ni cargos mensuales.</em>
           </p>
         </div>
 
@@ -221,7 +221,7 @@ export const MentoresGuiaSection: React.FC<MentoresProps> = ({
           onClick={onOpenPlanDetails}
           className="min-h-[48px] px-6 py-3 rounded-[12px] bg-[#F59E0B] hover:bg-[#D97706] active:bg-[#B45309] text-[#060F1E] font-semibold text-[14px] transition-colors flex items-center gap-2 shrink-0 cursor-pointer shadow-md"
         >
-          <span>Ver Programa Completo (12.99 USD)</span>
+          <span>Ver Programa Completo (USD 7.99 / $29.900 COL)</span>
           <ArrowRight className="w-4 h-4" strokeWidth={2} />
         </button>
       </div>

@@ -393,7 +393,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col justify-start pb-24 sm:pb-12">
+      <main className="flex-1 flex flex-col justify-start pb-8 sm:pb-12">
         {currentScreen === 'landing' && (
           <LandingScreen
             onStartFlow={handleStartFlow}
@@ -570,19 +570,21 @@ export default function App() {
         )}
       </main>
 
-      {/* Botón flotante persistente de Bypass de Emergencia */}
+      {/* Botón flotante persistente de Bypass de Emergencia (solo en pantallas secundarias) */}
       <EmergencyBypassButton
-        visible={currentScreen !== 'form' && currentScreen !== 'transition' && currentScreen !== 'chat'}
+        visible={currentScreen !== 'landing' && currentScreen !== 'form' && currentScreen !== 'transition' && currentScreen !== 'chat'}
         onClick={() => handleStartFlow('madre_profesional', 'ansiedad_noche')}
       />
 
       {/* Pie de página sobrio y editorial */}
-      <footer className="w-full border-t border-white/[0.08] py-6 px-4 text-center bg-[#060F1E] mt-12">
-        <div className="max-w-5xl lg:max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-[#94A3B8]">
-          <div>
-            El Mapa de tu Vida en Dios • F.E.™ Fortaleza Espiritual • Tu Poder Mental™
+      <footer className="w-full border-t border-white/[0.08] py-8 sm:py-10 px-4 sm:px-6 text-center bg-[#060F1E] mt-16 relative z-10">
+        <div className="max-w-5xl lg:max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[12.5px] text-[#94A3B8]">
+          <div className="text-center sm:text-left">
+            <span className="font-medium text-[#CBD5E1]">Tu Poder Mental™</span>
+            <span className="mx-1.5">•</span>
+            <span>F.E.™ Fortaleza Espiritual</span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-center">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5 text-center">
             <button
               type="button"
               onClick={() => setIsPlanOpen(true)}

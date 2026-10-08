@@ -10,7 +10,7 @@ export const EmergencyBypassButton: React.FC<EmergencyBypassButtonProps> = ({ on
   if (!visible) return null;
 
   return (
-    <aside aria-label="Acceso rápido de rescate" className="fixed bottom-4 sm:bottom-5 right-3 sm:right-6 z-50 animate-fade-in max-w-[calc(100vw-24px)]">
+    <aside aria-label="Acceso rápido de rescate" className="fixed bottom-4 sm:bottom-6 right-3 sm:right-6 z-30 animate-fade-in max-w-[calc(100vw-24px)] pointer-events-auto">
       <button
         type="button"
         onClick={onClick}

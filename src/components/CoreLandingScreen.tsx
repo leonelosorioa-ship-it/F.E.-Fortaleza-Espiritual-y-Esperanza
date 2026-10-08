@@ -208,7 +208,7 @@ export const CoreLandingScreen: React.FC<CoreLandingScreenProps> = ({
 
       {/* 
         BLOQUE DE DETALLES DEL PLAN
-        Promoviendo un proceso guiado de 30 días por un único pago tentativo de 12.99 USD
+        Promoviendo un proceso guiado de 30 días por un único pago de USD 7.99 o $29.900 COL
       */}
       <section
         aria-label="Detalles del plan"
@@ -224,8 +224,11 @@ export const CoreLandingScreen: React.FC<CoreLandingScreenProps> = ({
             </h2>
           </div>
           <div className="text-left sm:text-right">
-            <span className="text-[20px] font-semibold text-[#F59E0B] tabular-nums">
-              12.99 USD
+            <span className="text-[20px] font-semibold text-[#F59E0B] tabular-nums block">
+              USD 7.99
+            </span>
+            <span className="text-[12px] font-medium text-[#CBD5E1] block">
+              o $29.900 COL
             </span>
             <span className="text-rotulo text-[#94A3B8] block">
               Pago único • Sin mensualidades
@@ -234,7 +237,7 @@ export const CoreLandingScreen: React.FC<CoreLandingScreenProps> = ({
         </div>
 
         <p className="text-cuerpo text-[#94A3B8]">
-          El botiquín de emergencia es permanente y gratuito. Para profundizar en la sanidad interior y consolidar tu descanso nocturno, el programa de 30 días ofrece itinerarios diarios guiados por Clara Luz y Leo por un único valor de 12.99 USD (sin cuotas recurrentes).
+          El botiquín de emergencia es permanente y gratuito. Para profundizar en la sanidad interior y consolidar tu descanso nocturno, el programa de 30 días ofrece itinerarios diarios guiados por Clara Luz y Leo por un único valor de USD 7.99 o $29.900 COL (sin cuotas recurrentes).
         </p>
 
         <div className="pt-1 flex flex-col sm:flex-row gap-2.5">

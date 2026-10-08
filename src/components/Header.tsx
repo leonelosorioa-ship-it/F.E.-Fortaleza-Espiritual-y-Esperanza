@@ -6,15 +6,14 @@ import {
   Volume2,
   Sparkles,
   User as UserIcon,
-  Play,
   Bell,
   Sun,
   FolderOpen,
   Film,
   HardDrive,
   FileSpreadsheet,
-  MoreHorizontal,
-  ChevronDown,
+  Menu,
+  X,
 } from 'lucide-react';
 import { TuPoderMentalLogo } from './TuPoderMentalLogo';
 import { auth } from '../firebase';
@@ -61,8 +60,8 @@ export const Header: React.FC<HeaderProps> = ({
   savedCount,
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((u) => {
@@ -71,125 +70,200 @@ export const Header: React.FC<HeaderProps> = ({
     return () => unsub();
   }, []);
 
-  // Close dropdown on outside click
+  // Close menu on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setIsMoreOpen(false);
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
       }
     };
-    if (isMoreOpen) {
+    if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMoreOpen]);
+  }, [isMenuOpen]);
 
   return (
-    <header className="w-full border-b border-white/[0.08] bg-[#060F1E]/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
-      <div className="max-w-5xl lg:max-w-6xl mx-auto px-3 sm:px-6 h-15 sm:h-17 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Brand Logo */}
+    <header className="w-full border-b border-white/[0.08] bg-[#060F1E]/95 backdrop-blur-md sticky top-0 z-40 shadow-sm">
+      <div className="max-w-5xl lg:max-w-6xl mx-auto px-3 sm:px-6 h-16 sm:h-18 flex items-center justify-between gap-3 sm:gap-6">
+        {/* Brand Logo: Full and never shrink */}
         <button
           type="button"
           onClick={onGoHome}
-          className="text-left group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none flex items-center gap-1.5 sm:gap-2.5 rounded-[10px] min-h-[44px] min-w-0 shrink"
+          className="text-left group cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none flex items-center shrink-0"
           aria-label="Ir al inicio de Tu Poder Mental F.E."
         >
-          <TuPoderMentalLogo size={36} showText={true} />
+          <TuPoderMentalLogo size={42} showText={true} />
         </button>
 
-        {/* Essential, clear navigation */}
-        <nav aria-label="Navegación principal" className="flex items-center gap-1 sm:gap-2 shrink-0">
-          {/* Mentores Chatbot */}
-          <button
-            type="button"
-            onClick={onOpenChat}
-            className="min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-[10px] bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 border border-amber-500/30 text-[12px] sm:text-[13px] font-medium text-[#F59E0B] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
-            title="Conversar con los Mentores Clara Luz & Leo"
-          >
-            <Sparkles className="w-3.5 h-3.5 shrink-0" strokeWidth={2} />
-            <span className="hidden xs:inline">Mentores</span>
-          </button>
+        {/* Clean, uncluttered Navigation */}
+        <nav aria-label="Navegación principal" className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Desktop/Tablet Direct Shortcuts (Hidden on mobile to preserve brand space) */}
+          <div className="hidden md:flex items-center gap-1.5 lg:gap-2">
+            {/* Mentores Chat */}
+            <button
+              type="button"
+              onClick={onOpenChat}
+              className="min-h-[40px] px-3 py-1.5 rounded-[10px] bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 border border-amber-500/30 text-[12.5px] font-medium text-[#F59E0B] flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Conversar con Clara Luz & Leo"
+            >
+              <Sparkles className="w-3.5 h-3.5 shrink-0" strokeWidth={2} />
+              <span>Mentores</span>
+            </button>
 
-          {/* Ruta 30 Días */}
-          <button
-            type="button"
-            onClick={onOpenPeacePlan}
-            className="min-h-[40px] px-2 sm:px-2.5 py-1.5 rounded-[10px] text-[12px] sm:text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] active:bg-white/[0.1] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            title="Ruta 30 Días en Dios"
-          >
-            <Compass className="w-4 h-4 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
-            <span className="hidden sm:inline">Ruta 30D</span>
-          </button>
+            {/* Ruta 30D */}
+            <button
+              type="button"
+              onClick={onOpenPeacePlan}
+              className="min-h-[40px] px-2.5 py-1.5 rounded-[10px] text-[12.5px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Ruta 30 Días en Dios"
+            >
+              <Compass className="w-4 h-4 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
+              <span>Ruta 30D</span>
+            </button>
 
-          {/* Diario de Gratitud */}
-          <button
-            type="button"
-            onClick={onOpenGratitude}
-            className="min-h-[40px] px-2 sm:px-2.5 py-1.5 rounded-[10px] text-[12px] sm:text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] active:bg-white/[0.1] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            title="Diario de Gratitud"
-          >
-            <HeartHandshake className="w-4 h-4 text-[#10B981] shrink-0" strokeWidth={1.75} />
-            <span className="hidden md:inline">Gratitud</span>
-          </button>
+            {/* Gratitud */}
+            <button
+              type="button"
+              onClick={onOpenGratitude}
+              className="min-h-[40px] px-2.5 py-1.5 rounded-[10px] text-[12.5px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Diario de Gratitud"
+            >
+              <HeartHandshake className="w-4 h-4 text-[#10B981] shrink-0" strokeWidth={1.75} />
+              <span>Gratitud</span>
+            </button>
 
-          {/* Audios de Fe */}
-          <button
-            type="button"
-            onClick={onOpenAudios}
-            className="min-h-[40px] px-2 sm:px-2.5 py-1.5 rounded-[10px] text-[12px] sm:text-[13px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] active:bg-white/[0.1] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            title="Audios de Fe"
-          >
-            <Volume2 className="w-4 h-4 text-[#0EA5E9] shrink-0" strokeWidth={1.75} />
-            <span className="hidden md:inline">Audios</span>
-          </button>
+            {/* Audios */}
+            <button
+              type="button"
+              onClick={onOpenAudios}
+              className="min-h-[40px] px-2.5 py-1.5 rounded-[10px] text-[12.5px] font-medium text-[#CBD5E1] hover:text-[#F1F5F9] hover:bg-white/[0.05] flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Audios de Fe"
+            >
+              <Volume2 className="w-4 h-4 text-[#0EA5E9] shrink-0" strokeWidth={1.75} />
+              <span>Audios</span>
+            </button>
 
-          {/* Mis Oraciones (Historial) */}
+            {/* Mis Oraciones (with counter badge) */}
+            <button
+              type="button"
+              onClick={onOpenHistory}
+              className="min-h-[40px] px-3 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-[12.5px] font-medium text-[#F1F5F9] flex items-center gap-1.5 transition-colors cursor-pointer"
+              aria-label={`Ver oraciones guardadas (${savedCount})`}
+              title="Mis oraciones guardadas"
+            >
+              <Bookmark className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
+              <span>Oraciones</span>
+              {savedCount > 0 && (
+                <span className="text-[10.5px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#F59E0B] text-[#060F1E] font-bold">
+                  {savedCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Mobile-only visible quick action: Oraciones */}
           <button
             type="button"
             onClick={onOpenHistory}
-            className="min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-[12px] sm:text-[13px] font-medium text-[#F1F5F9] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            className="md:hidden min-h-[40px] px-2.5 py-1.5 rounded-[10px] border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-[12px] font-medium text-[#F1F5F9] flex items-center gap-1.5 transition-colors cursor-pointer"
             aria-label={`Ver oraciones guardadas (${savedCount})`}
             title="Mis oraciones guardadas"
           >
             <Bookmark className="w-3.5 h-3.5 text-[#F59E0B] shrink-0" strokeWidth={1.75} />
-            <span className="hidden lg:inline">Oraciones</span>
+            <span className="hidden xs:inline text-[11.5px]">Oraciones</span>
             {savedCount > 0 && (
-              <span className="text-[10.5px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#F59E0B] text-[#060F1E] font-bold">
+              <span className="text-[10px] tabular-nums px-1.5 py-0.2 rounded-full bg-[#F59E0B] text-[#060F1E] font-bold">
                 {savedCount}
               </span>
             )}
           </button>
 
-          {/* Menú Desplegable "Más Herramientas" */}
-          <div className="relative" ref={dropdownRef}>
+          {/* Menú Desplegable Completo y Limpio */}
+          <div className="relative" ref={menuRef}>
             <button
               type="button"
-              onClick={() => setIsMoreOpen(!isMoreOpen)}
-              className={`min-h-[40px] px-2 sm:px-2.5 py-1.5 rounded-[10px] text-[12px] sm:text-[13px] font-medium transition-colors flex items-center gap-1 cursor-pointer border ${
-                isMoreOpen
-                  ? 'bg-white/[0.1] border-white/[0.2] text-white'
-                  : 'bg-white/[0.03] hover:bg-white/[0.07] border-white/[0.08] text-[#94A3B8] hover:text-[#F1F5F9]'
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`min-h-[40px] px-2.5 sm:px-3 py-1.5 rounded-[10px] text-[12px] sm:text-[13px] font-medium transition-colors flex items-center gap-1.5 cursor-pointer border ${
+                isMenuOpen
+                  ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                  : 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.1] text-[#CBD5E1] hover:text-[#F1F5F9]'
               }`}
-              title="Más herramientas y recursos"
-              aria-expanded={isMoreOpen}
+              title="Abrir menú de herramientas y recursos"
+              aria-expanded={isMenuOpen}
+              aria-label="Menú principal"
             >
-              <MoreHorizontal className="w-4 h-4" />
-              <span className="hidden xl:inline text-[12px]">Más</span>
-              <ChevronDown className={`w-3 h-3 text-[#94A3B8] transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
+              {isMenuOpen ? (
+                <X className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Menu className="w-4 h-4" />
+              )}
+              <span className="text-[12px] font-semibold">Menú</span>
             </button>
 
-            {/* Dropdown Popover */}
-            {isMoreOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#091524] border border-white/[0.12] shadow-2xl py-2 z-50 text-[13px] animate-fade-in backdrop-blur-xl">
-                <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8] border-b border-white/[0.06] mb-1">
-                  Recursos Espirituales
+            {/* Dropdown Menu Modal */}
+            {isMenuOpen && (
+              <div className="absolute right-0 mt-2 w-64 max-h-[85vh] overflow-y-auto rounded-2xl bg-[#091524] border border-white/[0.14] shadow-2xl py-2 z-50 text-[13px] animate-fade-in backdrop-blur-xl">
+                {/* Mobile Extra Links */}
+                <div className="md:hidden border-b border-white/[0.08] pb-1.5 mb-1.5">
+                  <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[#F59E0B]">
+                    Accesos Principales
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      onOpenChat();
+                    }}
+                    className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
+                  >
+                    <Sparkles className="w-4 h-4 text-[#F59E0B] shrink-0" />
+                    <span>Hablar con los Mentores</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      onOpenPeacePlan();
+                    }}
+                    className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
+                  >
+                    <Compass className="w-4 h-4 text-[#F59E0B] shrink-0" />
+                    <span>Ruta 30 Días en Dios</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      onOpenGratitude();
+                    }}
+                    className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
+                  >
+                    <HeartHandshake className="w-4 h-4 text-[#10B981] shrink-0" />
+                    <span>Diario de Gratitud</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      onOpenAudios();
+                    }}
+                    className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
+                  >
+                    <Volume2 className="w-4 h-4 text-[#0EA5E9] shrink-0" />
+                    <span>Audios de Fe</span>
+                  </button>
+                </div>
+
+                <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                  Experiencias de Fe
                 </div>
 
                 {onOpenDailyPromise && (
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenDailyPromise();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
@@ -203,7 +277,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenJesusVideo();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
@@ -217,7 +291,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenGallery();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
@@ -231,7 +305,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenReminders();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center justify-between gap-2.5 transition-colors cursor-pointer"
@@ -246,7 +320,7 @@ export const Header: React.FC<HeaderProps> = ({
                   </button>
                 )}
 
-                <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#94A3B8] border-t border-b border-white/[0.06] my-1">
+                <div className="px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8] border-t border-white/[0.06] my-1 pt-2">
                   Nube & Archivos
                 </div>
 
@@ -254,7 +328,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenFiles();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center justify-between gap-2.5 transition-colors cursor-pointer"
@@ -275,7 +349,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenGoogleDrive();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"
@@ -289,7 +363,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsMoreOpen(false);
+                      setIsMenuOpen(false);
                       onOpenGoogleSheets();
                     }}
                     className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#CBD5E1] hover:text-[#F1F5F9] flex items-center gap-2.5 transition-colors cursor-pointer"

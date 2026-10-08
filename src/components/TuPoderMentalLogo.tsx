@@ -247,26 +247,26 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
         </g>
       </svg>
 
-      {/* Brand Wordmark & Typography Matching Uploaded Artwork */}
+      {/* Brand Wordmark & Typography Matching Official Artwork */}
       {showText && (
-        <div className="flex flex-col text-left select-none min-w-0 overflow-hidden">
+        <div className="flex flex-col text-left select-none shrink-0 leading-tight">
           {/* Line 1: — TU — */}
-          <div className="flex items-center gap-1 -mb-0.5">
-            <span className="w-2 sm:w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
-            <span className="text-[8.5px] sm:text-[10px] tracking-[0.18em] sm:tracking-[0.26em] font-semibold text-[#CBD5E1] uppercase">
+          <div className="flex items-center gap-1 leading-none mb-0.5">
+            <span className="w-2.5 sm:w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
+            <span className="text-[9px] sm:text-[10px] tracking-[0.22em] sm:tracking-[0.26em] font-bold text-[#CBD5E1] uppercase">
               TU
             </span>
-            <span className="w-2 sm:w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
+            <span className="w-2.5 sm:w-3.5 h-[1.5px] bg-[#CBD5E1]/60 inline-block" />
           </div>
 
           {/* Line 2: PODER (with Golden Heart in the 'O') */}
-          <div className="flex items-center font-sans font-bold tracking-[0.03em] sm:tracking-[0.04em] text-[14px] xs:text-[16px] sm:text-[20px] leading-none text-[#F1F5F9] uppercase">
+          <div className="flex items-center font-sans font-extrabold tracking-[0.03em] sm:tracking-[0.05em] text-[15px] sm:text-[19px] leading-none text-[#F1F5F9] uppercase">
             <span>P</span>
             {/* The 'O' with embedded golden heart */}
-            <span className="relative inline-flex items-center justify-center mx-[1px] sm:mx-[1.5px] w-[13px] h-[13px] xs:w-[15px] xs:h-[15px] sm:w-[18px] sm:h-[18px] rounded-full border-[1.8px] sm:border-[2.5px] border-[#F1F5F9]">
+            <span className="relative inline-flex items-center justify-center mx-[1px] sm:mx-[1.5px] w-[14px] h-[14px] sm:w-[17px] sm:h-[17px] rounded-full border-[1.8px] sm:border-[2.5px] border-[#F1F5F9] shrink-0">
               <svg
                 viewBox="0 0 24 24"
-                className="w-1.5 h-1.5 xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 fill-[#F59E0B] stroke-[#B45309] stroke-[0.8]"
+                className="w-2 h-2 sm:w-2.5 sm:h-2.5 fill-[#F59E0B] stroke-[#B45309] stroke-[0.8]"
               >
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
@@ -275,12 +275,12 @@ export const TuPoderMentalLogo: React.FC<LogoProps> = ({
           </div>
 
           {/* Line 3: MENTAL */}
-          <div className="font-sans font-semibold tracking-[0.16em] sm:tracking-[0.24em] text-[9px] xs:text-[10px] sm:text-[12px] leading-tight text-[#CBD5E1] uppercase -mt-0.5">
+          <div className="font-sans font-bold tracking-[0.2em] sm:tracking-[0.25em] text-[9.5px] sm:text-[11.5px] leading-tight text-[#CBD5E1] uppercase mt-0.5">
             MENTAL
           </div>
 
-          {/* Secondary Subtitle: F.E.™ */}
-          <span className="text-[7.5px] xs:text-[8px] sm:text-[9px] tracking-[0.02em] sm:tracking-[0.08em] uppercase font-semibold text-[#10B981] mt-0.5 leading-tight truncate max-w-[110px] xs:max-w-[160px] sm:max-w-none hidden xs:block">
+          {/* Secondary Subtitle: F.E.™ Fortaleza Espiritual */}
+          <span className="text-[8px] sm:text-[9.5px] tracking-[0.06em] uppercase font-semibold text-[#10B981] mt-0.5 leading-tight block">
             F.E.™ Fortaleza Espiritual
           </span>
         </div>

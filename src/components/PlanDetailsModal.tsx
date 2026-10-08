@@ -80,7 +80,7 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
             </ul>
           </div>
 
-          {/* Proceso Completo de 30 Días con Clara Luz y Leo (12.99 USD Pago Único) */}
+          {/* Proceso Completo de 30 Días con Clara Luz y Leo (USD 7.99 o $29.900 COL Pago Único) */}
           <div className="p-5 rounded-[14px] border-2 border-[#F59E0B] bg-gradient-to-b from-[#0E223D] to-[#0A1A2F] shadow-lg space-y-2.5">
             <div className="flex justify-between items-baseline">
               <div>
@@ -91,13 +91,18 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
                   Construye un refugio a prueba de tormentas
                 </span>
               </div>
-              <span className="text-[17px] tabular-nums font-bold text-[#F59E0B]">
-                12.99 USD <span className="text-[11px] text-[#FBBF24] font-medium">(Pago Único)</span>
-              </span>
+              <div className="text-right">
+                <span className="text-[17px] tabular-nums font-bold text-[#F59E0B] block leading-tight">
+                  USD 7.99 <span className="text-[11px] text-[#FBBF24] font-medium">(Pago Único)</span>
+                </span>
+                <span className="text-[11.5px] font-medium text-[#CBD5E1] block">
+                  o $29.900 COL
+                </span>
+              </div>
             </div>
 
             <p className="text-[12.5px] text-[#CBD5E1] leading-relaxed">
-              Durante los 30 días por un único valor de 12.99 Dólares. Clara Luz y Leo te guían a edificar cuerpo, mente, alma y propósito. <em>Por el momento no existirá membresía ni pagos mensuales recurrentes.</em>
+              Durante los 30 días por un único valor de USD 7.99 o $29.900 COL. Clara Luz y Leo te guían a edificar cuerpo, mente, alma y propósito. <em>Por el momento no existirá membresía ni pagos mensuales recurrentes.</em>
             </p>
 
             <ul className="space-y-1.5 text-[12.5px] text-[#CBD5E1]">

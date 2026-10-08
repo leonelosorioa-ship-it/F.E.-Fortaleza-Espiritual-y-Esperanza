@@ -90,9 +90,14 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
               <span className="text-[11px] font-semibold uppercase tracking-wider text-[#FBBF24] bg-[#F59E0B]/20 px-2.5 py-0.5 rounded-full border border-[#F59E0B]/40">
                 Rehabilitación • 30 Días
               </span>
-              <span className="text-[16px] font-bold text-[#F59E0B] tabular-nums">
-                12.99 USD
-              </span>
+              <div className="text-right">
+                <span className="text-[17px] font-bold text-[#F59E0B] tabular-nums block leading-tight">
+                  USD 7.99
+                </span>
+                <span className="text-[11px] font-medium text-[#CBD5E1] block">
+                  o $29.900 COL
+                </span>
+              </div>
             </div>
 
             <h2 className="font-editorial text-[19px] text-[#F1F5F9] font-normal">
@@ -114,7 +119,7 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
-                <span><strong>Pago único:</strong> sin membresías ni cobros sorpresa recurrentes</span>
+                <span><strong>Pago único:</strong> sin membresías ni cobros sorpresa recurrentes (USD 7.99 / $29.900 COL)</span>
               </li>
             </ul>
           </div>
@@ -125,7 +130,7 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
               onClick={onProceedPurchase || onBackToFreeBotiquin}
               className="w-full min-h-[50px] px-5 py-2.5 rounded-full bg-[#C6F432] hover:bg-[#D9F95C] active:scale-[0.98] text-[#061A0E] font-bold text-[14px] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(198,244,50,0.35)]"
             >
-              <span>Desbloquear 30 días (12.99 USD)</span>
+              <span>Desbloquear 30 días (USD 7.99 o $29.900 COL)</span>
               <ArrowRight className="w-4 h-4 text-[#061A0E]" strokeWidth={2.5} />
             </button>
             <span className="text-[11px] text-[#94A3B8] text-center block">

@@ -290,7 +290,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
             <div className="flex items-start gap-2.5">
               <ShieldCheck className="w-5 h-5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={1.75} />
               <div className="text-[12.5px] sm:text-[13px] text-[#CBD5E1]">
-                <strong>Proceso de 30 Días con Clara Luz y Leo:</strong> Este día forma parte del itinerario guiado por nuestros dos mentores de Fe y Esperanza. Accede por un <strong>único valor de 12.99 Dólares</strong> (sin membresía ni pagos recurrentes).
+                <strong>Proceso de 30 Días con Clara Luz y Leo:</strong> Este día forma parte del itinerario guiado por nuestros dos mentores de Fe y Esperanza. Accede por un <strong>único valor de USD 7.99 o $29.900 COL</strong> (sin membresía ni pagos recurrentes).
               </div>
             </div>
             {onOpenPlanDetails && (
@@ -299,7 +299,7 @@ export const PeacePlanView: React.FC<PeacePlanViewProps> = ({
                 onClick={onOpenPlanDetails}
                 className="min-h-[44px] px-4 py-2 rounded-[10px] bg-[#F59E0B] hover:bg-[#D97706] text-[#060F1E] text-[12.5px] font-bold shrink-0 transition-colors cursor-pointer self-start sm:self-center shadow-sm"
               >
-                Desbloquear 30 Días (12.99 USD)
+                Desbloquear 30 Días (USD 7.99 / $29.900 COL)
               </button>
             )}
           </div>
