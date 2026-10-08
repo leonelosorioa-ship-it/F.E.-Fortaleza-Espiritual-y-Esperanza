@@ -13,6 +13,7 @@ import {
   Cloud,
   Bell,
   Clock,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { GratitudeEntry } from '../types';
 import { auth } from '../firebase';
@@ -25,9 +26,13 @@ import { User } from 'firebase/auth';
 
 interface GratitudeJournalProps {
   onOpenReminderSettings?: () => void;
+  onOpenGoogleSheets?: () => void;
 }
 
-export const GratitudeJournal: React.FC<GratitudeJournalProps> = ({ onOpenReminderSettings }) => {
+export const GratitudeJournal: React.FC<GratitudeJournalProps> = ({
+  onOpenReminderSettings,
+  onOpenGoogleSheets,
+}) => {
   const [entries, setEntries] = useState<GratitudeEntry[]>([]);
   const [item1, setItem1] = useState<string>('');
   const [item2, setItem2] = useState<string>('');
@@ -319,9 +324,22 @@ export const GratitudeJournal: React.FC<GratitudeJournalProps> = ({ onOpenRemind
       {/* History of Gratitude */}
       {entries.length > 0 && (
         <div className="space-y-3">
-          <span className="text-[12px] font-semibold uppercase tracking-wider text-[#CBD5E1] block">
-            Cosecha de Días Anteriores
-          </span>
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] font-semibold uppercase tracking-wider text-[#CBD5E1] block">
+              Cosecha de Días Anteriores
+            </span>
+            {onOpenGoogleSheets && (
+              <button
+                type="button"
+                onClick={onOpenGoogleSheets}
+                className="px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                title="Sincronizar entradas de gratitud con Google Sheets"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Exportar a Google Sheets</span>
+              </button>
+            )}
+          </div>
 
           <div className="space-y-3">
             {entries.map((entry) => (

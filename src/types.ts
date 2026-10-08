@@ -239,3 +239,65 @@ export interface DailyPromiseData {
   quadrant?: LifeQuadrant;
 }
 
+export interface GoogleDriveFile {
+  id: string;
+  name: string;
+  mimeType: string;
+  size?: string;
+  iconLink?: string;
+  thumbnailLink?: string;
+  webViewLink?: string;
+  webContentLink?: string;
+  createdTime?: string;
+  modifiedTime?: string;
+  description?: string;
+  parents?: string[];
+  isFolder?: boolean;
+}
+
+export interface GoogleDriveQuota {
+  limit?: string;
+  usage?: string;
+  usageInDrive?: string;
+  usageInDriveTrash?: string;
+}
+
+export interface GoogleDriveUser {
+  displayName?: string;
+  emailAddress?: string;
+  photoLink?: string;
+}
+
+export interface SheetTabInfo {
+  sheetId: number;
+  title: string;
+  index: number;
+  rowCount?: number;
+  columnCount?: number;
+}
+
+export interface GoogleSpreadsheet {
+  id: string;
+  name: string;
+  webViewLink?: string;
+  createdTime?: string;
+  modifiedTime?: string;
+  sheets?: SheetTabInfo[];
+}
+
+export interface SheetDataGrid {
+  spreadsheetId: string;
+  spreadsheetTitle: string;
+  sheetTitle: string;
+  range: string;
+  values: string[][];
+}
+
+export type SheetTemplateType =
+  | 'prayer_requests'
+  | 'gratitude_journal'
+  | 'devotional_plan'
+  | 'blank';
+
+
+

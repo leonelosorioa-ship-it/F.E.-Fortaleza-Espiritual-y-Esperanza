@@ -24,6 +24,7 @@ import {
   Download,
   Calendar,
   Cloud,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { auth } from '../firebase';
 
@@ -39,6 +40,7 @@ interface HistoryViewProps {
   onSelectGratitude?: () => void;
   onOpenFilesManager?: () => void;
   onOpenAuth?: () => void;
+  onOpenGoogleSheets?: () => void;
 }
 
 export const HistoryView: React.FC<HistoryViewProps> = ({
@@ -53,6 +55,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
   onSelectGratitude,
   onOpenFilesManager,
   onOpenAuth,
+  onOpenGoogleSheets,
 }) => {
   const [activeTab, setActiveTab] = useState<'anchors' | 'files' | 'gratitude' | 'logins'>('anchors');
   const [searchFilter, setSearchFilter] = useState('');
@@ -89,6 +92,18 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
                 <span>Conectar con Google</span>
               </button>
             )
+          )}
+
+          {onOpenGoogleSheets && (
+            <button
+              type="button"
+              onClick={onOpenGoogleSheets}
+              className="px-3 py-1.5 rounded-[10px] bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25 text-[12px] font-medium transition-colors cursor-pointer flex items-center gap-1.5"
+              title="Abrir o exportar a Google Sheets"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Google Sheets</span>
+            </button>
           )}
 
           {activeTab === 'anchors' && anchors.length > 0 && (

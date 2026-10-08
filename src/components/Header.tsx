@@ -11,6 +11,8 @@ import {
   Sun,
   FolderOpen,
   Film,
+  HardDrive,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { TuPoderMentalLogo } from './TuPoderMentalLogo';
 import { auth } from '../firebase';
@@ -30,6 +32,8 @@ interface HeaderProps {
   onOpenReminders?: () => void;
   onOpenDailyPromise?: () => void;
   onOpenFiles?: () => void;
+  onOpenGoogleDrive?: () => void;
+  onOpenGoogleSheets?: () => void;
   filesCount?: number;
   remindersActive?: boolean;
   savedCount: number;
@@ -48,6 +52,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenReminders,
   onOpenDailyPromise,
   onOpenFiles,
+  onOpenGoogleDrive,
+  onOpenGoogleSheets,
   filesCount = 0,
   remindersActive,
   savedCount,
@@ -199,6 +205,34 @@ export const Header: React.FC<HeaderProps> = ({
                   {filesCount}
                 </span>
               )}
+            </button>
+          )}
+
+          {/* Google Drive */}
+          {onOpenGoogleDrive && (
+            <button
+              type="button"
+              onClick={onOpenGoogleDrive}
+              className="min-h-[40px] sm:min-h-[42px] px-2 sm:px-2.5 py-1.5 rounded-[10px] border border-sky-400/30 bg-sky-500/10 hover:bg-sky-500/20 active:bg-sky-500/30 text-[11.5px] sm:text-[12px] font-medium text-sky-200 flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none"
+              title="Google Drive Espiritual & Respaldo"
+              aria-label="Abrir Google Drive"
+            >
+              <HardDrive className="w-3.5 h-3.5 text-sky-400 shrink-0" strokeWidth={1.8} />
+              <span className="hidden sm:inline">Drive</span>
+            </button>
+          )}
+
+          {/* Google Sheets */}
+          {onOpenGoogleSheets && (
+            <button
+              type="button"
+              onClick={onOpenGoogleSheets}
+              className="min-h-[40px] sm:min-h-[42px] px-2 sm:px-2.5 py-1.5 rounded-[10px] border border-emerald-400/30 bg-emerald-500/10 hover:bg-emerald-500/20 active:bg-emerald-500/30 text-[11.5px] sm:text-[12px] font-medium text-emerald-200 flex items-center justify-center gap-1.5 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+              title="Google Sheets - Registro de Oraciones & Diario"
+              aria-label="Abrir Google Sheets"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 shrink-0" strokeWidth={1.8} />
+              <span className="hidden md:inline">Sheets</span>
             </button>
           )}
 

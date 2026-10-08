@@ -88,6 +88,83 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', service: 'Tu Poder Mental F.E. API' });
 });
 
+// Import Cloud SQL Repositories and Auth Middleware
+import { requireAuth, AuthRequest } from './src/middleware/auth.ts';
+import { getOrCreateUser } from './src/db/users.ts';
+import { getUserAnchors, createAnchor } from './src/db/anchors.ts';
+import { getUserGratitude, createGratitudeEntry } from './src/db/gratitude.ts';
+
+// User Sync API (Cloud SQL)
+app.post('/api/user/sync', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const uid = req.user?.uid;
+    const email = req.user?.email || '';
+    const { displayName, photoUrl } = req.body;
+    if (!uid) return res.status(401).json({ error: 'Usuario no autenticado' });
+
+    const user = await getOrCreateUser(uid, email, displayName, photoUrl);
+    res.json({ success: true, user });
+  } catch (error: any) {
+    console.error('Failed to sync user in Cloud SQL:', error);
+    res.status(500).json({ error: error.message || 'Error al sincronizar usuario' });
+  }
+});
+
+// Saved Anchors API (Cloud SQL)
+app.get('/api/anchors', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const uid = req.user?.uid;
+    if (!uid) return res.status(401).json({ error: 'No autenticado' });
+    const anchors = await getUserAnchors(uid);
+    res.json({ anchors });
+  } catch (error: any) {
+    console.error('Failed to fetch anchors from Cloud SQL:', error);
+    res.status(500).json({ error: error.message || 'Error al obtener oraciones' });
+  }
+});
+
+app.post('/api/anchors', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const uid = req.user?.uid;
+    const email = req.user?.email || '';
+    if (!uid) return res.status(401).json({ error: 'No autenticado' });
+
+    const saved = await createAnchor(uid, email, req.body);
+    res.json({ success: true, anchor: saved });
+  } catch (error: any) {
+    console.error('Failed to save anchor in Cloud SQL:', error);
+    res.status(500).json({ error: error.message || 'Error al guardar oración' });
+  }
+});
+
+// Gratitude Entries API (Cloud SQL)
+app.get('/api/gratitude', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const uid = req.user?.uid;
+    if (!uid) return res.status(401).json({ error: 'No autenticado' });
+    const entries = await getUserGratitude(uid);
+    res.json({ entries });
+  } catch (error: any) {
+    console.error('Failed to fetch gratitude entries from Cloud SQL:', error);
+    res.status(500).json({ error: error.message || 'Error al obtener gratitud' });
+  }
+});
+
+app.post('/api/gratitude', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const uid = req.user?.uid;
+    const email = req.user?.email || '';
+    if (!uid) return res.status(401).json({ error: 'No autenticado' });
+
+    const { entryId, items, displayDate } = req.body;
+    const saved = await createGratitudeEntry(uid, email, entryId, items, displayDate);
+    res.json({ success: true, entry: saved });
+  } catch (error: any) {
+    console.error('Failed to save gratitude in Cloud SQL:', error);
+    res.status(500).json({ error: error.message || 'Error al guardar gratitud' });
+  }
+});
+
 // Setup Vite or Static File Serving
 async function startServer() {
   const isProd = process.env.NODE_ENV === 'production';

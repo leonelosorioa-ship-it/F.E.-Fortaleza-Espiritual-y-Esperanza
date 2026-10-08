@@ -17,12 +17,14 @@ import {
   Clock,
   Sparkles,
   HardDrive,
+  FileSpreadsheet,
   FileUp,
   Tag,
   CheckCircle2,
 } from 'lucide-react';
 import { UserFile, UserFileCategory, UserFileType } from '../types';
-import { auth } from '../firebase';
+import { auth, getGoogleAccessToken, connectGoogleDrive } from '../firebase';
+import { uploadUserFileToDrive } from '../services/googleDriveService';
 
 interface FileManagerModalProps {
   isOpen: boolean;
@@ -31,6 +33,8 @@ interface FileManagerModalProps {
   onSaveFile: (file: UserFile) => Promise<void>;
   onDeleteFile: (fileId: string) => Promise<void>;
   onOpenAuth?: () => void;
+  onOpenGoogleDrive?: () => void;
+  onOpenGoogleSheets?: () => void;
 }
 
 export const FileManagerModal: React.FC<FileManagerModalProps> = ({
@@ -40,11 +44,14 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({
   onSaveFile,
   onDeleteFile,
   onOpenAuth,
+  onOpenGoogleDrive,
+  onOpenGoogleSheets,
 }) => {
   const [activeTab, setActiveTab] = useState<'list' | 'record' | 'upload'>('list');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [uploadingToDriveId, setUploadingToDriveId] = useState<string | null>(null);
 
   // Audio Recording State
   const [isRecording, setIsRecording] = useState(false);
@@ -261,6 +268,29 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({
     document.body.removeChild(link);
   };
 
+  // Upload individual file to Google Drive
+  const handleUploadToDrive = async (file: UserFile) => {
+    setUploadingToDriveId(file.id);
+    setStatusMessage(null);
+    try {
+      const token = getGoogleAccessToken() || (await connectGoogleDrive());
+      if (!token) throw new Error('Se requiere conectar Google Drive.');
+      await uploadUserFileToDrive(file);
+      setStatusMessage({
+        type: 'success',
+        text: `¡"${file.name}" se respaldó con éxito en tu Google Drive!`,
+      });
+    } catch (err: any) {
+      console.error('Drive upload error:', err);
+      setStatusMessage({
+        type: 'error',
+        text: err.message || 'Error al respaldar en Google Drive.',
+      });
+    } finally {
+      setUploadingToDriveId(null);
+    }
+  };
+
   // Format seconds to mm:ss
   const formatTime = (sec: number) => {
     const mins = Math.floor(sec / 60);
@@ -367,6 +397,28 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({
               <FileUp className="w-3.5 h-3.5 text-sky-400" />
               <span>Subir Archivo</span>
             </button>
+
+            {onOpenGoogleDrive && (
+              <button
+                type="button"
+                onClick={onOpenGoogleDrive}
+                className="px-3 py-1.5 rounded-[10px] text-[12.5px] font-medium transition-colors cursor-pointer flex items-center gap-1.5 bg-sky-500/15 border border-sky-500/30 text-sky-300 hover:bg-sky-500/25"
+              >
+                <HardDrive className="w-3.5 h-3.5 text-sky-400" />
+                <span>Google Drive</span>
+              </button>
+            )}
+
+            {onOpenGoogleSheets && (
+              <button
+                type="button"
+                onClick={onOpenGoogleSheets}
+                className="px-3 py-1.5 rounded-[10px] text-[12.5px] font-medium transition-colors cursor-pointer flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/25"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Google Sheets</span>
+              </button>
+            )}
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-[#94A3B8]">
@@ -523,6 +575,15 @@ export const FileManagerModal: React.FC<FileManagerModalProps> = ({
                           </div>
 
                           <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleUploadToDrive(file)}
+                              disabled={uploadingToDriveId === file.id}
+                              className="p-1.5 rounded-[8px] text-[#94A3B8] hover:text-sky-300 hover:bg-sky-500/10 transition-colors cursor-pointer"
+                              title="Respaldar en Google Drive"
+                            >
+                              <HardDrive className={`w-4 h-4 ${uploadingToDriveId === file.id ? 'animate-spin text-sky-400' : ''}`} />
+                            </button>
                             <button
                               type="button"
                               onClick={() => handleDownload(file)}

@@ -310,9 +310,24 @@
         }
       },
       "required": ["id", "userId", "name", "fileType", "sizeBytes", "createdAt"]
+    },
+    "TestConnectionDoc": {
+      "title": "TestConnectionDoc",
+      "description": "Probe document for health checking Firestore connectivity",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Status marker"
+        }
+      }
     }
   },
   "firestore": {
+    "/test/{docId}": {
+      "schema": "TestConnectionDoc",
+      "description": "Firestore connectivity verification probe"
+    },
     "/users/{userId}": {
       "schema": "UserProfile",
       "description": "User profile, role and 30-day journey progress"

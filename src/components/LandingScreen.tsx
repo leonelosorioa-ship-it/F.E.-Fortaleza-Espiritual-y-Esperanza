@@ -12,6 +12,7 @@ import {
   Bell,
   FolderOpen,
   HardDrive,
+  FileSpreadsheet,
   KeyRound,
   Film,
   Play,
@@ -36,6 +37,8 @@ interface LandingScreenProps {
   onOpenReminders?: () => void;
   onOpenDailyPromise?: () => void;
   onOpenFiles?: () => void;
+  onOpenGoogleDrive?: () => void;
+  onOpenGoogleSheets?: () => void;
   onOpenJesusVideo?: (videoId?: string) => void;
   onOpenGallery?: () => void;
 }
@@ -51,6 +54,8 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
   onOpenReminders,
   onOpenDailyPromise,
   onOpenFiles,
+  onOpenGoogleDrive,
+  onOpenGoogleSheets,
   onOpenJesusVideo,
   onOpenGallery,
 }) => {
@@ -260,6 +265,30 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
               >
                 <FolderOpen className="w-3.5 h-3.5 text-sky-400" />
                 <span>Mis Archivos</span>
+              </button>
+            )}
+
+            {onOpenGoogleDrive && (
+              <button
+                type="button"
+                onClick={onOpenGoogleDrive}
+                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-200 font-semibold text-[12.5px] transition-all cursor-pointer flex items-center gap-1.5"
+                title="Google Drive Espiritual"
+              >
+                <HardDrive className="w-3.5 h-3.5 text-sky-400" />
+                <span>Google Drive</span>
+              </button>
+            )}
+
+            {onOpenGoogleSheets && (
+              <button
+                type="button"
+                onClick={onOpenGoogleSheets}
+                className="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-emerald-200 font-semibold text-[12.5px] transition-all cursor-pointer flex items-center gap-1.5"
+                title="Google Sheets - Registro de Peticiones y Diario"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Google Sheets</span>
               </button>
             )}
 

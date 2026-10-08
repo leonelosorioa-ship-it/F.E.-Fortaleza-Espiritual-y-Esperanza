@@ -25,6 +25,8 @@ import { NotificationSettingsModal } from './components/NotificationSettingsModa
 import { DailyPromiseModal } from './components/DailyPromiseModal';
 import { FileManagerModal } from './components/FileManagerModal';
 import { FaithGallery } from './components/FaithGallery';
+import { GoogleDriveModal } from './components/GoogleDriveModal';
+import { GoogleSheetsModal } from './components/GoogleSheetsModal';
 import {
   checkAndFireScheduledReminders,
   loadNotificationSettings,
@@ -44,6 +46,7 @@ import {
   subscribeToLoginLogs,
   subscribeToGratitudeEntries,
 } from './services/firestoreService';
+import { syncUserToCloudSql } from './services/sqlSyncService';
 import { User } from 'firebase/auth';
 
 type Screen =
@@ -83,6 +86,8 @@ export default function App() {
   });
   const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
   const [isFilesModalOpen, setIsFilesModalOpen] = useState<boolean>(false);
+  const [isGoogleDriveOpen, setIsGoogleDriveOpen] = useState<boolean>(false);
+  const [isGoogleSheetsOpen, setIsGoogleSheetsOpen] = useState<boolean>(false);
   const [userFiles, setUserFiles] = useState<UserFile[]>(() => {
     try {
       const stored = localStorage.getItem('fe_user_files');
@@ -144,6 +149,9 @@ export default function App() {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         }).catch(console.error);
+
+        // Sync profile to Cloud SQL PostgreSQL
+        syncUserToCloudSql(user.displayName || undefined, user.photoURL || undefined).catch(console.error);
 
         // 1. Subscribe to real-time Cloud Anchors
         unsubAnchors = subscribeToSavedAnchors(user.uid, (cloudAnchors) => {
@@ -377,6 +385,8 @@ export default function App() {
           setIsDailyPromiseModalOpen(true);
         }}
         onOpenFiles={() => setIsFilesModalOpen(true)}
+        onOpenGoogleDrive={() => setIsGoogleDriveOpen(true)}
+        onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
         filesCount={userFiles.length}
         remindersActive={hasActiveReminders}
         savedCount={savedAnchors.length}
@@ -399,6 +409,8 @@ export default function App() {
               setIsDailyPromiseModalOpen(true);
             }}
             onOpenFiles={() => setIsFilesModalOpen(true)}
+            onOpenGoogleDrive={() => setIsGoogleDriveOpen(true)}
+            onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
             onOpenJesusVideo={(trackId) => handleOpenJesusVideo(trackId || 'misericordia')}
             onOpenGallery={() => setCurrentScreen('gallery')}
           />
@@ -471,7 +483,10 @@ export default function App() {
               <ArrowLeft className="w-4 h-4 text-[#F59E0B]" strokeWidth={1.75} />
               <span>Volver al botiquín</span>
             </button>
-            <GratitudeJournal onOpenReminderSettings={() => setIsReminderModalOpen(true)} />
+            <GratitudeJournal
+              onOpenReminderSettings={() => setIsReminderModalOpen(true)}
+              onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
+            />
           </div>
         )}
 
@@ -527,6 +542,7 @@ export default function App() {
             onSelectGratitude={() => setCurrentScreen('gratitude')}
             onOpenFilesManager={() => setIsFilesModalOpen(true)}
             onOpenAuth={() => setIsAuthModalOpen(true)}
+            onOpenGoogleSheets={() => setIsGoogleSheetsOpen(true)}
           />
         )}
 
@@ -611,6 +627,37 @@ export default function App() {
         onSaveFile={handleSaveUserFile}
         onDeleteFile={handleDeleteUserFile}
         onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenGoogleDrive={() => {
+          setIsFilesModalOpen(false);
+          setIsGoogleDriveOpen(true);
+        }}
+        onOpenGoogleSheets={() => {
+          setIsFilesModalOpen(false);
+          setIsGoogleSheetsOpen(true);
+        }}
+      />
+
+      {/* Modal de Integración de Google Drive (Google Workspace API) */}
+      <GoogleDriveModal
+        isOpen={isGoogleDriveOpen}
+        onClose={() => setIsGoogleDriveOpen(false)}
+        localFiles={userFiles}
+        onOpenGoogleSheets={() => {
+          setIsGoogleDriveOpen(false);
+          setIsGoogleSheetsOpen(true);
+        }}
+      />
+
+      {/* Modal de Integración de Google Sheets (Google Workspace API) */}
+      <GoogleSheetsModal
+        isOpen={isGoogleSheetsOpen}
+        onClose={() => setIsGoogleSheetsOpen(false)}
+        onOpenGoogleDrive={() => {
+          setIsGoogleSheetsOpen(false);
+          setIsGoogleDriveOpen(true);
+        }}
+        savedAnchors={savedAnchors}
+        gratitudeEntries={gratitudeEntries}
       />
 
       {/* Modal de experiencia contemplativa y animación Jesús en Ti Confío */}
