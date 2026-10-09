@@ -5,6 +5,7 @@ import { JesusVideoModal } from './JesusVideoModal';
 
 interface FlexiHeroAnimationProps {
   onStartFlow: () => void;
+  onOpenRescue?: () => void;
   onOpenMotherSanctuary?: () => void;
   onOpenAuth?: () => void;
   onOpenSpiritualQuiz?: () => void;
@@ -12,6 +13,7 @@ interface FlexiHeroAnimationProps {
 
 export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
   onStartFlow,
+  onOpenRescue,
   onOpenMotherSanctuary,
   onOpenAuth,
   onOpenSpiritualQuiz,
@@ -136,21 +138,21 @@ export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
             )}
           </div>
 
-          {/* Big Bold Headline with the vibrant Flexi Lime Accent */}
-          <h1 className="font-editorial text-[26px] xs:text-[32px] sm:text-[40px] lg:text-[46px] text-[#F1F5F9] font-normal leading-[1.14] tracking-tight">
-            Empieza una vida con{' '}
+          {/* Big Bold Headline with the vibrant Flexi Accent */}
+          <h1 className="font-editorial text-[25px] xs:text-[30px] sm:text-[38px] lg:text-[44px] text-[#F8FAFC] font-normal leading-[1.18] tracking-tight">
+            Tu fe y tu salud mental no son enemigas;{' '}
             <span className="text-[#C6F432] font-semibold drop-shadow-[0_0_20px_rgba(198,244,50,0.35)]">
-              más paz en Dios
+              caminan juntas hacia la paz
             </span>
           </h1>
 
-          {/* Punchy 3-beat Subtitle inspired by "Entrenas. Estiras. Te recuperas." + Pastoral Assurance */}
+          {/* Pastoral Assurance Subtitle */}
           <div className="space-y-1.5">
-            <p className="text-[14.5px] sm:text-[16.5px] text-[#F1F5F9] font-medium leading-snug">
+            <p className="text-[14.5px] sm:text-[16px] text-[#F8FAFC] font-medium leading-snug">
               Entrenas tu espíritu. Aquietas tu mente. Descansas en su presencia.
             </p>
             <p className="text-[13px] sm:text-[14px] text-[#CBD5E1] leading-relaxed max-w-[65ch]">
-              Para el creyente abrumado: obtén un ancla de paz y descanso del sistema nervioso sin sentir culpa religiosa. Si el insomnio o la ansiedad te visitan hoy, tu cuerpo no está fallando. Respira y entrega el control.
+              Para el creyente abrumado: obtén un ancla de paz y descanso del sistema nervioso sin sentir culpa religiosa. Si la opresión en el pecho o el insomnio te visitan hoy, tu cuerpo no está fallando; respira y entrega el control.
             </p>
           </div>
 
@@ -162,11 +164,21 @@ export const FlexiHeroAnimation: React.FC<FlexiHeroAnimationProps> = ({
               onClick={onStartFlow}
               className="w-full sm:w-auto min-h-[52px] px-8 py-3.5 rounded-full bg-[#C6F432] hover:bg-[#D9F95C] active:scale-[0.98] text-[#061A0E] font-bold text-[15px] sm:text-[16px] transition-all flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_0_30px_rgba(198,244,50,0.35)] focus-visible:ring-2 focus-visible:ring-[#C6F432] focus-visible:outline-none"
             >
-              <span>Empieza hoy</span>
+              <span>Calmar mi mente ahora</span>
               <ArrowRight className="w-4 h-4 text-[#061A0E]" strokeWidth={2.5} />
             </button>
 
-            {onOpenMotherSanctuary && (
+            {onOpenRescue && (
+              <button
+                type="button"
+                onClick={onOpenRescue}
+                className="w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-full bg-[#0F172A]/80 hover:bg-[#1E293B] text-[#F59E0B] border border-[#F59E0B]/40 hover:border-[#F59E0B] text-[13px] font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer backdrop-blur-sm"
+              >
+                <span>Botiquín de Rescate (Crisis)</span>
+              </button>
+            )}
+
+            {onOpenMotherSanctuary && !onOpenRescue && (
               <button
                 type="button"
                 onClick={onOpenMotherSanctuary}

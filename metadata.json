@@ -1,6 +1,6 @@
 {
-  "name": "F.E.™ Fortaleza Espiritual y Esperanza",
-  "description": "Botiquín de primeros auxilios litúrgicos y fisiológicos para momentos de ansiedad y rumiación nocturna.",
+  "name": "F.E.™ • Esperanza en Dios",
+  "description": "Microaplicación de bienestar psicoespiritual y regulación del sistema nervioso sin culpa religiosa. Módulo de Tu Poder Mental™.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

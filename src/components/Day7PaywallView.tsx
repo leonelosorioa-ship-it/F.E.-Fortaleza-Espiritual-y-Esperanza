@@ -26,7 +26,7 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
       <div className="text-center space-y-2 max-w-[580px] mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#10B981]/15 border border-[#10B981]/30 text-[#34D399] text-[11px] font-semibold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" strokeWidth={1.75} />
-          <span>Semana 1 Completada con Éxito</span>
+          <span>Semana 1 Completada • Tu Primera Victoria Emocional (First Win)</span>
         </div>
 
         <h1 className="font-editorial text-[26px] sm:text-[32px] text-[#F1F5F9] font-normal leading-tight">
@@ -34,7 +34,7 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
         </h1>
 
         <p className="text-[14.5px] text-[#CBD5E1] leading-relaxed mx-auto">
-          Has recorrido los primeros 7 días libres de la ruta. Experimentaste que calmar el cuerpo y la mente con la Palabra de Dios no es una utopía, sino un hábito fisiológico y espiritual.
+          Has recorrido los primeros 7 días libres de la ruta. Experimentaste que calmar el cuerpo y la mente con la Palabra de Dios no es una utopía, sino un hábito fisiológico y espiritual. <strong className="text-[#38BDF8]">«Tu fe y tu salud mental no son enemigas; caminan juntas hacia la paz.»</strong>
         </p>
       </div>
 
@@ -134,7 +134,7 @@ export const Day7PaywallView: React.FC<Day7PaywallProps> = ({
               <ArrowRight className="w-4 h-4 text-[#061A0E]" strokeWidth={2.5} />
             </button>
             <span className="text-[11px] text-[#94A3B8] text-center block">
-              Garantía de gracia • Acceso vitalicio en tu dispositivo
+              Garantía de Satisfacción de 7 Días • Acceso vitalicio • Sin mensualidades
             </span>
           </div>
         </div>

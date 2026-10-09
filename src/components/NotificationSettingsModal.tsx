@@ -232,10 +232,10 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
                 </div>
                 <div>
                   <h3 className="text-[15px] sm:text-[16px] font-semibold text-[#F1F5F9] flex items-center gap-2">
-                    Recordatorio del Diario de Gratitud
+                    Recordatorio Nocturno • 8:30 PM (Contra la Rumiación)
                   </h3>
                   <p className="text-[12px] text-[#94A3B8]">
-                    Tómate 2 minutos antes de descansar para agradecer 3 bendiciones recibidas.
+                    Horario estratégico antes de dormir: 3 minutos para pausar, entregar cargas a Dios y calmar tu sistema nervioso.
                   </p>
                 </div>
               </div>

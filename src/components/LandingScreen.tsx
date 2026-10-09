@@ -3,6 +3,7 @@ import { HeroCoupleIllustration } from './HeroCoupleIllustration';
 import { MapaCuadrantesInteractive } from './MapaCuadrantesInteractive';
 import { MentoresGuiaSection } from './MentoresGuiaSection';
 import { FlexiHeroAnimation } from './FlexiHeroAnimation';
+import { FaithTechDifferentiationSection } from './FaithTechDifferentiationSection';
 import { UserRoleProfile, SymptomId } from '../types';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
@@ -101,6 +102,19 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
         onChooseMentorGuide={onChooseMentorGuide}
         onSelectMentor={(role, symptom) => onStartFlow(role, symptom)}
         onOpenPlanDetails={onOpenPlan}
+      />
+
+      {/* 6. Enfoque FaithTech: Diferenciación Competitiva, Ciencia & Gracia */}
+      <FaithTechDifferentiationSection
+        onOpenPlanDetails={onOpenPlan}
+        onStart30Days={() => {
+          if (onChooseMentorGuide && activeMentor) {
+            onChooseMentorGuide(activeMentor);
+          } else {
+            onOpenPlan();
+          }
+        }}
+        onExploreFreeBotiquin={() => handleStartMotherSanctuary()}
       />
     </div>
   );

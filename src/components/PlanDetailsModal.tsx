@@ -40,11 +40,16 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
           </button>
         </div>
 
-        {/* Principio de Gracia */}
-        <div className="bg-[#0E223D]/70 border border-[#F59E0B]/30 rounded-[14px] p-4 flex items-start gap-3">
-          <Heart className="w-4 h-4 text-[#F59E0B] fill-[#F59E0B]/20 shrink-0 mt-0.5" strokeWidth={1.75} />
+        {/* Principio de Gracia & Enfoque FaithTech */}
+        <div className="bg-[#0E223D]/70 border border-[#F59E0B]/30 rounded-[14px] p-4 space-y-2">
+          <div className="flex items-center gap-2 text-[#F59E0B]">
+            <Heart className="w-4 h-4 fill-[#F59E0B]/20 shrink-0" strokeWidth={1.75} />
+            <span className="text-[12.5px] font-semibold text-[#F1F5F9]">
+              Enfoque FaithTech: «Tu fe y tu salud mental no son enemigas; caminan juntas hacia la paz»
+            </span>
+          </div>
           <p className="text-[12.5px] text-[#CBD5E1] leading-relaxed">
-            <strong className="text-[#F1F5F9]">Principio de Gracia:</strong> El Botiquín de Encuentro con Dios y los primeros auxilios para momentos de crisis nocturna o taquicardia son y serán siempre de <strong>acceso libre y gratuito</strong>. Nadie debe pagar por ser consolado o recibir la Palabra en su momento de mayor aflicción.
+            <strong className="text-[#38BDF8]">Sentir ansiedad no es falta de fe, te hace humano.</strong> El Botiquín de Primeros Auxilios, la respiración diafragmática 4×4 y las oraciones de crisis nocturna son y serán siempre de <strong>acceso 100% libre y gratuito</strong>. Nadie debe pagar por ser consolado o recibir la Palabra en su momento de mayor aflicción.
           </p>
         </div>
 
@@ -54,7 +59,7 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
           <div className="p-5 rounded-[14px] border border-white/[0.08] bg-[#060F1E]">
             <div className="flex justify-between items-baseline mb-2">
               <span className="text-[14.5px] font-semibold text-[#F1F5F9]">
-                Botiquín de Rescate y Oración
+                Nivel 1: Botiquín de Rescate y Oración
               </span>
               <span className="text-[11px] text-[#34D399] font-semibold uppercase tracking-wider bg-[#10B981]/15 px-2.5 py-0.5 rounded-full border border-[#10B981]/30">
                 Acceso libre perpetuo
@@ -71,7 +76,7 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-3.5 h-3.5 text-[#10B981] shrink-0 mt-0.5" strokeWidth={2} />
-                <span>Diario de gratitud con jardín botánico y Semana 1 libre</span>
+                <span><strong>Semana 1 Libre (Días 1 a 7):</strong> Primera victoria emocional (<em>First Win</em>)</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-3.5 h-3.5 text-[#10B981] shrink-0 mt-0.5" strokeWidth={2} />
@@ -85,10 +90,10 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
             <div className="flex justify-between items-baseline">
               <div>
                 <span className="text-[15px] font-semibold text-[#F1F5F9] block">
-                  Proceso de 30 Días con Clara Luz y Leo
+                  Nivel 2: Proceso de 30 Días con Clara Luz o Leo
                 </span>
                 <span className="text-[11px] font-medium text-[#34D399]">
-                  Construye un refugio a prueba de tormentas
+                  Rehabilitación profunda del alma y la mente
                 </span>
               </div>
               <div className="text-right">
@@ -102,21 +107,25 @@ export const PlanDetailsModal: React.FC<PlanDetailsModalProps> = ({ isOpen, onCl
             </div>
 
             <p className="text-[12.5px] text-[#CBD5E1] leading-relaxed">
-              Durante los 30 días por un único valor de USD 7.99 o $29.900 COL. Clara Luz y Leo te guían a edificar cuerpo, mente, alma y propósito. <em>Por el momento no existirá membresía ni pagos mensuales recurrentes.</em>
+              Durante los 30 días completos por un único valor accesible para Latinoamérica de USD 7.99 o $29.900 COL. Tu guía inmutable te acompaña a edificar cuerpo, mente, alma y propósito. <em>Sin membresías mensuales ni cobros recurrentes en dólares.</em>
             </p>
 
             <ul className="space-y-1.5 text-[12.5px] text-[#CBD5E1]">
               <li className="flex items-start gap-2">
                 <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
-                <span><strong>El Mapa de 30 Días:</strong> semanas 2 a 5 con reflexiones y anclajes diarios</span>
+                <span><strong>Acompañamiento Inmutable:</strong> Todo el camino con Clara Luz o Leo</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
-                <span><strong>Catálogo completo de audios de fe:</strong> vigilias nocturnas extendidas</span>
+                <span><strong>Racha en la Gracia (Grace-Based):</strong> Si fallas un día, no se reinicia tu progreso</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
-                <span><strong>Cero mensualidades ocultas:</strong> un solo pago con acceso ilimitado</span>
+                <span><strong>Garantía de Satisfacción de 7 Días:</strong> Seguridad y respaldo absoluto</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Check className="w-3.5 h-3.5 text-[#F59E0B] shrink-0 mt-0.5" strokeWidth={2} />
+                <span><strong>Cero mensualidades ocultas:</strong> Un solo pago con acceso vitalicio</span>
               </li>
             </ul>
           </div>

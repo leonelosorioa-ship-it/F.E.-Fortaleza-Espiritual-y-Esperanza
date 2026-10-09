@@ -44,6 +44,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   onGoHome,
   onOpenHistory,
+  onOpenPlan,
   onOpenPeacePlan,
   onOpenGratitude,
   onOpenAudios,
@@ -347,6 +348,22 @@ export const Header: React.FC<HeaderProps> = ({
                     <FileSpreadsheet className="w-4 h-4 text-emerald-400 shrink-0" />
                     <span>Google Sheets</span>
                   </button>
+                )}
+
+                {onOpenPlan && (
+                  <div className="border-t border-white/[0.06] mt-1 pt-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        onOpenPlan();
+                      }}
+                      className="w-full px-3.5 py-2 text-left hover:bg-white/[0.06] text-[#FBBF24] hover:text-white flex items-center gap-2.5 transition-colors cursor-pointer text-[12.5px] font-medium"
+                    >
+                      <Sparkles className="w-4 h-4 text-[#F59E0B] shrink-0" />
+                      <span>Enfoque FaithTech • Rescate vs. 30 Días</span>
+                    </button>
+                  </div>
                 )}
               </div>
             )}

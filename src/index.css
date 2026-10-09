@@ -2,50 +2,31 @@
 
 :root {
   /* ==========================================================================
-     DESIGN SYSTEM: MODO SANTUARIO NOCTURNO (WARM DARK SANCTUARY)
-     Fondos azul noche profundos, oro ámbar sereno y toques esmeralda de sanidad.
-     Regla estricta: NUNCA negro puro (#000) ni blanco puro (#FFF).
+     DESIGN SYSTEM CANÓNICO: F.E.™ • ESPERANZA EN DIOS (SANTUARIO NOCTURNO)
+     Paleta psicoespiritual para descanso visual, regulación y paz mental.
+     Regla estricta: NUNCA negro puro (#000000) ni blanco puro (#FFFFFF).
      ========================================================================== */
+  --color-base: #0F172A; /* Fondo santuario nocturno */
+  --color-surface: #1E293B; /* Contenedores y tarjetas */
+  --color-surface-hover: #334155;
+  --color-border: #334155;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-accent: #0D9488; /* Verde azulado / Teal sereno */
+  --color-accent-hover: #0F766E;
+  --color-semantic-success: #10B981;
+  --color-semantic-warning: #F59E0B;
+  --radius-control: 8px;
+  --radius-container: 16px;
 
-  /* Superficies de Fondo */
-  --color-base: #060F1E;
-  --color-surface-card: #0B1728;
-  --color-surface-elevated: #0E223D;
-  --color-surface-glass: rgba(255, 255, 255, 0.04);
-  --color-surface-selected: rgba(245, 158, 11, 0.12);
-
-  /* Neutros de Texto (Blanco roto cálido y gris lunar) */
-  --color-text-primary: #F1F5F9;
-  --color-text-secondary: #CBD5E1;
-  --color-text-tertiary: #94A3B8;
-  --color-text-muted: #64748B;
-
-  /* Acento Único de Acción y Foco (Oro Ámbar Cálido) */
-  --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-  --color-accent-active: #B45309;
-  --color-accent-subtle: rgba(245, 158, 11, 0.15);
-  --color-accent-text: #060F1E;
-
-  /* ==========================================================================
-     PALETA EJEMPLO FLEXI (Vibrant Lime & High-Contrast Performance Sanctuary)
-     ========================================================================== */
-  --color-flexi-lime: #C6F432;
-  --color-flexi-lime-hover: #D9F95C;
-  --color-flexi-lime-glow: rgba(198, 244, 50, 0.35);
-  --color-flexi-dark: #060F17;
-  --color-flexi-badge-bg: #0F281E;
-  --color-flexi-badge-text: #A3E635;
-
-  /* Toque de Sanidad y Sosiego (Esmeralda) */
-  --color-emerald: #059669;
-  --color-emerald-light: #10B981;
-  --color-emerald-subtle: rgba(16, 185, 129, 0.14);
-
-  /* Bordes y Separadores Tenues (1px) */
-  --color-border-hairline: rgba(255, 255, 255, 0.08);
-  --color-border-subtle: rgba(245, 158, 11, 0.25);
-  --color-border-focus: #F59E0B;
+  /* Aliases para compatibilidad */
+  --color-surface-card: #1E293B;
+  --color-surface-elevated: #243248;
+  --color-surface-glass: rgba(30, 41, 59, 0.7);
+  --color-text-tertiary: #64748B;
+  --color-border-hairline: #334155;
+  --color-border-subtle: rgba(13, 148, 136, 0.3);
+  --color-border-focus: #0D9488;
 
   /* Tipografía */
   --font-family-display: "Lora", Georgia, serif;

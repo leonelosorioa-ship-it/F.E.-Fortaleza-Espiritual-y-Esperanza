@@ -99,9 +99,9 @@ export const DEFAULT_NOTIFICATION_SETTINGS: NotificationScheduleConfig = {
   soundEnabled: true,
   gratitude: {
     enabled: true,
-    time: '21:00',
-    title: '🌿 Momento de Agradecer • Diario de Gratitud',
-    body: 'Tómate 2 minutos antes de descansar: escribe 3 bendiciones que Dios puso hoy en tu jornada.',
+    time: '20:30', // 8:30 PM: Disparador estratégico nocturno contra la rumiación
+    title: '🌿 8:30 PM: Detén la rumiación nocturna • Gracia y Paz',
+    body: 'Tómate 3 minutos en Dios: tu mente y tu sistema nervioso merecen reposar en Su gracia antes de dormir.',
   },
   dailyPromise: {
     enabled: true,
